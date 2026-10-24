@@ -12,3 +12,9 @@ CLAUDE.md
 .agents/
 .aider-desk/
 skills-lock.json
+# Local run state, model cache, build output
+var/
+.cache/
+dist/
+*.zip
+.superpowers/

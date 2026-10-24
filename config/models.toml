@@ -1,0 +1,86 @@
+# Model roles, prices and free-tier limits for the A3 slice (P1, P3 in docs/decisions-proposed.md).
+# IDs checked against https://ai.google.dev/gemini-api/docs/models and the pricing page on 2026-10-25.
+# Never change an ID from memory: re-check the provider's docs and update the date.
+
+# Models that no role may use. The spare is only for scripts/compare_spare.py, at the owner's request.
+spare = ["gemini-3.8-flash"]
+
+[roles.extraction_text]
+provider = "gemini"
+model = "gemini-3.5-flash-lite"
+timeout_s = 30
+max_output_tokens = 8192
+
+[roles.extraction_vision]
+provider = "gemini"
+model = "gemini-3.5-flash-lite"
+timeout_s = 45
+max_output_tokens = 8192
+
+[roles.requirements]
+provider = "gemini"
+model = "gemini-3.5-flash-lite"
+timeout_s = 30
+max_output_tokens = 4096
+
+[roles.coverage]
+provider = "gemini"
+model = "gemini-3.5-flash-lite"
+timeout_s = 30
+max_output_tokens = 8192
+
+[roles.planner]
+provider = "gemini"
+model = "gemini-3.5-flash-lite"
+timeout_s = 30
+max_output_tokens = 8192
+
+# Local different-family judge (P1). Falls back to gemini-3.5-flash-lite only if Task 3a fails.
+[roles.judge]
+provider = "ollama"
+model = "qwen3:4b-instruct-2507-q4_K_M"
+timeout_s = 30
+max_output_tokens = 512
+
+# Paid list prices in USD per million tokens. Used for cost estimates only; actual cost is zero on the free tier.
+[prices."gemini-3.5-flash-lite"]
+input_per_mtok = 0.30
+output_per_mtok = 2.50
+checked = "2026-10-25"
+source = "https://ai.google.dev/gemini-api/docs/pricing"
+
+[prices."gemini-3.8-flash"]
+# Rises to 1.50 / 7.50 on 2027-01-01.
+input_per_mtok = 0.75
+output_per_mtok = 3.75
+checked = "2026-10-25"
+source = "https://ai.google.dev/gemini-api/docs/pricing"
+
+[prices."qwen3:4b-instruct-2507-q4_K_M"]
+# Runs locally; electricity is not counted.
+input_per_mtok = 0.0
+output_per_mtok = 0.0
+checked = "2026-10-25"
+source = "local Ollama"
+
+# Free-tier limits for the Evident project, copied by the owner from the AI Studio rate-limit page.
+# min_interval_s spaces uncached calls: 15 RPM allows 4 s, 5 RPM allows 12 s; both get a margin.
+[limits."gemini-3.5-flash-lite"]
+rpm = 15
+tpm = 250000
+rpd = 500
+min_interval_s = 4.5
+checked = "2026-10-25"
+source = "AI Studio rate-limit page, Evident project, copied by owner"
+
+[limits."gemini-3.8-flash"]
+rpm = 5
+tpm = 250000
+rpd = 20
+min_interval_s = 13.0
+checked = "2026-10-25"
+source = "AI Studio rate-limit page, Evident project, copied by owner"
+
+# Pinned digest per Ollama tag (first 12 hex characters, as Ollama lists them).
+[ollama_digests]
+"qwen3:4b-instruct-2507-q4_K_M" = "0edcdef34593"
