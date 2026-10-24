@@ -48,7 +48,9 @@ Run on 2026-10-25 with `uv run python scripts/judge_smoke.py`. Ollama 0.40.10; t
 - **Speed:** median 2.9 s, maximum 3.6 s (n = 10, warm). **Pass.**
 - **Fit:** Ollama reports 66% of the loaded model in VRAM and 34% in system memory, at `num_ctx` 4096 with a loaded size of 3.5 GB. **Fail.**
 
-**Outcome against the criteria as stated: fail (criterion 3 only).** The owner decides whether to keep the local judge (P1).
+**Outcome against the criteria as stated: fail (criterion 3 only).**
+
+**Owner decision (2026-10-25):** keep the local judge. The owner's own conditions (not too slow, not clearly wrong) are met; the failed fit criterion costs only speed, which already passes. The judge stays on Ollama (P1); no fallback.
 
 ### Observation for Task 12 (not a criterion)
 

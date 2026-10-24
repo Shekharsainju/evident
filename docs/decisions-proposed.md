@@ -10,7 +10,7 @@ Proposals and temporary exceptions to the Decision log in `docs/design.md`. Noth
 - **What is still a limitation:** a 4B quantised model is much smaller than the judges the design has in mind, and its confidence is self-reported and uncalibrated. Every validation report and the evaluation results state both.
 - **Gate before use:** a smoke test (plan Task 3a) measures time per judgement and accuracy on 10 obvious claims (5 supported, 5 inflated), with pass criteria written before it runs.
 - **Fallback:** if the smoke test fails, the judge role moves to `gemini-3.5-flash-lite` and the same-family limitation from the old P1 applies again: the judge is then the same model as the planner. The mitigations are those of the old P1: a separate judge prompt that sees only the claim and the cited evidence, model-free Layer 1 first, and low confidence or Layer 1/2 disagreement routed to user review. Which way the smoke test went is recorded here and in every report.
-- **Smoke test outcome:** pending.
+- **Smoke test outcome (2026-10-25):** accuracy 10/10 and false accepts 0/5 (pass); median 2.9 s, max 3.6 s (pass); GPU fit 66% (fail, a criterion added by the builder). The owner chose to keep the local judge. Details in `experiments/a3-slice/JUDGE_SMOKE.md`.
 - **Ends when:** phase 0 experiment 2 runs, which compares two judge candidates as the design requires.
 
 ## P3: Free-tier Gemini 3.5 Flash-Lite for every Gemini role in the A3 slice (temporary exception)
