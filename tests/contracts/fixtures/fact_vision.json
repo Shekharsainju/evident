@@ -1,0 +1,33 @@
+{
+  "schema_version": "2.0",
+  "fact_id": "cert_01",
+  "version": 1,
+  "owner_id": "user_demo_01",
+  "status": "extracted",
+  "kind": "certification",
+  "text": "Completed the Example Cloud Practitioner certification",
+  "attributes": {
+    "schema_version": "2.0",
+    "ownership": null,
+    "deployment": null,
+    "scale": null,
+    "metrics": [],
+    "start": null,
+    "end": null,
+    "skills": [],
+    "title": "Cloud Practitioner",
+    "organisation": "Example Cloud"
+  },
+  "source": {
+    "schema_version": "2.0",
+    "extraction_path": "vision",
+    "document_id": "doc_photo_01",
+    "bbox": [120.5, 80, 900, 160],
+    "bbox_verified": false,
+    "span_text": "Cloud Practitioner",
+    "confidence": 0.71
+  },
+  "supersedes": null,
+  "edited_by_user": false,
+  "confirmed_at": null
+}

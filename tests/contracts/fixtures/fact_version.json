@@ -1,0 +1,46 @@
+{
+  "schema_version": "2.0",
+  "fact_id": "exp_03",
+  "version": 2,
+  "owner_id": "user_demo_01",
+  "status": "confirmed",
+  "kind": "project",
+  "text": "Built a FastAPI service serving a PyTorch skin-condition classifier",
+  "attributes": {
+    "schema_version": "2.0",
+    "ownership": "built",
+    "deployment": "prototype",
+    "scale": null,
+    "metrics": [
+      {
+        "schema_version": "2.0",
+        "metric_id": "m_07",
+        "metric": "latency",
+        "direction": "decrease",
+        "value": 45,
+        "unit": "percent",
+        "baseline": null,
+        "subject": "skin classifier API",
+        "span_text": "cut inference latency by 45%"
+      }
+    ],
+    "start": "2026-05",
+    "end": "2026-07",
+    "skills": ["FastAPI", "PyTorch"],
+    "title": "Project author",
+    "organisation": "Derma-Scanner"
+  },
+  "source": {
+    "schema_version": "2.0",
+    "extraction_path": "pdf_text",
+    "document_id": "doc_cv_01",
+    "page": 1,
+    "bbox": [72, 410, 540, 438],
+    "span_text": "Derma-Scanner: FastAPI backend serving PyTorch model",
+    "confidence": 0.94,
+    "span_found": true
+  },
+  "supersedes": 1,
+  "edited_by_user": true,
+  "confirmed_at": "2026-10-24T10:12:00Z"
+}
