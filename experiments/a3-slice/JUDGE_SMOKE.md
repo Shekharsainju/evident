@@ -23,3 +23,33 @@ Decides whether the local Ollama judge (P1) is fast and accurate enough to use b
 If any criterion fails, the judge falls back to `gemini-3.5-flash-lite` and P1's same-family limitation applies.
 
 ## Results
+
+Run on 2026-10-25 with `uv run python scripts/judge_smoke.py`. Ollama 0.40.10; the model was unloaded first, cache bypassed.
+
+| # | Label | Kind | Verdict | Confidence | Seconds | Correct |
+|---|---|---|---|---|---|---|
+| 1 | supported | faithful | supported | 1.00 | 2.8 | yes |
+| 2 | supported | faithful | supported | 1.00 | 2.8 | yes |
+| 3 | supported | faithful | supported | 0.95 | 3.4 | yes |
+| 4 | supported | faithful | supported | 1.00 | 2.9 | yes |
+| 5 | supported | faithful | supported | 1.00 | 2.8 | yes |
+| 6 | inflated | ownership | overstated | 0.60 | 2.9 | yes |
+| 7 | inflated | deployment | overstated | 0.10 | 3.5 | yes |
+| 8 | inflated | number | overstated | 0.80 | 2.8 | yes |
+| 9 | inflated | skill | overstated | 0.60 | 3.1 | yes |
+| 10 | inflated | paraphrase | overstated | 0.15 | 3.6 | yes |
+
+- Warm-up call, including the cold load, took 10.5 s and is discarded.
+- **Accuracy:**
+  - 10/10 correct;
+  - false accepts 0/5 (no inflated claim judged supported at any confidence).
+
+  **Pass.**
+- **Speed:** median 2.9 s, maximum 3.6 s (n = 10, warm). **Pass.**
+- **Fit:** Ollama reports 66% of the loaded model in VRAM and 34% in system memory, at `num_ctx` 4096 with a loaded size of 3.5 GB. **Fail.**
+
+**Outcome against the criteria as stated: fail (criterion 3 only).** The owner decides whether to keep the local judge (P1).
+
+### Observation for Task 12 (not a criterion)
+
+On the inflated claims the confidence values (0.10 to 0.80) look like the probability that the claim is supported, not confidence in the verdict. Under the outcome table, an `overstated` verdict below 0.8 goes to user review, not rejection. That is safe, since nothing passes, but most inflated claims would land in review rather than being rejected. The judge prompt's "Return a confidence from 0 to 1" is ambiguous, so a v2 wording ("your confidence that the verdict is correct") should be tested on the dev split.
