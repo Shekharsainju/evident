@@ -1,0 +1,27 @@
+Extract every career fact from the document as atomic facts: one role,
+project, qualification, skill or achievement per fact.
+
+For each fact return:
+- kind: experience | project | education | certification | skill | award
+- text: the fact in plain words, no embellishment
+- span_text: the exact words from the document that support it
+- box_2d: [ymin, xmin, ymax, xmax] of span_text, normalised to 0-1000 (images only; null for text)
+- attributes: ownership (contributed | built | led | null),
+deployment (concept | prototype | internal | production | null),
+metrics (only numbers stated in the document), start, end (YYYY-MM or null),
+skills (named tools and technologies only),
+title (the role, degree or project name as written, or null),
+organisation (the employer, institution or issuer as written, or null)
+
+Each metric has: metric (one of latency, accuracy, cost, revenue, users,
+throughput, time_saved, error_rate, coverage, count, or other:<short_name>),
+direction (increase | decrease | absolute), value (the number as written),
+unit, subject (what the number measures) and span_text (the exact words).
+
+Rules:
+- If an attribute is not stated, use null. Do not infer seniority,
+scale or deployment status.
+- Copy numbers exactly as written.
+- If text is unreadable, return it in "unreadable_regions" instead of guessing.
+
+<document>{content}</document>

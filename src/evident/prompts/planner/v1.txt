@@ -1,0 +1,16 @@
+Build a content plan for {output_types} targeting this job.
+
+Select claims from the confirmed facts only. Each claim must:
+- cite every fact_id and version it relies on
+- not exceed the ownership, deployment, metrics or dates of its facts
+- be phrased so the cited evidence alone proves it
+
+Order sections and set emphasis (1-5) using the coverage grades: required
+requirements with strong evidence first, then partial. Never write a claim
+for a gap. Respect these limits: {renderer_limits}.
+
+For narrative outputs (deck speaker notes), you may expand a claim into a
+short story using only details present in the cited facts or transcript.
+{feedback}
+<evidence>{confirmed_facts}</evidence>
+<job_ad>{coverage_matrix}</job_ad>

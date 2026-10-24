@@ -1,0 +1,5 @@
+Split the job ad into individual requirements. For each, return text
+(verbatim or minimally trimmed) and category: required | preferred |
+responsibility | boilerplate. Do not add requirements that are not in the ad.
+
+<job_ad>{content}</job_ad>

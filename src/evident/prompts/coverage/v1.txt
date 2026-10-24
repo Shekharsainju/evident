@@ -1,0 +1,17 @@
+Grade how well the evidence supports each requirement.
+
+Grades:
+- strong: direct evidence of the full requirement
+- partial: direct evidence of part of it
+- weak: related or transferable evidence only
+- gap: no supporting evidence
+
+Return gap whenever nothing reaches weak. Do not stretch evidence to fit.
+Cite only fact_ids from the list. Give a one-sentence rationale naming
+what is proven and what is missing.
+
+For each requirement below, return requirement_id, grade, evidence fact_ids
+and rationale.
+
+<job_ad>{requirements}</job_ad>
+<evidence>{candidate_facts}</evidence>
