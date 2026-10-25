@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ copy.document_title }}</title>
+<style>
+  @page { size: A4; margin: 18mm; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 11pt; color: #111; }
+  h1 { font-size: 20pt; margin: 0 0 4pt; }
+  h2 { font-size: 13pt; margin: 14pt 0 4pt; }
+  ul { margin: 0; padding-left: 16pt; }
+  footer { margin-top: 18pt; font-size: 9pt; color: #444; }
+</style>
+</head>
+<body>
+<header>
+{% for key, value in identity.items() %}
+{% if loop.first %}<h1><span data-identity="{{ key }}">{{ value }}</span></h1>
+{% else %}<p><span data-identity="{{ key }}">{{ value }}</span></p>
+{% endif %}
+{% endfor %}
+</header>
+{% for heading, claims in sections %}
+<section>
+<h2>{{ heading }}</h2>
+<ul>
+{% for c in claims %}
+<li><span data-claim-id="{{ c.claim_id }}" data-claim-version="{{ c.version }}">{{ c.text }}</span></li>
+{% endfor %}
+</ul>
+</section>
+{% endfor %}
+<footer>{{ copy.marker }}</footer>
+</body>
+</html>
