@@ -46,7 +46,7 @@ packages = ["evident"]
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["pdfplumber.*", "pypdfium2.*", "pytesseract.*", "pptx.*"]
+module = ["pdfplumber.*", "pypdfium2.*", "pytesseract.*", "pptx.*", "scipy.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
