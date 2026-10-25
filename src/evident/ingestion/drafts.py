@@ -26,6 +26,8 @@ log = logging.getLogger("evident.ingestion")
 
 YEAR_MONTH = re.compile(r"^\d{4}-(0[1-9]|1[0-2])$")
 BOX_SCALE = 1000.0
+# Chosen on the dev split (profile 01) on 2026-10-25: v2 found 48/48 facts, v1 29/48.
+EXTRACTION_PROMPT_VERSION = "v2"
 
 
 class DraftMetric(BaseModel):

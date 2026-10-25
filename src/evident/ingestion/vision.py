@@ -19,7 +19,12 @@ from rapidfuzz import fuzz
 from evident.contracts.documents import Document
 from evident.contracts.facts import FactVersion, VisionSource
 from evident.errors import ErrorCategory, StageError
-from evident.ingestion.drafts import ExtractionDraft, box_2d_to_pixels, draft_to_fact
+from evident.ingestion.drafts import (
+    EXTRACTION_PROMPT_VERSION,
+    ExtractionDraft,
+    box_2d_to_pixels,
+    draft_to_fact,
+)
 from evident.models.adapter import ImagePart, ModelAdapter, Part, TextPart
 from evident.prompts import load_prompt, render_prompt
 from evident.settings import Role
@@ -33,7 +38,7 @@ OCR_UPSCALE = 2
 OCR_WHITE_BORDER = 12
 SHORT_SPAN_WORDS = 3
 IMAGE_PLACEHOLDER = "The document is the attached image."
-EXTRACTION_PROMPT_VERSION = "v2"
+
 
 
 def _tesseract() -> str:

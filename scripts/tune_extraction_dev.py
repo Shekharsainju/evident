@@ -17,9 +17,10 @@ from PIL import Image, ImageOps
 from rapidfuzz import fuzz
 
 from evident.contracts.enums import FactKind
-from evident.eval.assets import TEMPLATES, cv_photo_path
+from evident.eval.assets import TEMPLATES, cv_pdf_path, cv_photo_path
 from evident.eval.datasets import load_ground_truth
 from evident.ingestion.drafts import ExtractedFactDraft, box_2d_to_pixels
+from evident.ingestion.pdf_text import extract_pages, locate_span, request_pdf_draft
 from evident.ingestion.vision import _normalise, _tesseract, request_photo_draft
 from evident.models.router import build_adapter
 from evident.settings import Settings, load_model_config
@@ -179,11 +180,23 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--versions", nargs="+", default=["v1", "v2"])
     parser.add_argument("--profile", default=DEV_PROFILE)
+    parser.add_argument("--pdf", action="store_true", help="digital PDFs instead of photos")
     args = parser.parse_args()
     if args.profile != DEV_PROFILE:
         raise SystemExit("Dev tuning uses student_profile_01 only.")
     adapter = build_adapter(Settings(), load_model_config())
     n_truth = len(truth_keys())
+    if args.pdf:
+        for version in args.versions:
+            print(f"\n== extraction/{version} on PDFs ==")
+            for template in TEMPLATES:
+                pages = extract_pages(cv_pdf_path(DEV_PROFILE, template).read_bytes())
+                draft = request_pdf_draft(pages, adapter, version)
+                found = sum(locate_span(pages, d.span_text) is not None for d in draft.facts)
+                k = match_count(draft.facts)
+                print(f"{template:<8} predicted {len(draft.facts):>2}  matched {k:>2}/{n_truth}  "
+                      f"precision {k}/{len(draft.facts)}  spans found {found}/{len(draft.facts)}")
+        return
     for version in args.versions:
         totals: dict[str, list[int]] = {}
         print(f"\n== extraction/{version} ==")
