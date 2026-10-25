@@ -1,7 +1,9 @@
-"""Test double for ModelAdapter: replays queued JSON replies per role."""
+"""Test double for ModelAdapter: replays queued JSON replies (or raises queued
+exceptions) per role."""
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
 from evident.models.adapter import ModelResult, Part, T
@@ -17,7 +19,7 @@ class RecordedCall:
 
 
 class FakeAdapter:
-    def __init__(self, responses: dict[Role, list[str]]) -> None:
+    def __init__(self, responses: Mapping[Role, Sequence[str | Exception]]) -> None:
         self.responses = {role: list(replies) for role, replies in responses.items()}
         self.calls: list[RecordedCall] = []
 
@@ -31,8 +33,11 @@ class FakeAdapter:
         queue = self.responses.get(role)
         if not queue:
             raise AssertionError(f"FakeAdapter has no reply queued for role {role.value}")
+        reply = queue.pop(0)
+        if isinstance(reply, Exception):
+            raise reply
         return ModelResult(
-            value=schema.model_validate_json(queue.pop(0)),
+            value=schema.model_validate_json(reply),
             model_id=f"fake-{role.value}",
             prompt=prompt.name,
             prompt_version=prompt.version,

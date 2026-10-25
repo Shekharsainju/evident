@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Review facts{% endblock %}
+{% block content %}
+<h1>Review the extracted facts</h1>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<div class="card">
+  <p>Only facts you confirm are used. Facts with dates, metrics, qualifications, ownership above "contributed", deployment above "concept", or an uncertain source location need their own confirm.</p>
+  <form method="post" action="/runs/{{ run.run_id }}/facts/confirm-low-impact"><button type="submit" class="secondary">Confirm all other facts</button></form>
+</div>
+{% for row in rows %}{% set f = row.fact %}{% set a = f.attributes %}{% set s = f.source %}
+<div class="card fact" id="{{ f.fact_id }}">
+  <div>
+    <p>
+      <span class="badge">{{ f.kind.value }}</span>
+      <span class="badge{% if f.status.value == "confirmed" %} ok{% elif f.status.value == "rejected" %} warn{% endif %}">{{ f.status.value }}</span>
+      {% if row.high_impact and f.status.value == "extracted" %}<span class="badge warn">needs your check</span>{% endif %}
+      {% if f.edited_by_user %}<span class="badge">edited by you</span>{% endif %}
+      {% if s.extraction_path == "vision" %}<span class="badge{% if not s.bbox_verified %} warn{% endif %}">{% if s.bbox_verified %}location checked{% else %}approximate location{% endif %}</span>{% endif %}
+      {% if s.extraction_path == "pdf_text" and not s.span_found %}<span class="badge warn">text not found in the document</span>{% endif %}
+    </p>
+    <p><strong>{{ f.text }}</strong></p>
+    <p class="muted">
+      {% if a.title %}{{ a.title }}{% endif %}{% if a.organisation %}, {{ a.organisation }}{% endif %}
+      {% if a.start or a.end %} | {{ a.start or "?" }} to {{ a.end or "present" }}{% endif %}
+      {% if a.ownership %} | ownership: {{ a.ownership.value }}{% endif %}
+      {% if a.deployment %} | deployment: {{ a.deployment.value }}{% endif %}
+    </p>
+    {% if a.skills %}<p class="muted">Skills: {{ a.skills | join(", ") }}</p>{% endif %}
+    {% for m in a.metrics %}<p class="muted">Metric: {{ m.metric }} {{ m.direction.value }} {{ m.value }} {{ m.unit }} ("{{ m.span_text }}")</p>{% endfor %}
+    <p class="muted">Source text: "{{ s.span_text }}"</p>
+    {% if f.status.value == "extracted" %}
+    <form class="inline" method="post" action="/facts/{{ f.fact_id }}/v/{{ f.version }}/confirm">
+      <input type="hidden" name="run_id" value="{{ run.run_id }}"><button type="submit">Confirm</button></form>
+    <form class="inline" method="post" action="/facts/{{ f.fact_id }}/v/{{ f.version }}/reject">
+      <input type="hidden" name="run_id" value="{{ run.run_id }}"><button type="submit" class="secondary">Reject</button></form>
+    {% endif %}
+    {% if f.status.value in ("extracted", "confirmed") %}
+    <details><summary>Edit (creates a new version)</summary>
+      <form method="post" action="/facts/{{ f.fact_id }}/v/{{ f.version }}/edit">
+        <input type="hidden" name="run_id" value="{{ run.run_id }}">
+        <label>Text</label><input type="text" name="text" value="{{ f.text }}">
+        <label>Title</label><input type="text" name="title" value="{{ a.title or "" }}">
+        <label>Organisation</label><input type="text" name="organisation" value="{{ a.organisation or "" }}">
+        <label>Start (YYYY-MM)</label><input type="text" name="start" value="{{ a.start or "" }}">
+        <label>End (YYYY-MM, empty if ongoing)</label><input type="text" name="end" value="{{ a.end or "" }}">
+        <label>Ownership (contributed, built or led)</label><input type="text" name="ownership" value="{{ a.ownership.value if a.ownership else "" }}">
+        <label>Deployment (concept, prototype, internal or production)</label><input type="text" name="deployment" value="{{ a.deployment.value if a.deployment else "" }}">
+        <label>Skills (comma separated)</label><input type="text" name="skills" value="{{ a.skills | join(", ") }}">
+        <p><button type="submit">Save as new version</button></p>
+      </form>
+    </details>
+    {% endif %}
+  </div>
+  <div><img loading="lazy" alt="Where this fact appears in the original document"
+    src="/documents/{{ s.document_id }}/source?fact_id={{ f.fact_id }}&amp;version={{ f.version }}"></div>
+</div>
+{% else %}
+<div class="card">No facts were extracted.</div>
+{% endfor %}
+{% endblock %}

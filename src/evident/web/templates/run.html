@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Run {{ run.run_id }}{% endblock %}
+{% block content %}
+{% set problem = run.state.value in ("failed", "quota_exhausted") %}
+<h1>Run {{ run.run_id }}</h1>
+<div class="card">
+  <p><span class="badge">{{ run.stage.value }}</span><span class="badge{% if problem %} warn{% endif %}">{{ run.state.value.replace("_", " ") }}</span></p>
+  {% if problem %}<div class="error">{{ run.message }}</div>{% else %}<p>{{ run.message }}</p>{% endif %}
+  {% if refresh %}<p class="muted">This page refreshes every 2 seconds.</p>{% endif %}
+  {% if run.stage.value == "review" %}<p><a href="/runs/{{ run.run_id }}/facts">Review the extracted facts</a></p>{% endif %}
+</div>
+{% endblock %}

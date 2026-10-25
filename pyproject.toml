@@ -53,3 +53,5 @@ ignore_missing_imports = true
 testpaths = ["tests"]
 markers = ["live: makes real model calls (uses free-tier quota or the local GPU)"]
 addopts = "-m 'not live'"
+# The test client warns that it wants httpx2; adding it is a dependency change, so it waits.
+filterwarnings = ["ignore:Using `httpx` with `starlette.testclient` is deprecated"]

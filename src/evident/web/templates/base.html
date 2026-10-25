@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% if refresh %}<meta http-equiv="refresh" content="2">{% endif %}
+<title>{% block title %}Evident{% endblock %}</title>
+<style>
+  :root { --ink: #1f2933; --muted: #616e7c; --line: #d9e2ec; --accent: #1f5f8b; --warn: #8d2b0b; --ok: #1d6b3a; --bg: #f7f9fb; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.5 "Segoe UI", Arial, sans-serif; color: var(--ink); background: var(--bg); }
+  header { background: #fff; border-bottom: 1px solid var(--line); padding: 12px 24px; display: flex; gap: 16px; align-items: baseline; }
+  header a { color: var(--accent); font-weight: 600; text-decoration: none; font-size: 18px; }
+  .synthetic { font-size: 13px; color: var(--muted); }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  h1 { font-size: 24px; margin: 0 0 16px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+  .fact { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; }
+  .fact img { max-width: 100%; border: 1px solid var(--line); }
+  .muted { color: var(--muted); }
+  .badge { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 10px; border: 1px solid var(--line); margin-right: 6px; }
+  .badge.warn { color: var(--warn); border-color: #f0b8a8; background: #fff4f0; }
+  .badge.ok { color: var(--ok); border-color: #a8dcb9; background: #f0fff4; }
+  .error { background: #fff4f0; border: 1px solid #f0b8a8; color: var(--warn); padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; }
+  .inline { display: inline; }
+  button { font: inherit; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+  button.secondary { background: #fff; color: var(--accent); }
+  label { display: block; margin: 8px 0 2px; font-weight: 600; font-size: 13px; }
+  input[type=text], select { width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font: inherit; }
+</style>
+</head>
+<body>
+<header><a href="/">Evident</a><span class="synthetic">A3 slice demo. All profiles and job ads here are synthetic.</span></header>
+<main>{% block content %}{% endblock %}</main>
+</body>
+</html>

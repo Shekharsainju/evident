@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Start a run{% endblock %}
+{% block content %}
+<h1>Start a run</h1>
+<form class="card" method="post" action="/runs" enctype="multipart/form-data">
+  <label for="cv">Synthetic CV</label>
+  <select id="cv" name="cv">
+    <option value="">Upload a file instead</option>
+    {% for key in samples %}<option value="{{ key }}">{{ key }}{% if key.endswith("_photo") %} (photo){% else %} (PDF){% endif %}</option>{% endfor %}
+  </select>
+  <label for="upload">Or upload a CV (PDF, PNG or JPEG, up to 10 MB)</label>
+  <input id="upload" type="file" name="upload" accept=".pdf,.png,.jpg,.jpeg">
+  <p class="muted">Free-tier model requests may be used by Google to improve its products, so upload synthetic CVs only.</p>
+  <label for="job_id">Job ad</label>
+  <select id="job_id" name="job_id">
+    {% for job in jobs %}<option value="{{ job.document_id }}">{{ job.title }} ({{ job.document_id }})</option>{% endfor %}
+  </select>
+  <label><input type="checkbox" name="use_job_screenshot" value="true"> Use the Graduate AI Engineer screenshot instead (read by vision)</label>
+  <p><button type="submit">Start</button></p>
+</form>
+{% endblock %}
