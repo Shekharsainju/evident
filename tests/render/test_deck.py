@@ -50,3 +50,40 @@ def test_deck_body_text_is_verbatim_claims(tmp_path: Path) -> None:
 
     for c in claims:
         assert c.text in paragraphs
+
+
+def test_narrative_notes_carry_claim_id(tmp_path: Path) -> None:
+    body = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
+    story = claim("c_02", "I wrote the checker after a clash cost a friend a lab slot.",
+                  output_type=DECK, parent="c_01")
+    plan = plan_of(body, story)
+
+    notes = notes_text(render_deck(plan, report_of(validation(body), validation(story)), ID,
+                                   tmp_path / "deck.pptx"))
+
+    assert f"c_02: {story.text}" in notes.splitlines()
+
+
+def test_each_claim_has_own_text_box_named_by_claim_id(tmp_path: Path) -> None:
+    claims = [
+        claim("c_01", "Built a timetable clash checker in Python", output_type=DECK),
+        claim("c_02", "Wrote 40 unit tests for the clash checker", output_type=DECK),
+    ]
+    out = render_deck(plan_of(*claims), report_of(*map(validation, claims)), ID,
+                      tmp_path / "deck.pptx")
+
+    shapes = [shape for s in Presentation(str(out)).slides for shape in s.shapes]
+    named = sorted((shape.name, shape.text_frame.text) for shape in shapes
+                   if shape.name in {"c_01", "c_02"})
+
+    assert named == [(c.claim_id, c.text) for c in claims]
+
+
+def test_title_slide_has_no_identity_name(tmp_path: Path) -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
+    out = render_deck(plan_of(c), report_of(validation(c)), ID, tmp_path / "deck.pptx")
+
+    title = list(Presentation(str(out)).slides)[0]
+    text = " ".join(shape.text_frame.text for shape in title.shapes if shape.has_text_frame)
+
+    assert ID["name"] not in text

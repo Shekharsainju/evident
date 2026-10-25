@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import tomllib
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -37,19 +38,23 @@ def _renderable(v: ClaimValidation) -> bool:
         v.outcome == ClaimOutcome.user_review and v.approved_by_user)
 
 
-def _validated(plan: ContentPlan, report: ValidationReport) -> set[str]:
+def _validated(plan: ContentPlan, report: ValidationReport) -> set[tuple[str, int]]:
     if report.plan_id != plan.plan_id:
         raise StageError(code="report_plan_mismatch", category=ErrorCategory.internal,
                          detail=f"Report {report.plan_id} is not for plan {plan.plan_id}.")
     dropped = set(report.dropped_claim_ids)
-    ok: set[str] = set()
+    counts = Counter(c.claim_id for c in plan.claims)
+    ok: set[tuple[str, int]] = set()
     for c in plan.claims:
+        # A repeated ID makes "which version was validated" ambiguous, so none of them render.
+        if counts[c.claim_id] > 1 or c.claim_id in dropped:
+            continue
         matches = [v for v in report.results
                    if v.claim_id == c.claim_id and v.claim_version == c.version]
         # Every record for this exact version must allow it, so a conflicting duplicate fails
         # closed instead of depending on list order.
-        if c.claim_id not in dropped and matches and all(_renderable(v) for v in matches):
-            ok.add(c.claim_id)
+        if matches and all(_renderable(v) for v in matches):
+            ok.add((c.claim_id, c.version))
     return ok
 
 
@@ -57,14 +62,16 @@ def renderable_claims(plan: ContentPlan, report: ValidationReport,
                       output_type: OutputType) -> list[Claim]:
     """The only way a claim reaches a rendered output. Keeps plan order."""
     ok = _validated(plan, report)
+    ok_ids = {claim_id for claim_id, _ in ok}
     # A derived claim is only as good as its parent: drop it if the parent did not validate.
+    # Parents are cited by ID alone, which is safe because repeated IDs never reach ok.
     return [c for c in plan.claims
-            if c.claim_id in ok and output_type in c.output_types
-            and (c.parent_claim_id is None or c.parent_claim_id in ok)]
+            if (c.claim_id, c.version) in ok and output_type in c.output_types
+            and (c.parent_claim_id is None or c.parent_claim_id in ok_ids)]
 
 
 def heading(section: str) -> str:
-    return HEADINGS.get(section, HEADINGS["other"])
+    return HEADINGS.get(section.casefold(), HEADINGS["other"])
 
 
 def by_section(claims: list[Claim]) -> list[tuple[str, list[Claim]]]:

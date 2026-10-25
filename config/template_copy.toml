@@ -3,11 +3,13 @@
 
 marker = "Synthetic profile, A3 testing"
 document_title = "Profile"
+deck_title = "Interview deck"
 sources_label = "Sources:"
 # The deck renderer gets no fact versions, so it cannot print the page or span text.
 source_detail_missing = "page and span in the receipt"
 
-# Section headings by plan section name. A section with no entry uses "other", so a section
+# Section headings by plan section name, matched ignoring case, so keys stay lower case.
+# A section with no entry uses "other", so a section
 # name from the plan is never printed as if it were template copy.
 [headings]
 experience = "Experience"

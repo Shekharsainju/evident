@@ -14,7 +14,10 @@ from evident.contracts.validation import ValidationReport
 from evident.render.profile_html import COPY, by_section, renderable_claims
 
 TITLE_LAYOUT = 0
-CONTENT_LAYOUT = 1
+TITLE_ONLY_LAYOUT = 5
+CLAIM_TOP = Inches(1.5)
+CLAIM_HEIGHT = Inches(1.4)
+CLAIM_GAP = Inches(0.2)
 
 
 def _add_marker(slide: Any, width: Any) -> None:
@@ -35,22 +38,29 @@ def render_deck(plan: ContentPlan, report: ValidationReport, identity: dict[str,
     narratives = [c for c in claims if c.parent_claim_id is not None]
 
     deck = Presentation()
+    # Only template copy on the title slide: Task 14's verify_pptx takes no identity, so a
+    # name here would fail verification on a correct deck.
     title = deck.slides.add_slide(deck.slide_layouts[TITLE_LAYOUT])
-    title.shapes.title.text = identity.get("name", "")
+    title.shapes.title.text = COPY["deck_title"]
     title.placeholders[1].text = COPY["marker"]
 
     for heading, section_claims in by_section(body):
-        slide = deck.slides.add_slide(deck.slide_layouts[CONTENT_LAYOUT])
+        slide = deck.slides.add_slide(deck.slide_layouts[TITLE_ONLY_LAYOUT])
         slide.shapes.title.text = heading
-        frame = slide.placeholders[1].text_frame
-        frame.text = section_claims[0].text
-        for c in section_claims[1:]:
-            frame.add_paragraph().text = c.text
+        # One text box per claim, named by claim ID, so verification can match each box to
+        # exactly one validated claim.
+        for i, c in enumerate(section_claims):
+            top = CLAIM_TOP + i * (CLAIM_HEIGHT + CLAIM_GAP)
+            box = slide.shapes.add_textbox(Inches(0.5), top, deck.slide_width - Inches(1.0),
+                                           CLAIM_HEIGHT)
+            box.name = c.claim_id
+            box.text_frame.word_wrap = True
+            box.text_frame.text = c.text
         _add_marker(slide, deck.slide_width)
 
         on_slide = {c.claim_id for c in section_claims}
         stories = [n for n in narratives if n.parent_claim_id in on_slide]
-        notes = [n.text for n in stories] + [COPY["sources_label"]]
+        notes = [f"{n.claim_id}: {n.text}" for n in stories] + [COPY["sources_label"]]
         notes += source_lines(section_claims + stories)
         slide.notes_slide.notes_text_frame.text = "\n".join(notes)
 

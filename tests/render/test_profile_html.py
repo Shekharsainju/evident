@@ -4,6 +4,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 import pdfplumber
+import pytest
 
 from evident.contracts.enums import ClaimOutcome, OutputType, Verdict
 from evident.contracts.facts import FactRef
@@ -14,7 +15,13 @@ from evident.contracts.validation import (
     Layer1Result,
     ValidationReport,
 )
-from evident.render.profile_html import render_profile, render_profile_pdf, renderable_claims
+from evident.errors import StageError
+from evident.render.profile_html import (
+    heading,
+    render_profile,
+    render_profile_pdf,
+    renderable_claims,
+)
 from tests.builders import NOW, OWNER
 
 MARKER = "Synthetic profile, A3 testing"
@@ -22,11 +29,12 @@ ID = {"name": "Alex Example"}
 
 
 def claim(claim_id: str, text: str, version: int = 1, output_type: str = "visual_profile",
-          fact_id: str = "doc_01_f01", section: str = "projects", emphasis: int = 3) -> Claim:
+          fact_id: str = "doc_01_f01", section: str = "projects", emphasis: int = 3,
+          parent: str | None = None) -> Claim:
     return Claim(claim_id=claim_id, version=version, text=text,
                  evidence=[FactRef(fact_id=fact_id, version=1)], section=section,
                  emphasis=emphasis, allowed_transformations=[],
-                 output_types=[OutputType(output_type)], parent_claim_id=None)
+                 output_types=[OutputType(output_type)], parent_claim_id=parent)
 
 
 def validation(c: Claim, outcome: str = "passed", approved: bool = False) -> ClaimValidation:
@@ -45,9 +53,10 @@ def plan_of(*claims: Claim) -> ContentPlan:
                        claims=list(claims), created_at=NOW)
 
 
-def report_of(*results: ClaimValidation) -> ValidationReport:
-    return ValidationReport(plan_id="plan_01", results=list(results), dropped_claim_ids=[],
-                            models_by_role={}, limitations=[])
+def report_of(*results: ClaimValidation, dropped: tuple[str, ...] = (),
+              plan_id: str = "plan_01") -> ValidationReport:
+    return ValidationReport(plan_id=plan_id, results=list(results),
+                            dropped_claim_ids=list(dropped), models_by_role={}, limitations=[])
 
 
 def plan_with(text: str) -> ContentPlan:
@@ -134,3 +143,64 @@ def test_pdf_contains_claim_text_and_marker(tmp_path: Path) -> None:
         pdf_text = " ".join(" ".join((p.extract_text() or "") for p in pdf.pages).split())
 
     assert text in pdf_text and MARKER in pdf_text
+
+
+# Fail-closed rules in renderable_claims
+
+
+def kept_ids(plan: ContentPlan, report: ValidationReport) -> list[str]:
+    return [c.claim_id for c in renderable_claims(plan, report, OutputType.visual_profile)]
+
+
+def test_unvalidated_new_version_beside_validated_one_not_rendered() -> None:
+    old = claim("c_01", "Built a timetable clash checker in Python")
+    new = claim("c_01", "Built and shipped a timetable clash checker", version=2)
+    assert kept_ids(plan_of(old, new), report_of(validation(old))) == []
+
+
+def test_duplicate_claim_ids_in_plan_fail_closed() -> None:
+    first = claim("c_01", "Built a timetable clash checker in Python")
+    twin = claim("c_01", "Led the timetable clash checker project")
+    assert kept_ids(plan_of(first, twin), report_of(validation(first))) == []
+
+
+def test_validation_for_another_version_not_rendered() -> None:
+    validated = claim("c_01", "Built a timetable clash checker in Python")
+    edited = claim("c_01", "Built a timetable clash checker in Python", version=2)
+    assert kept_ids(plan_of(edited), report_of(validation(validated))) == []
+
+
+def test_dropped_claim_not_rendered() -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python")
+    assert kept_ids(plan_of(c), report_of(validation(c), dropped=("c_01",))) == []
+
+
+def test_report_for_another_plan_raises() -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python")
+    with pytest.raises(StageError):
+        renderable_claims(plan_of(c), report_of(validation(c), plan_id="plan_02"),
+                          OutputType.visual_profile)
+
+
+def test_derived_claim_with_rejected_parent_not_rendered() -> None:
+    parent = claim("c_01", "Built a timetable clash checker in Python")
+    child = claim("c_02", "Built a clash checker", parent="c_01")
+    report = report_of(validation(parent, "rejected"), validation(child))
+    assert kept_ids(plan_of(parent, child), report) == []
+
+
+@pytest.mark.parametrize("first", ["passed", "rejected"])
+def test_conflicting_records_for_one_version_not_rendered(first: str) -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python")
+    second = "rejected" if first == "passed" else "passed"
+    report = report_of(validation(c, first), validation(c, second))
+    assert kept_ids(plan_of(c), report) == []
+
+
+def test_claim_for_another_output_type_not_rendered() -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python", output_type="interview_deck")
+    assert kept_ids(plan_of(c), report_of(validation(c))) == []
+
+
+def test_section_heading_ignores_case() -> None:
+    assert heading("Projects") == heading("PROJECTS") == heading("projects") == "Projects"
