@@ -6,6 +6,7 @@
 <div class="card">
   <p>Only facts you confirm are used. Facts with dates, metrics, qualifications, ownership above "contributed", deployment above "concept", or an uncertain source location need their own confirm.</p>
   <form method="post" action="/runs/{{ run.run_id }}/facts/confirm-low-impact"><button type="submit" class="secondary">Confirm all other facts</button></form>
+  <form method="post" action="/runs/{{ run.run_id }}/continue"><p><button type="submit">Continue: grade, plan, validate and render</button></p></form>
 </div>
 {% for row in rows %}{% set f = row.fact %}{% set a = f.attributes %}{% set s = f.source %}
 <div class="card fact" id="{{ f.fact_id }}">

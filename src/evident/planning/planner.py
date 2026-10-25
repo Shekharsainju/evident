@@ -26,11 +26,13 @@ from evident.contracts.enums import (
 )
 from evident.contracts.facts import FactRef, FactVersion
 from evident.contracts.plan import Claim, ContentPlan
-from evident.contracts.validation import ClaimValidation
+from evident.contracts.validation import ClaimValidation, ValidationReport
 from evident.models.adapter import ModelAdapter, Part, TextPart
 from evident.prompts import load_prompt, render_prompt
-from evident.settings import Role
-from evident.validation.judge import evidence_block
+from evident.settings import Role, load_model_config
+from evident.validation.judge import evidence_block, limitations
+from evident.validation.layer1.config import Layer1Context
+from evident.validation.outcome import validate_claim
 
 log = logging.getLogger("evident.planning")
 
@@ -229,3 +231,44 @@ def build_plan(
     log.info("planner kept claims=%d of drafts=%d", len(claims), len(draft.claims))
     return ContentPlan(plan_id=f"plan_{uuid.uuid4().hex[:12]}", owner_id=owner_id,
                        target_id=target.target_id, claims=claims, created_at=datetime.now(UTC))
+
+
+def plan_and_validate(
+    owner_id: str,
+    target: Target,
+    facts: list[FactVersion],
+    coverage: list[CoverageRow],
+    ctx: Layer1Context,
+    adapter: ModelAdapter,
+    max_rounds: int = 2,
+) -> tuple[ContentPlan, ValidationReport]:
+    """Plan, validate every claim, and send rejections back to the planner (spec 8.4).
+
+    Each round's plan replaces the previous one. Claims still rejected after the last round
+    are listed in `dropped_claim_ids`. They stay in the plan with their results so the claims
+    page can show what was rejected and why; `renderable_claims` skips every dropped ID.
+    """
+    plan: ContentPlan | None = None
+    results: list[ClaimValidation] = []
+    for round_number in range(1, max_rounds + 1):
+        rejected = [v for v in results if v.outcome is ClaimOutcome.rejected]
+        if plan is not None and not rejected:
+            break
+        plan = build_plan(owner_id, target, facts, coverage, adapter,
+                          feedback=rejected or None, previous=plan)
+        # The same ID and version means the same text, evidence and reach, so the earlier
+        # result still holds and the claim is not judged twice.
+        earlier = {(v.claim_id, v.claim_version): v for v in results}
+        results = [earlier.get((c.claim_id, c.version)) or validate_claim(c, ctx, adapter)
+                   for c in plan.claims]
+        log.info("plan round=%d claims=%d rejected=%d", round_number, len(plan.claims),
+                 sum(v.outcome is ClaimOutcome.rejected for v in results))
+    assert plan is not None  # max_rounds >= 1
+
+    dropped = [v.claim_id for v in results if v.outcome is ClaimOutcome.rejected]
+    config = load_model_config()
+    report = ValidationReport(
+        plan_id=plan.plan_id, results=results, dropped_claim_ids=dropped,
+        models_by_role={role.value: rc.model for role, rc in config.roles.items()},
+        limitations=limitations(config))
+    return plan, report

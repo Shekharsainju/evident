@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Claims{% endblock %}
+{% macro result(v, text) %}
+<div class="card">
+  <p><span class="badge{% if v.outcome.value == 'passed' %} ok{% else %} warn{% endif %}">{{ v.outcome.value.replace("_", " ") }}</span>{% if v.approved_by_user %}<span class="badge ok">approved by you</span>{% endif %}<span class="muted">{{ v.claim_id }} v{{ v.claim_version }}</span></p>
+  <p>{{ text }}</p>
+  {% if v.layer1.failures %}
+  <p><strong>Layer 1</strong></p>
+  <ul>{% for f in v.layer1.failures %}<li>rule {{ f.rule }}: "{{ f.phrase }}" ({{ f.detail }})</li>{% endfor %}</ul>
+  {% else %}<p class="muted">Layer 1: passed</p>{% endif %}
+  {% if v.judge %}
+  <p><strong>Judge</strong> ({{ v.judge_model }}): {{ v.judge.verdict.value }}, confidence {{ "%.2f"|format(v.judge.confidence) }}{% if v.judge.offending_phrase %}, phrase "{{ v.judge.offending_phrase }}"{% endif %}</p>
+  {% elif v.judge_error %}<p><strong>Judge error:</strong> {{ v.judge_error }}</p>{% endif %}
+  {{ caller() if caller }}
+</div>
+{% endmacro %}
+{% block content %}
+<h1>Claims</h1>
+<p><a href="/runs/{{ run.run_id }}">Back to the run</a></p>
+{% if report is none %}
+<div class="card"><p class="muted">No claims have been validated yet.</p></div>
+{% else %}
+{% for v in report.results %}
+  {% if v.claim_id in report.dropped_claim_ids %}
+    {% call result(v, texts.get(v.claim_id, "")) %}<p class="muted">Dropped: still rejected after the last planning round, or dropped by you.</p>{% endcall %}
+  {% elif v.outcome.value == "user_review" and not v.approved_by_user %}
+    {% call result(v, texts.get(v.claim_id, "")) %}
+    <form class="inline" method="post" action="/runs/{{ run.run_id }}/claims/{{ v.claim_id }}/review"><input type="hidden" name="action" value="approve"><button type="submit">Approve</button></form>
+    <form class="inline" method="post" action="/runs/{{ run.run_id }}/claims/{{ v.claim_id }}/review"><input type="hidden" name="action" value="drop"><button type="submit" class="secondary">Drop</button></form>
+    {% endcall %}
+  {% else %}
+    {{ result(v, texts.get(v.claim_id, "")) }}
+  {% endif %}
+{% endfor %}
+{% endif %}
+
+<h2>Try an inflated claim <span class="badge warn">Live</span></h2>
+<div class="card">
+  <p class="muted">Runs Layer 1 and the judge on the claim you type. It is never added to the plan.</p>
+  <form method="post" action="/runs/{{ run.run_id }}/claims/try">
+    <label for="try-text">Claim</label>
+    <input id="try-text" type="text" name="text" value="{{ tried_text }}">
+    <label for="try-refs">Cited facts</label>
+    <select id="try-refs" name="fact_ref" multiple>
+      {% for f in facts %}<option value="{{ f.fact_id }}@{{ f.version }}">{{ f.fact_id }}@{{ f.version }}: {{ f.text }}</option>{% endfor %}
+    </select>
+    <p><button type="submit">Validate</button></p>
+  </form>
+</div>
+{% if tried %}{{ result(tried, tried_text) }}{% endif %}
+{% endblock %}

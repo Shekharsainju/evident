@@ -5,11 +5,12 @@ from __future__ import annotations
 from typing import Annotated
 
 from fastapi import APIRouter, BackgroundTasks, File, Form, Request, UploadFile
-from fastapi.responses import HTMLResponse, RedirectResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
 
-from evident.contracts.enums import RunState
+from evident.contracts.enums import FactStatus, RunState
 from evident.contracts.facts import FactRef
 from evident.contracts.runs import RunStatus
+from evident.contracts.validation import ClaimValidation
 from evident.errors import ErrorCategory, StageError
 from evident.render.receipts import crop_source
 from evident.review.actions import (
@@ -29,6 +30,11 @@ router = APIRouter()
 # No auth in the slice (spec 3): every request acts as the single local owner.
 OWNER = LOCAL_OWNER_ID
 ACTIVE = {RunState.pending, RunState.running}
+MEDIA_TYPES = {
+    ".html": "text/html; charset=utf-8",
+    ".pdf": "application/pdf",
+    ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+}
 
 
 def _repo(request: Request) -> Repository:
@@ -104,7 +110,10 @@ def facts_page(request: Request, run_id: str) -> Response:
 @router.post("/runs/{run_id}/facts/confirm-low-impact")
 def confirm_low(request: Request, run_id: str) -> Response:
     run = _run(request, run_id)
-    confirm_low_impact(_repo(request), OWNER, run.document_id, utc_now())
+    service = _service(request)
+    service.ensure_idle(OWNER, run_id)
+    if confirm_low_impact(_repo(request), OWNER, run.document_id, utc_now()):
+        service.facts_changed(OWNER, run_id)
     return _see_other(f"/runs/{run_id}/facts")
 
 
@@ -130,6 +139,7 @@ def fact_action(
 ) -> Response:
     run = _run(request, run_id)
     repo = _repo(request)
+    _service(request).ensure_idle(OWNER, run_id)
     ref = FactRef(fact_id=fact_id, version=version)
     fact = repo.get_fact(OWNER, ref)
     if fact is None or getattr(fact.source, "document_id", None) != run.document_id:
@@ -151,7 +161,102 @@ def fact_action(
         if exc.category is ErrorCategory.validation:
             return _facts_page(request, run, error=exc.detail, status_code=400)
         raise
+    # Outputs keep the fact versions they used; the run goes back to review so Continue
+    # grades and validates against the changed facts.
+    _service(request).facts_changed(OWNER, run_id)
     return _see_other(f"/runs/{run_id}/facts#{fact_id}")
+
+
+@router.post("/runs/{run_id}/continue")
+def continue_run(request: Request, run_id: str, background: BackgroundTasks) -> Response:
+    _run(request, run_id)
+    service = _service(request)
+    # Marked pending here, not in the task, so a second click sees the run as busy.
+    if service.mark_pending(OWNER, run_id):
+        background.add_task(service.continue_after_review, OWNER, run_id)
+    return _see_other(f"/runs/{run_id}")
+
+
+@router.get("/runs/{run_id}/coverage", response_class=HTMLResponse)
+def coverage_page(request: Request, run_id: str) -> Response:
+    run = _run(request, run_id)
+    rows = (_repo(request).get_coverage(OWNER, run.target_id)
+            if run.target_id is not None else None)
+    return TEMPLATES.TemplateResponse(request, "coverage.html", {"run": run, "rows": rows})
+
+
+def _claims_page(request: Request, run: RunStatus, tried: ClaimValidation | None = None,
+                 tried_text: str = "", status_code: int = 200) -> Response:
+    repo = _repo(request)
+    plan = repo.get_plan(OWNER, run.plan_id) if run.plan_id else None
+    report = repo.get_report(OWNER, run.plan_id) if run.plan_id else None
+    texts = {c.claim_id: c.text for c in plan.claims} if plan else {}
+    facts = [f for f in repo.current_facts(OWNER, run.document_id)
+             if f.status is FactStatus.confirmed]
+    return TEMPLATES.TemplateResponse(request, "claims.html", {
+        "run": run, "plan": plan, "report": report, "texts": texts, "facts": facts,
+        "tried": tried, "tried_text": tried_text,
+    }, status_code=status_code)
+
+
+@router.get("/runs/{run_id}/claims", response_class=HTMLResponse)
+def claims_page(request: Request, run_id: str) -> Response:
+    return _claims_page(request, _run(request, run_id))
+
+
+def _parse_ref(value: str) -> FactRef:
+    fact_id, sep, version = value.strip().rpartition("@")
+    if not sep or not fact_id or not version.isdigit():
+        raise StageError(code="bad_input", category=ErrorCategory.input,
+                         detail="Fact references look like fact_id@version.")
+    return FactRef(fact_id=fact_id, version=int(version))
+
+
+@router.post("/runs/{run_id}/claims/try", response_class=HTMLResponse)
+def try_claim(request: Request, run_id: str, text: Annotated[str, Form()],
+              fact_ref: Annotated[list[str], Form()]) -> Response:
+    run = _run(request, run_id)
+    refs = [_parse_ref(r) for r in fact_ref]
+    result = _service(request).try_claim(OWNER, run_id, text, refs)
+    return _claims_page(request, run, tried=result, tried_text=text)
+
+
+@router.post("/runs/{run_id}/claims/{claim_id}/review")
+def review_claim(request: Request, run_id: str, claim_id: str,
+                 action: Annotated[str, Form()]) -> Response:
+    _run(request, run_id)  # the run must be the owner's before anything else is looked up
+    _service(request).review_claim(OWNER, run_id, claim_id, action)
+    return _see_other(f"/runs/{run_id}/claims")
+
+
+@router.get("/runs/{run_id}/outputs", response_class=HTMLResponse)
+def outputs_page(request: Request, run_id: str) -> Response:
+    run = _run(request, run_id)
+    repo = _repo(request)
+    found = [repo.get_output(OWNER, oid) for oid in run.output_ids]
+    report = repo.get_report(OWNER, run.plan_id) if run.plan_id else None
+    return TEMPLATES.TemplateResponse(request, "outputs.html", {
+        "run": run, "outputs": [o for o in found if o is not None], "report": report,
+    })
+
+
+@router.get("/outputs/{output_id}/files/{name}")
+def output_file(request: Request, output_id: str, name: str) -> Response:
+    # Only names listed in the output are served; the URL never becomes part of a path.
+    path = _service(request).output_file(OWNER, output_id, name)
+    if path is None:
+        raise StageError(code="not_found", category=ErrorCategory.input, detail="Not found.")
+    media = MEDIA_TYPES.get(path.suffix, "application/octet-stream")
+    return FileResponse(path, media_type=media, filename=path.name)
+
+
+@router.get("/receipts/{claim_id}", response_class=HTMLResponse)
+def receipt(request: Request, claim_id: str, plan_id: str) -> Response:
+    found = _service(request).receipt(OWNER, plan_id, claim_id)
+    if found is None:
+        raise StageError(code="not_found", category=ErrorCategory.input, detail="Not found.")
+    claim, facts = found
+    return TEMPLATES.TemplateResponse(request, "receipt.html", {"claim": claim, "facts": facts})
 
 
 @router.get("/documents/{document_id}/source")

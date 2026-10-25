@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Coverage{% endblock %}
+{% block content %}
+<h1>Coverage</h1>
+<p><a href="/runs/{{ run.run_id }}">Back to the run</a></p>
+{% if rows is none %}
+<div class="card"><p class="muted">The job requirements have not been graded yet.</p></div>
+{% else %}
+<div class="card">
+<table>
+  <tr><th>Requirement</th><th>Category</th><th>Grade</th><th>Cited facts</th><th>Rationale</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td>{{ r.text }}</td>
+    <td>{{ r.category.value }}</td>
+    <td><span class="badge{% if r.grade.value == 'gap' %} warn{% elif r.grade.value == 'strong' %} ok{% endif %}">{{ r.grade.value }}</span></td>
+    <td>{% for e in r.evidence %}{{ e.fact_id }}@{{ e.version }}{% if not loop.last %}, {% endif %}{% else %}none{% endfor %}</td>
+    <td>{{ r.rationale }}</td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+{% endif %}
+{% endblock %}
