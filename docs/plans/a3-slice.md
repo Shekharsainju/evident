@@ -8,7 +8,7 @@
 
 **Architecture:** Typed Pydantic contracts flow through stage functions in `src/evident/`: ingestion, review, coverage, planner, validation, render and post-render. One model adapter interface routes each role to free-tier Gemini 3.5 Flash-Lite or to a local Ollama judge, with a disk cache and a per-model quota guard. A JSON file store sits behind a `Repository` interface so Postgres can replace it later. A FastAPI + Jinja UI runs the stages in background tasks.
 
-**Tech Stack:** Python 3.12, uv, Pydantic v2 (strict), FastAPI, Jinja2, google-genai (interactions API), Ollama (local HTTP API via `urllib`), pdfplumber, pypdfium2, pytesseract, rapidfuzz, Pillow, numpy, Playwright (Chromium), python-pptx, scipy, pytest, ruff, mypy.
+**Tech Stack:** Python 3.12, uv, Pydantic v2 (strict), FastAPI, Jinja2, google-genai (`generate_content`), Ollama (local HTTP API via `urllib`), pdfplumber, pypdfium2, pytesseract, rapidfuzz, Pillow, numpy, Playwright (Chromium), python-pptx, scipy, pytest, ruff, mypy.
 
 **Spec:** `docs/specs/a3-slice.md` (approved 2026-10-24, revised 2026-10-25). Decisions P1, P2 and P3 are in `docs/decisions-proposed.md`. Executors read the spec and the `cv-builder-invariants` skill before starting.
 
@@ -22,7 +22,8 @@
   - `qwen3:4b-instruct-2507-q4_K_M` (digest `0edcdef34593`) via Ollama for `judge` (P1). If Task 3a fails, `judge` moves to `gemini-3.5-flash-lite` and the same-family limitation applies.
   - `gemini-3.8-flash` is a spare. No role maps to it; only `scripts/compare_spare.py` may call it, at the owner's request.
   - IDs come only from `config/models.toml`.
-  - google-genai >= 2.3.0, using the interactions API (`client.interactions.create`). Ollama through `POST /api/chat` with `urllib`, no new dependency.
+  - google-genai >= 2.3.0, using `client.models.generate_content` with `HttpRetryOptions(attempts=1)` (one request per call). The interactions API was dropped on 2026-10-25: it sent a hidden second request on every 429 or 5xx, and no public option stops it. Ollama through `POST /api/chat` with `urllib`, no new dependency.
+  - Transient Gemini errors (5xx, 408, timeouts, connection errors) get at most 3 attempts with 2 s and 4 s backoff, each through the quota guard. A 429 is never retried.
   - Timeouts: text 30 s, vision 45 s, for both providers.
 - **Quota (Gemini only):**
   - Every reply is cached on disk, for both providers.
@@ -970,7 +971,10 @@ def test_preflight_refuses_before_any_call_when_over_quota(): ...
 - [ ] **Step 4:** Run. Expected: PASS.
 - [ ] **Step 5:** Generate the claim sets. Hand-check every claim and record relabels and drops in `claims_review.md`. Commit them before any test-split model call.
 - [ ] **Step 6:** Write the `RESULTS.md` section "Pass criteria (stated before running)", copying spec 9.1 and 9.2 word for word, and commit it.
-- [ ] **Step 7:** Dev run, `uv run python scripts/run_eval.py --split dev --suite all`: 6 uncached Flash-Lite calls and about 40 local judge calls. Only the extraction prompt (`v2`) and `JUDGE_THRESHOLD` may change, and each change goes in the "Dev tuning log" with its dev numbers.
+- [ ] **Step 7:** Dev run, `uv run python scripts/run_eval.py --split dev --suite all`: 6 uncached Flash-Lite calls and about 40 local judge calls. Only the extraction prompt (`v2`), the judge prompt (`v2`) and `JUDGE_THRESHOLD` may change, and each change goes in the "Dev tuning log" with its dev numbers.
+  - **Judge prompt v1 vs v2 (owner decision 2026-10-25):** `judge/v2` changes only the confidence line to "Return confidence: how sure you are that your verdict is correct, from 0 (guessing) to 1 (certain). It is not the probability that the claim is supported." Run the dev claims once with `judge/v1` and once with `judge/v2`, as two separate runs (`--judge-prompt v1|v2`), each with its own false accept, false reject and review rates.
+  - The winner is chosen on the dev split only: fewer false accepts first, then fewer inflated claims routed to review instead of rejected, then fewer false rejects. Set it as the judge prompt version in code before Step 8, and log the choice and reason.
+  - The smoke-test claims (Task 3a) are not used for this choice.
 - [ ] **Step 8:** Test run, `uv run python scripts/run_eval.py --split test --suite all --write-results`: 24 uncached Flash-Lite calls and about 85 local judge calls (all 109 against quota if the judge fell back).
   - If the pre-flight refuses, tell the owner the counts and stop. Don't retry. It resumes after the quota resets, from the cache.
   - `RESULTS.md` gets:
@@ -978,7 +982,8 @@ def test_preflight_refuses_before_any_call_when_over_quota(): ...
     - grounding rates as `Rate` strings, overall, per category and per catching layer;
     - cost-estimate and latency observations;
     - pass or fail against each criterion;
-    - the spec 13 limitations, including "only 5 underlying profiles", "simulated photos" and the judge limitation from `limitations(config)`.
+    - the spec 13 limitations, including "only 5 underlying profiles", "simulated photos" and the judge limitation from `limitations(config)`;
+    - which judge prompt version (`v1` or `v2`) the reported numbers use, with a pointer to the dev tuning log entry that chose it.
   - A fail is reported as a fail.
 - [ ] **Step 9 (optional, only if the owner asks):** `uv run python scripts/compare_spare.py --n 5`. It re-runs up to 5 dev extraction examples and up to 10 dev planner or coverage calls on `gemini-3.8-flash` (at most 15 calls, through the spare's own guard of 20 a day), and writes a side-by-side "Spare comparison (observation only)" section in `RESULTS.md`. Dev data only; it never feeds a reported rate.
 - [ ] **Step 10:** Write the explainer, then commit `docs: add A3 slice evaluation results`.
@@ -1038,7 +1043,7 @@ Spec 10.1. Native execution.
 - [ ] **Step 2:** Run. Expected: FAIL.
 - [ ] **Step 3:** Implement.
 - [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Owner step, after the final prompts are settled: run the full pipeline once in the UI, then `uv run python scripts/mark_recorded.py --run-id <id>`. Then start with `$env:EVIDENT_DEMO = "1"; uv run uvicorn evident.web.app:main --factory --port 8000` and click through every stage. Expected: every page loads instantly with the banner, and the quota files show no new Flash-Lite calls.
+- [ ] **Step 5:** Before recording, check that the judge prompt version in code is the one Task 20 chose. A new prompt version changes cache keys, so recording with the wrong version would replay the wrong verdicts. Owner step, after the final prompts are settled: run the full pipeline once in the UI, then `uv run python scripts/mark_recorded.py --run-id <id>`. Then start with `$env:EVIDENT_DEMO = "1"; uv run uvicorn evident.web.app:main --factory --port 8000` and click through every stage. Expected: every page loads instantly with the banner, and the quota files show no new Flash-Lite calls.
 - [ ] **Step 6:** Update `docs/explainers/demo-ui.md`, then commit `feat: add recorded-run demo mode with live claim box`.
 
 ### Task 22: Submission pack
