@@ -46,10 +46,11 @@ def coverage_reply(fact_id: str) -> str:
                                  "evidence": [f"{fact_id}@1"], "rationale": "ok"}]})
 
 
-def plan_reply(fact_id: str, *texts: str) -> str:
+def plan_reply(fact_id: str, *texts: str,
+               output_types: tuple[str, ...] = ("visual_profile", "interview_deck")) -> str:
     return json.dumps({"claims": [
         {"text": t, "evidence": [f"{fact_id}@1"], "section": "Projects", "emphasis": 3,
-         "output_types": ["visual_profile", "interview_deck"], "narrative_for": None}
+         "output_types": list(output_types), "narrative_for": None}
         for t in texts]})
 
 
@@ -206,15 +207,14 @@ def test_render_skips_claims_whose_facts_changed(tmp_path: Path) -> None:
 
 
 def test_approving_a_claim_whose_fact_was_superseded_does_not_render_it(tmp_path: Path) -> None:
-    client, repo, _, settings, run_id, fact_id = done_run(tmp_path, good_confidence=0.5)
+    client, repo, _, _, run_id, fact_id = done_run(tmp_path, good_confidence=0.5)
     edit_fact(client, run_id, fact_id)
     client.post(f"/runs/{run_id}/claims/c_001/review", data={"action": "approve"},
                 follow_redirects=False)
     profile = next(o for o in outputs(repo, run_id)
                    if o.output_type is OutputType.visual_profile)
-    assert profile.claim_ids == []
-    html = (settings.data_dir / profile.files["profile.html"]).read_text(encoding="utf-8")
-    assert GOOD not in html
+    assert profile.claim_ids == [] and profile.files == {}
+    assert profile.post_render is not None and not profile.post_render.passed
 
 
 def test_superseded_outputs_are_not_served(tmp_path: Path) -> None:
@@ -376,6 +376,54 @@ def test_try_form_with_no_fact_ticked_shows_readable_error(tmp_path: Path) -> No
     assert resp.headers["content-type"].startswith("text/html")
     assert "Tick at least one fact" in resp.text
     assert len(adapter.calls) == calls  # nothing sent to the judge
+
+
+def test_output_with_no_claims_is_blocked_with_review_reason(tmp_path: Path) -> None:
+    client, repo, _, _, run_id, _ = done_run(tmp_path, good_confidence=0.5)
+    outs = outputs(repo, run_id)
+    assert len(outs) == 2
+    reason = "No validated claims for this output: 1 claim is waiting for your review."
+    for o in outs:
+        assert o.claim_ids == [] and o.files == {}
+        assert o.post_render == PostRenderResult(passed=False, problems=[reason])
+    page = client.get(f"/runs/{run_id}/outputs").text
+    assert reason in page and "post-render verification failed" not in page
+    assert "blocked" in get_run(repo, run_id).message
+    client.post(f"/runs/{run_id}/claims/c_001/review", data={"action": "approve"},
+                follow_redirects=False)
+    assert all(o.post_render is not None and o.post_render.passed and o.files
+               for o in outputs(repo, run_id))
+
+
+def test_output_with_no_claims_and_none_pending_is_blocked(tmp_path: Path) -> None:
+    client, repo, adapter, _ = make(tmp_path)
+    run_id, fact_id = reviewed_run(client, repo)
+    queue_pipeline(adapter, fact_id)
+    adapter.responses[Role.judge] = [judge_reply("overstated", 0.9, "timetable"),
+                                     judge_reply("overstated", 0.9, "production")]
+    client.post(f"/runs/{run_id}/continue", follow_redirects=False)
+    for o in outputs(repo, run_id):
+        assert o.post_render == PostRenderResult(
+            passed=False, problems=["No validated claims for this output."])
+        assert o.files == {}
+
+
+def test_deck_filled_when_planner_tags_no_deck_claims(tmp_path: Path) -> None:
+    from pptx import Presentation
+
+    client, repo, adapter, settings = make(tmp_path)
+    run_id, fact_id = reviewed_run(client, repo)
+    queue_pipeline(adapter, fact_id)
+    profile_only = plan_reply(fact_id, GOOD, INFLATED, output_types=("visual_profile",))
+    adapter.responses[Role.planner] = [profile_only, profile_only]
+    client.post(f"/runs/{run_id}/continue", follow_redirects=False)
+    deck = next(o for o in outputs(repo, run_id) if o.output_type is OutputType.interview_deck)
+    assert deck.claim_ids == ["c_001"]
+    assert deck.post_render is not None and deck.post_render.passed
+    prs = Presentation(str(settings.data_dir / deck.files["deck.pptx"]))
+    assert len(prs.slides) == 2
+    body = [s.text_frame.text for s in prs.slides[1].shapes if s.has_text_frame]
+    assert GOOD in body and INFLATED not in body
 
 
 def test_blocked_output_files_are_not_served(tmp_path: Path) -> None:

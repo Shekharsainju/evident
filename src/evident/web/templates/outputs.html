@@ -7,7 +7,7 @@
 <div class="card">
   <p><strong>{{ o.output_type.value.replace("_", " ") }}</strong>
   {% if o.post_render and o.post_render.passed %}<span class="badge ok">post-render verification passed</span>
-  {% else %}<span class="badge warn">blocked: post-render verification failed</span>{% endif %}</p>
+  {% else %}<span class="badge warn">blocked</span>{% endif %}</p>
   {% if o.post_render and o.post_render.passed %}
   <p>{% for name in o.files %}<a href="/outputs/{{ o.output_id }}/files/{{ name }}">{{ name }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</p>
   {% elif o.post_render %}<ul>{% for p in o.post_render.problems %}<li>{{ p }}</li>{% endfor %}</ul>{% endif %}

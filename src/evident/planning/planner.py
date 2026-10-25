@@ -29,6 +29,7 @@ from evident.contracts.plan import Claim, ContentPlan
 from evident.contracts.validation import ClaimValidation, ValidationReport
 from evident.models.adapter import ModelAdapter, Part, TextPart
 from evident.prompts import load_prompt, render_prompt
+from evident.render.profile_html import by_section
 from evident.settings import Role, load_model_config
 from evident.validation.judge import evidence_block, limitations
 from evident.validation.layer1.config import Layer1Context
@@ -40,6 +41,9 @@ RENDERER_LIMITS = (
     "visual profile: at most 10 claims, each at most 160 characters; deck: at most 4 content "
     "slides, at most 3 claims per slide; speaker-note narratives at most 400 characters"
 )
+# The deck limits stated in RENDERER_LIMITS, enforced when the deck claims are chosen.
+MAX_DECK_SLIDES = 4
+MAX_CLAIMS_PER_SLIDE = 3
 FEEDBACK_HEADING = "Rejected claims and reasons"
 CLAIM_ID = re.compile(r"^c_(\d+)$")
 
@@ -143,6 +147,60 @@ def _check_draft(d: DraftClaim, supported: set[FactRef]) -> tuple[_Kept | None, 
     return _Kept(index=-1, text=text, refs=refs, draft=d, output_types=types), ""
 
 
+def _choose_deck(claims: list[Claim]) -> list[Claim]:
+    """Decide the deck claims here, before validation, so the stored output types are the
+    ones validated and the deck renderer draws exactly the deck claims that pass.
+
+    If the planner tagged no claim for the deck, every claim is a candidate (the fallback).
+    Candidates are grouped into slides the way the renderer groups them and trimmed to the
+    deck limits, highest emphasis first. Narratives follow their parent onto the deck or
+    are dropped with it.
+    """
+    body = [c for c in claims if c.parent_claim_id is None]
+    tagged = [c for c in body if OutputType.interview_deck in c.output_types]
+    candidates = tagged or body
+    chosen = {c.claim_id for _, group in by_section(candidates)[:MAX_DECK_SLIDES]
+              for c in group[:MAX_CLAIMS_PER_SLIDE]}
+    if not tagged and chosen:
+        log.info("planner deck fallback tagged=%d of claims=%d", len(chosen), len(body))
+    elif len(chosen) < len(tagged):
+        log.info("planner deck trimmed=%d to limits kept=%d", len(tagged) - len(chosen),
+                 len(chosen))
+
+    narratives = [c for c in claims if c.parent_claim_id is not None]
+    kept_narratives = [n for n in narratives if n.parent_claim_id in chosen]
+    if len(kept_narratives) < len(narratives):
+        log.info("planner dropped narratives=%d parent not on deck",
+                 len(narratives) - len(kept_narratives))
+    expanded = {n.parent_claim_id for n in kept_narratives}
+
+    out: list[Claim] = []
+    dropped = 0
+    for c in claims:
+        if c.parent_claim_id is not None:
+            if c in kept_narratives:
+                # A narrative is already the expansion of its parent, so it may not be
+                # expanded again.
+                out.append(c.model_copy(update={"allowed_transformations": []}))
+            continue
+        wanted: set[OutputType] = {t for t in c.output_types
+                                   if t is not OutputType.interview_deck}
+        if c.claim_id in chosen:
+            wanted.add(OutputType.interview_deck)
+        if not wanted:
+            dropped += 1  # a deck-only claim that didn't make the deck
+            continue
+        transformations = [Transformation.shorten]
+        if c.claim_id in expanded:
+            transformations.append(Transformation.expand_narrative)
+        out.append(c.model_copy(update={
+            "output_types": [t for t in OutputType if t in wanted],
+            "allowed_transformations": transformations}))
+    if dropped:
+        log.info("planner dropped deck-only claims=%d over deck limits", dropped)
+    return out
+
+
 def build_plan(
     owner_id: str,
     target: Target,
@@ -186,7 +244,6 @@ def build_plan(
             log.info("planner dropped draft=%d reason=narrative parent not found", k.index)
             continue
         usable.append(k)
-    expanded = {k.draft.narrative_for.strip() for k in usable if k.draft.narrative_for}
 
     prev_by_text = {c.text: c for c in previous.claims} if previous else {}
     numbers = [int(m.group(1)) for c in (previous.claims if previous else [])
@@ -200,33 +257,27 @@ def build_plan(
             ids[k.text] = f"c_{next_number:03d}"
             next_number += 1
 
-    claims: list[Claim] = []
+    drafted: list[Claim] = []
     for k in usable:
-        claim_id = ids[k.text]
-        if k.draft.narrative_for is not None:
-            # A narrative is already the expansion of its parent, so it may not be expanded again.
-            parent_id: str | None = ids[k.draft.narrative_for.strip()]
-            transformations: list[Transformation] = []
-            output_types = [OutputType.interview_deck]
-        else:
-            parent_id = None
-            transformations = [Transformation.shorten]
-            if k.text in expanded:
-                transformations.append(Transformation.expand_narrative)
-            output_types = k.output_types
-        version = 1
-        old = prev_by_text.get(k.text)
+        narrative = k.draft.narrative_for is not None
+        drafted.append(Claim(
+            claim_id=ids[k.text], text=k.text, evidence=k.refs,
+            section=k.draft.section.strip(), emphasis=k.draft.emphasis,
+            allowed_transformations=[],  # set in _choose_deck, once narratives are final
+            output_types=[OutputType.interview_deck] if narrative else k.output_types,
+            parent_claim_id=ids[(k.draft.narrative_for or "").strip()] if narrative else None))
+
+    claims: list[Claim] = []
+    for c in _choose_deck(drafted):
+        old = prev_by_text.get(c.text)
         if old is not None:
             # Same wording with different evidence or reach is a changed claim, so it is a new
             # version and earlier validation results can't be mistaken for it.
-            unchanged = (old.evidence == k.refs and old.output_types == output_types
-                         and old.parent_claim_id == parent_id
-                         and old.allowed_transformations == transformations)
-            version = old.version if unchanged else old.version + 1
-        claims.append(Claim(claim_id=claim_id, version=version, text=k.text, evidence=k.refs,
-                            section=k.draft.section.strip(), emphasis=k.draft.emphasis,
-                            allowed_transformations=transformations, output_types=output_types,
-                            parent_claim_id=parent_id))
+            unchanged = (old.evidence == c.evidence and old.output_types == c.output_types
+                         and old.parent_claim_id == c.parent_claim_id
+                         and old.allowed_transformations == c.allowed_transformations)
+            c = c.model_copy(update={"version": old.version if unchanged else old.version + 1})
+        claims.append(c)
 
     log.info("planner kept claims=%d of drafts=%d", len(claims), len(draft.claims))
     return ContentPlan(plan_id=f"plan_{uuid.uuid4().hex[:12]}", owner_id=owner_id,

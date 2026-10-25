@@ -162,12 +162,13 @@ def test_feedback_text_contains_rule_and_phrase() -> None:
 
 
 def test_reused_text_with_changed_evidence_gets_new_version() -> None:
-    prev = previous_plan(claim("c_001", "Built a clash checker"),
-                         claim("c_002", "Contributed to a chatbot prototype", version=2))
-    plan, _ = plan_with(draft("Built a clash checker", ["doc_01_f01@1", "doc_01_f02@2"],
-                              output_types=["visual_profile"]),
-                        draft("Contributed to a chatbot prototype",
-                              output_types=["visual_profile"]),
+    both = [OutputType.visual_profile, OutputType.interview_deck]
+    deck_ready = {"output_types": both, "allowed_transformations": [Transformation.shorten]}
+    prev = previous_plan(claim("c_001", "Built a clash checker").model_copy(update=deck_ready),
+                         claim("c_002", "Contributed to a chatbot prototype",
+                               version=2).model_copy(update=deck_ready))
+    plan, _ = plan_with(draft("Built a clash checker", ["doc_01_f01@1", "doc_01_f02@2"]),
+                        draft("Contributed to a chatbot prototype"),
                         previous=prev)
     # c_001 now cites a second fact, so it is a new version; c_002 is unchanged.
     assert [(c.claim_id, c.version) for c in plan.claims] == [("c_001", 2), ("c_002", 2)]
@@ -224,3 +225,63 @@ def test_invalid_drafts_dropped_and_logged_without_text(
     text = str(bad["text"]).strip()
     if text:
         assert text not in caplog.text
+
+
+# Deck selection: build_plan decides the deck claims, so what is validated as a deck claim
+# is exactly what render_deck draws.
+
+
+def deck_ids(plan: ContentPlan) -> list[str]:
+    return [c.claim_id for c in plan.claims if OutputType.interview_deck in c.output_types]
+
+
+def test_deck_fallback_tags_claims_when_none_marked_for_deck(
+        caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.INFO, logger="evident.planning"):
+        plan, _ = plan_with(draft("Built a clash checker", section="Projects", emphasis=4,
+                                  output_types=["visual_profile"]),
+                            draft("Studied computing", section="Education", emphasis=2,
+                                  output_types=["visual_profile"]))
+    assert deck_ids(plan) == ["c_001", "c_002"]
+    assert all(c.output_types == [OutputType.visual_profile, OutputType.interview_deck]
+               for c in plan.claims)
+    assert "deck fallback" in caplog.text and "tagged=2" in caplog.text
+    assert "clash checker" not in caplog.text and "computing" not in caplog.text
+
+
+def test_deck_limited_to_four_slides_of_three_claims_by_emphasis() -> None:
+    sections = ["Projects", "Experience", "Education", "Skills", "Awards"]
+    drafts = [draft(f"{s} claim {i}", section=s, emphasis=e)
+              for s, top in zip(sections, [5, 4, 3, 2, 1], strict=True)
+              for i, e in enumerate([top, top, top, 1], start=1)]
+    plan, _ = plan_with(*drafts)
+    by_text = {c.text: c for c in plan.claims}
+    chosen = {by_text[t].section for t in by_text
+              if OutputType.interview_deck in by_text[t].output_types}
+    assert chosen == {"Projects", "Experience", "Education", "Skills"}  # Awards, lowest, left out
+    for s in chosen:
+        on_slide = [c for c in plan.claims
+                    if c.section == s and OutputType.interview_deck in c.output_types]
+        # Claim 4 in each section has the lowest emphasis, so it is the one left off.
+        assert len(on_slide) == 3 and f"{s} claim 4" not in {c.text for c in on_slide}
+    # Every claim still reaches the profile; only the deck tag is trimmed.
+    assert len(plan.claims) == 20
+    assert all(OutputType.visual_profile in c.output_types for c in plan.claims)
+
+
+def test_deck_only_claim_not_chosen_is_dropped() -> None:
+    drafts = [draft(f"Projects claim {i}", emphasis=5) for i in range(1, 4)]
+    plan, _ = plan_with(*drafts, draft("Minor deck-only claim", emphasis=1,
+                                       output_types=["interview_deck"]))
+    assert "Minor deck-only claim" not in {c.text for c in plan.claims}
+
+
+def test_narrative_dropped_when_parent_left_off_deck() -> None:
+    drafts = [draft(f"Projects claim {i}", emphasis=5) for i in range(1, 4)]
+    plan, _ = plan_with(*drafts,
+                        draft("Low claim", emphasis=1),
+                        draft("A story about the low claim", narrative_for="Low claim"))
+    low = next(c for c in plan.claims if c.text == "Low claim")
+    assert low.output_types == [OutputType.visual_profile]
+    assert low.allowed_transformations == [Transformation.shorten]
+    assert all(c.parent_claim_id is None for c in plan.claims)

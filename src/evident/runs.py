@@ -30,7 +30,7 @@ from evident.contracts.enums import (
     RunState,
 )
 from evident.contracts.facts import FactRef, FactVersion
-from evident.contracts.outputs import Output
+from evident.contracts.outputs import Output, PostRenderResult
 from evident.contracts.plan import Claim, ContentPlan
 from evident.contracts.runs import RunStatus
 from evident.contracts.validation import ClaimValidation, ValidationReport
@@ -67,6 +67,7 @@ QUOTA_CODES = {"daily_quota", "rate_limited"}
 IDENTITY: dict[str, str] = {}
 SAFE_SEGMENT = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 SUPERSEDED = ".superseded"
+NO_CLAIMS = "No validated claims for this output."
 BUSY = {RunState.pending, RunState.running}
 PLANNED_STAGES = {RunStage.validate, RunStage.render, RunStage.verify, RunStage.done}
 MediaType = Literal["application/pdf", "image/png", "image/jpeg"]
@@ -103,6 +104,20 @@ def load_jobs() -> list[dict[str, Any]]:
 def sniff_media_type(data: bytes) -> MediaType | None:
     """Decide the type from the file's bytes, never from its name or the browser's claim."""
     return next((media for magic, media in MAGIC.items() if data.startswith(magic)), None)
+
+
+def _no_claims_reason(plan: ContentPlan, report: ValidationReport,
+                      output_type: OutputType) -> str:
+    """Says whether approving claims in review would fill the output."""
+    versions = {c.claim_id: c.version for c in plan.claims if output_type in c.output_types}
+    waiting = {v.claim_id for v in report.results
+               if versions.get(v.claim_id) == v.claim_version
+               and v.claim_id not in report.dropped_claim_ids
+               and v.outcome is ClaimOutcome.user_review and not v.approved_by_user}
+    if not waiting:
+        return NO_CLAIMS
+    noun = "claim is" if len(waiting) == 1 else "claims are"
+    return f"{NO_CLAIMS[:-1]}: {len(waiting)} {noun} waiting for your review."
 
 
 def _bad_input(detail: str) -> StageError:
@@ -373,7 +388,11 @@ class RunService:
         claims = renderable_claims(plan, report, output_type)
         expected = {c.claim_id: c.text for c in claims}
         written: list[Path] = []
-        if output_type is OutputType.visual_profile:
+        if not claims:
+            # An empty template passes verification trivially; it is not a validated output.
+            result = PostRenderResult(passed=False,
+                                      problems=[_no_claims_reason(plan, report, output_type)])
+        elif output_type is OutputType.visual_profile:
             html = render_profile(plan, report, IDENTITY, "/receipts/")
             result = verify_html(html, expected, IDENTITY, TEMPLATE_COPY)
             if result.passed:
@@ -421,7 +440,7 @@ class RunService:
         for old in run.output_ids:
             self._mark_superseded(owner_id, old)
         blocked = sum(1 for o in outs if o.post_render is None or not o.post_render.passed)
-        message = (f"{blocked} output(s) failed post-render verification and are blocked."
+        message = (f"{blocked} output(s) blocked. See the outputs page for the reasons."
                    if blocked else "Outputs rendered and verified.")
         self._update(run, stage=RunStage.done, state=RunState.done, message=message,
                      output_ids=[o.output_id for o in outs])
