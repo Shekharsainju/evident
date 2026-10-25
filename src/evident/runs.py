@@ -16,15 +16,18 @@ from typing import Any, Literal
 
 from PIL import Image
 
-from evident.contracts.coverage import Target
+from evident.contracts.coverage import Requirement, Target
 from evident.contracts.documents import Document
-from evident.contracts.enums import DocumentKind, RunStage, RunState
+from evident.contracts.enums import DocumentKind, FactStatus, RunStage, RunState
 from evident.contracts.runs import RunStatus
+from evident.coverage.grading import check_coverage_gate, grade_requirements
+from evident.coverage.requirements import extract_requirements
 from evident.errors import ErrorCategory, StageError
 from evident.eval.assets import JOB_SCREENSHOT, TEMPLATES, cv_pdf_path, cv_photo_path
 from evident.ingestion.pdf_text import ingest_pdf
 from evident.ingestion.vision import ingest_photo
 from evident.models.adapter import ModelAdapter
+from evident.review.actions import is_high_impact
 from evident.settings import Settings
 from evident.store.repository import Repository
 
@@ -172,3 +175,56 @@ class RunService:
             return
         self._update(run, stage=RunStage.review, state=RunState.waiting_for_user,
                      message=f"Review the extracted facts: {len(facts)} found.")
+
+    def _job_requirements(self, owner_id: str, target: Target) -> list[Requirement]:
+        if target.document_id is not None:
+            if self.repo.get_document(owner_id, target.document_id) is None:
+                raise StageError(code="not_found", category=ErrorCategory.input,
+                                 detail="The job ad screenshot is missing.")
+            image = self.repo.get_document_bytes(owner_id, target.document_id)
+            return extract_requirements(self.adapter, image=image)
+        job = {j["document_id"]: j for j in load_jobs()}.get(target.source_job_id or "")
+        if job is None:
+            raise StageError(code="not_found", category=ErrorCategory.input,
+                             detail="The job ad is missing.")
+        return extract_requirements(self.adapter,
+                                    text=f"{job['title']}\n{job['description']}")
+
+    def run_coverage(self, owner_id: str, run_id: str) -> None:
+        """Grade the job's requirements against confirmed facts and store the matrix.
+
+        The matrix is written only after the gate passes, so a quota stop or a failed gate
+        leaves nothing half-written. The run stays in the coverage stage, because the next
+        stage is chained by the caller (plan Task 15).
+        """
+        run = self.repo.get_run(owner_id, run_id)
+        if run is None:
+            return
+        facts = self.repo.current_facts(owner_id, run.document_id)
+        if any(f.status is FactStatus.extracted and is_high_impact(f) for f in facts):
+            self._update(run, stage=RunStage.review, state=RunState.waiting_for_user,
+                         message="Confirm or reject the highlighted facts first.", error=None)
+            return
+        confirmed = [f for f in facts if f.status is FactStatus.confirmed]
+        run = self._update(run, stage=RunStage.coverage, state=RunState.running,
+                           message="Grading the job requirements.", error=None)
+        try:
+            target = (self.repo.get_target(owner_id, run.target_id)
+                      if run.target_id is not None else None)
+            if target is None:
+                raise StageError(code="not_found", category=ErrorCategory.input,
+                                 detail="The target job is missing.")
+            rows = grade_requirements(self._job_requirements(owner_id, target), confirmed,
+                                      self.adapter)
+            check_coverage_gate(rows, confirmed)
+            self.repo.put_coverage(owner_id, target.target_id, rows)
+        except StageError as exc:
+            state = RunState.quota_exhausted if exc.code in QUOTA_CODES else RunState.failed
+            self._update(run, state=state, message=exc.detail or exc.code, error=exc.code)
+            return
+        except Exception as exc:  # never let a background task die silently
+            log.error("coverage failed run=%s error=%s", run_id, type(exc).__name__)
+            self._update(run, state=RunState.failed, message="Internal error while grading.",
+                         error="internal")
+            return
+        self._update(run, message=f"Graded {len(rows)} requirements.")
