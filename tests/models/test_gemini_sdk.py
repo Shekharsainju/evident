@@ -47,6 +47,8 @@ def server() -> Iterator[tuple[list[int], list[str], str]]:
             pass
 
         def do_POST(self) -> None:
+            # Read the body: closing with unread data resets the socket on Windows.
+            self.rfile.read(int(self.headers.get("Content-Length", 0)))
             hits.append(self.path)
             status = statuses.pop(0) if len(statuses) > 1 else statuses[0]
             body = OK_BODY if status == 200 else (
