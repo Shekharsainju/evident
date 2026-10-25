@@ -87,19 +87,25 @@ def _coverage_matrix(rows: list[CoverageRow]) -> str:
     return "\n".join(lines)
 
 
+def _quoted(value: str) -> str:
+    # Claim text and phrases derive from untrusted content; a stray quote or bar could pose
+    # as an extra reason on the same feedback line.
+    return _one_line(value).replace('"', "'").replace("|", "/")
+
+
 def _feedback(feedback: list[ClaimValidation], previous: ContentPlan | None) -> str:
     texts = {c.claim_id: c.text for c in previous.claims} if previous else {}
     lines: list[str] = []
     for v in feedback:
         if v.outcome is not ClaimOutcome.rejected:
             continue
-        reasons = [f'rule {f.rule}: "{_one_line(f.phrase)}"' for f in v.layer1.failures]
+        reasons = [f'rule {f.rule}: "{_quoted(f.phrase)}"' for f in v.layer1.failures]
         if v.judge is not None and v.judge.verdict is not Verdict.supported:
-            phrase = _one_line(v.judge.offending_phrase or "")
+            phrase = _quoted(v.judge.offending_phrase or "")
             reasons.append(f'judge {v.judge.verdict.value}: "{phrase}"')
         if v.judge_error:
             reasons.append("judge error")
-        text = _one_line(texts.get(v.claim_id, "(text not available)"))
+        text = _quoted(texts.get(v.claim_id, "(text not available)"))
         lines.append(f'- {v.claim_id}: "{text}" | ' + " | ".join(reasons or ["rejected"]))
     if not lines:
         return ""
@@ -184,21 +190,20 @@ def build_plan(
     numbers = [int(m.group(1)) for c in (previous.claims if previous else [])
                if (m := CLAIM_ID.match(c.claim_id))]
     next_number = max(numbers, default=0) + 1
-    ids: dict[str, tuple[str, int]] = {}
+    ids: dict[str, str] = {}
     for k in usable:
         if k.text in prev_by_text:
-            old = prev_by_text[k.text]
-            ids[k.text] = (old.claim_id, old.version)
+            ids[k.text] = prev_by_text[k.text].claim_id
         else:
-            ids[k.text] = (f"c_{next_number:03d}", 1)
+            ids[k.text] = f"c_{next_number:03d}"
             next_number += 1
 
     claims: list[Claim] = []
     for k in usable:
-        claim_id, version = ids[k.text]
+        claim_id = ids[k.text]
         if k.draft.narrative_for is not None:
             # A narrative is already the expansion of its parent, so it may not be expanded again.
-            parent_id: str | None = ids[k.draft.narrative_for.strip()][0]
+            parent_id: str | None = ids[k.draft.narrative_for.strip()]
             transformations: list[Transformation] = []
             output_types = [OutputType.interview_deck]
         else:
@@ -207,6 +212,15 @@ def build_plan(
             if k.text in expanded:
                 transformations.append(Transformation.expand_narrative)
             output_types = k.output_types
+        version = 1
+        old = prev_by_text.get(k.text)
+        if old is not None:
+            # Same wording with different evidence or reach is a changed claim, so it is a new
+            # version and earlier validation results can't be mistaken for it.
+            unchanged = (old.evidence == k.refs and old.output_types == output_types
+                         and old.parent_claim_id == parent_id
+                         and old.allowed_transformations == transformations)
+            version = old.version if unchanged else old.version + 1
         claims.append(Claim(claim_id=claim_id, version=version, text=k.text, evidence=k.refs,
                             section=k.draft.section.strip(), emphasis=k.draft.emphasis,
                             allowed_transformations=transformations, output_types=output_types,
