@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>{{ cv.name }}: CV</title>
+<style>
+  @page { size: A4; margin: 0; }
+  body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; font-size: 9.8pt; color: #222; }
+  .page { display: flex; min-height: 297mm; }
+  aside { width: 66mm; background: #1f3a5f; color: #f2f4f8; padding: 16mm 7mm 22mm 9mm; box-sizing: border-box; }
+  main { flex: 1; padding: 16mm 12mm 22mm 10mm; box-sizing: border-box; }
+  h1 { font-size: 20pt; margin: 0 0 4pt 0; color: #1f3a5f; }
+  .sub { color: #555; margin-bottom: 12pt; }
+  aside h2 { font-size: 10pt; text-transform: uppercase; letter-spacing: 1pt; color: #a9c4e8; margin: 0 0 6pt 0; }
+  aside section { margin-bottom: 14pt; }
+  aside ul { list-style: none; margin: 0; padding: 0; }
+  aside li { margin-bottom: 3pt; }
+  main h2 { font-size: 12pt; color: #1f3a5f; margin: 12pt 0 6pt 0; border-left: 3pt solid #1f3a5f; padding-left: 5pt; }
+  .item { margin-bottom: 9pt; }
+  .title { font-weight: 600; font-size: 10.5pt; }
+  .meta { color: #666; font-size: 9pt; }
+  p { margin: 3pt 0; line-height: 1.35; }
+  .tech { color: #555; font-size: 9pt; }
+  footer { position: fixed; bottom: 6mm; right: 12mm; font-size: 8pt; color: #777; }
+</style></head>
+<body><div class="page">
+<aside>
+  <section><h2>Skills</h2><ul>{% for s in cv.skills %}<li>{{ s }}</li>{% endfor %}</ul></section>
+  <section><h2>Education</h2>
+    <p>{{ cv.degree }}</p><p>{{ cv.institution }}</p><p>{{ cv.education_dates }}</p>
+  </section>
+  <section><h2>Subjects</h2><ul>{% for s in cv.subjects %}<li>{{ s }}</li>{% endfor %}</ul></section>
+</aside>
+<main>
+  <h1>{{ cv.name }}</h1>
+  <div class="sub">{{ cv.degree }}</div>
+  <h2>Projects</h2>
+  {% for p in cv.projects %}
+  <div class="item">
+    <div class="title">{{ p.title }}</div>
+    <div class="meta">{{ p.context }} | {{ p.dates }}</div>
+    <p>{{ p.description }}</p>
+    <p class="tech">Built with: {{ p.technologies | join(", ") }}</p>
+  </div>
+  {% endfor %}
+  {% if cv.experience %}
+  <h2>Work and volunteering</h2>
+  {% for e in cv.experience %}
+  <div class="item">
+    <div class="title">{{ e.role }}</div>
+    <div class="meta">{{ e.organisation }} | {{ e.type }} | {{ e.dates }}</div>
+    <p>{{ e.description }}</p>
+  </div>
+  {% endfor %}
+  {% endif %}
+</main>
+</div>
+<footer>{{ cv.marker }}</footer>
+</body></html>

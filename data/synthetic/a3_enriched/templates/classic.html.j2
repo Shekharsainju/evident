@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>{{ cv.name }}: CV</title>
+<style>
+  @page { size: A4; margin: 18mm 18mm 20mm 18mm; }
+  body { font-family: Georgia, "Times New Roman", serif; font-size: 10.5pt; color: #1a1a1a; line-height: 1.38; }
+  h1 { font-size: 22pt; margin: 0 0 2pt 0; font-weight: normal; letter-spacing: 0.5pt; }
+  .sub { font-size: 11pt; color: #444; margin-bottom: 10pt; }
+  h2 { font-size: 11.5pt; text-transform: uppercase; letter-spacing: 1.2pt; border-bottom: 1px solid #888; padding-bottom: 2pt; margin: 14pt 0 6pt 0; }
+  .item { margin-bottom: 8pt; }
+  .head { display: flex; justify-content: space-between; font-weight: bold; }
+  .meta { font-style: italic; color: #444; }
+  p { margin: 2pt 0; }
+  ul { margin: 2pt 0 0 16pt; padding: 0; }
+  footer { position: fixed; bottom: -12mm; left: 0; right: 0; text-align: center; font-size: 8pt; color: #666; }
+</style></head>
+<body>
+<h1>{{ cv.name }}</h1>
+<div class="sub">{{ cv.degree }}, {{ cv.institution }}</div>
+
+<h2>Education</h2>
+<div class="item">
+  <div class="head"><span>{{ cv.degree }}</span><span>{{ cv.education_dates }}</span></div>
+  <div class="meta">{{ cv.institution }}</div>
+  <p>Relevant subjects:</p>
+  <ul>{% for s in cv.subjects %}<li>{{ s }}</li>{% endfor %}</ul>
+</div>
+
+{% if cv.experience %}
+<h2>Experience</h2>
+{% for e in cv.experience %}
+<div class="item">
+  <div class="head"><span>{{ e.role }}</span><span>{{ e.dates }}</span></div>
+  <div class="meta">{{ e.organisation }} ({{ e.type }})</div>
+  <p>{{ e.description }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+<h2>Projects</h2>
+{% for p in cv.projects %}
+<div class="item">
+  <div class="head"><span>{{ p.title }}</span><span>{{ p.dates }}</span></div>
+  <div class="meta">{{ p.context }}</div>
+  <p>{{ p.description }}</p>
+  <p>Technologies: {{ p.technologies | join(", ") }}</p>
+</div>
+{% endfor %}
+
+<h2>Technical skills</h2>
+<p>{{ cv.skills | join(", ") }}</p>
+
+<footer>{{ cv.marker }}</footer>
+</body></html>

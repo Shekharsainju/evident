@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>{{ cv.name }}: CV</title>
+<style>
+  @page { size: A4; margin: 11mm 12mm 16mm 12mm; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 8.6pt; color: #111; line-height: 1.25; }
+  header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #111; padding-bottom: 3pt; }
+  h1 { font-size: 15pt; margin: 0; }
+  .sub { font-size: 9pt; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 9mm; margin-top: 6pt; }
+  h2 { font-size: 9pt; text-transform: uppercase; background: #eee; padding: 1pt 3pt; margin: 7pt 0 3pt 0; }
+  .item { margin-bottom: 5pt; }
+  .row { display: flex; justify-content: space-between; font-weight: bold; }
+  .meta { color: #444; }
+  p { margin: 1pt 0; }
+  footer { position: fixed; bottom: -9mm; left: 0; font-size: 7.5pt; color: #555; }
+</style></head>
+<body>
+<header><h1>{{ cv.name }}</h1><div class="sub">{{ cv.degree }} | {{ cv.institution }}</div></header>
+<h2>Skills</h2>
+<p>{{ cv.skills | join(" | ") }}</p>
+<div class="grid">
+  <div>
+    <h2>Projects</h2>
+    {% for p in cv.projects %}
+    <div class="item">
+      <div class="row"><span>{{ p.title }}</span><span>{{ p.dates }}</span></div>
+      <div class="meta">{{ p.context }}</div>
+      <p>{{ p.description }}</p>
+      <p class="meta">Stack: {{ p.technologies | join(", ") }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  <div>
+    {% if cv.experience %}
+    <h2>Experience</h2>
+    {% for e in cv.experience %}
+    <div class="item">
+      <div class="row"><span>{{ e.role }}</span><span>{{ e.dates }}</span></div>
+      <div class="meta">{{ e.organisation }}, {{ e.type }}</div>
+      <p>{{ e.description }}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <h2>Education</h2>
+    <div class="item">
+      <div class="row"><span>{{ cv.degree }}</span></div>
+      <div class="meta">{{ cv.institution }}, {{ cv.education_dates }}</div>
+      {% for s in cv.subjects %}<p>{{ s }}</p>{% endfor %}
+    </div>
+  </div>
+</div>
+<footer>{{ cv.marker }}</footer>
+</body></html>
