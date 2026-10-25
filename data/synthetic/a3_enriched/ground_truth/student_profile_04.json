@@ -1,0 +1,720 @@
+[
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt01",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "Bachelor of Computing Science, University of Technology Sydney",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": "2024-02",
+      "end": null,
+      "skills": [],
+      "title": "Bachelor of Computing Science",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Bachelor of Computing Science, University of Technology Sydney",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt02",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43007 Advanced Artificial Intelligence",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43007 Advanced Artificial Intelligence",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43007 Advanced Artificial Intelligence",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt03",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "41092 Network Fundamentals",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "41092 Network Fundamentals",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "41092 Network Fundamentals",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt04",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "31271 Database Fundamentals",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "31271 Database Fundamentals",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "31271 Database Fundamentals",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt05",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43030 Professional Practice in Computing",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43030 Professional Practice in Computing",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43030 Professional Practice in Computing",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt06",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "experience",
+    "text": "Recorded support requests, helped users with account and device issues and escalated problems that required administrator access. Logged 40 support requests in the first month.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "contributed",
+      "deployment": null,
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_01",
+          "metric": "count",
+          "direction": "absolute",
+          "value": 40.0,
+          "unit": "count",
+          "baseline": null,
+          "subject": "support requests logged in the first month",
+          "span_text": "Logged 40 support requests in the first month"
+        }
+      ],
+      "start": "2024-02",
+      "end": null,
+      "skills": [],
+      "title": "IT Support Assistant",
+      "organisation": "Fictional community organisation"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Recorded support requests, helped users with account and device issues and escalated problems that required administrator access. Logged 40 support requests in the first month.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt07",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "project",
+    "text": "Captured and inspected local network traffic in a controlled lab, documented common protocol fields and explained simple monitoring checks.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "built",
+      "deployment": "concept",
+      "scale": null,
+      "metrics": [],
+      "start": "2024-08",
+      "end": "2024-10",
+      "skills": [
+        "Linux",
+        "Wireshark basics",
+        "networking",
+        "technical reporting"
+      ],
+      "title": "Network Monitoring Exercise",
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Captured and inspected local network traffic in a controlled lab, documented common protocol fields and explained simple monitoring checks.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt08",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "project",
+    "text": "Added input validation, error logging and REST API tests to a small course information service. Ran the service in a local Docker container and worked with teammates to review changes before merging them. The new tests raised test coverage to 80%.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "contributed",
+      "deployment": "prototype",
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_02",
+          "metric": "coverage",
+          "direction": "absolute",
+          "value": 80.0,
+          "unit": "percent",
+          "baseline": null,
+          "subject": "course service test coverage",
+          "span_text": "raised test coverage to 80%"
+        }
+      ],
+      "start": "2025-03",
+      "end": "2025-06",
+      "skills": [
+        "Python",
+        "Flask",
+        "SQLite",
+        "REST API testing",
+        "Docker basics",
+        "pytest",
+        "Git"
+      ],
+      "title": "Reliable Course Service",
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Added input validation, error logging and REST API tests to a small course information service. Ran the service in a local Docker container and worked with teammates to review changes before merging them. The new tests raised test coverage to 80%.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt09",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Python",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Python"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Python",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt10",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Linux",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Linux"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Linux",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt11",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "SQL",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "SQL"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "SQL",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt12",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "network troubleshooting",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "network troubleshooting"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "network troubleshooting",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt13",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Git",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Git"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Git",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt14",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "REST API testing",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "REST API testing"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "REST API testing",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt15",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Wireshark basics",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Wireshark basics"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Wireshark basics",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt16",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Docker basics",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Docker basics"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Docker basics",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_04_gt17",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "technical documentation",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "technical documentation"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_04",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "technical documentation",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  }
+]
