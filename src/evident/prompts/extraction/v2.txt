@@ -1,0 +1,36 @@
+Extract every career fact from the document as atomic facts: one role,
+project, qualification, course subject, skill or achievement per fact.
+
+Granularity rules:
+- One fact per role (each job, cadetship or volunteer position).
+- One fact per project.
+- One fact per qualification (for example the degree).
+- One fact per course subject or unit listed, with kind education.
+- One fact per skill: each named tool or technology in a skills list is its
+own skill fact, with skills set to that one skill only.
+- Never merge several roles, projects, subjects or listed skills into one fact.
+
+For each fact return:
+- kind: experience | project | education | certification | skill | award
+- text: the fact in plain words, no embellishment
+- span_text: the exact words from the document that support it
+- box_2d: [ymin, xmin, ymax, xmax] of span_text, normalised to 0-1000 (images only; null for text)
+- attributes: ownership (contributed | built | led | null),
+deployment (concept | prototype | internal | production | null),
+metrics (only numbers stated in the document), start, end (YYYY-MM or null),
+skills (named tools and technologies only),
+title (the role, degree, subject or project name as written, or null),
+organisation (the employer, institution or issuer as written, or null)
+
+Each metric has: metric (one of latency, accuracy, cost, revenue, users,
+throughput, time_saved, error_rate, coverage, count, or other:<short_name>),
+direction (increase | decrease | absolute), value (the number as written),
+unit, subject (what the number measures) and span_text (the exact words).
+
+Rules:
+- If an attribute is not stated, use null. Do not infer seniority,
+scale or deployment status.
+- Copy numbers exactly as written.
+- If text is unreadable, return it in "unreadable_regions" instead of guessing.
+
+<document>{content}</document>

@@ -117,3 +117,60 @@ def test_unknown_kind_skipped_without_storing(tmp_path: Path, page_png: bytes) -
     adapter = FakeAdapter({Role.extraction_vision: [reply(None, kind="hobby")]})
     assert ingest_photo(doc, page_png, adapter, repo) == []
     assert repo.current_facts(doc.owner_id) == []
+
+
+LIST_HTML = """<!doctype html><html><body style="margin:0;background:#fff;font:30px Arial">
+<p style="margin:30px 30px 0">Skills: GitHub, Jupyter Notebook</p>
+<p style="margin:6px 30px 0">Python</p>
+<p style="margin:6px 30px 0">Java</p>
+<p style="margin:300px 30px 30px">end</p>
+</body></html>"""
+
+
+@pytest.fixture(scope="module")
+def list_png(tmp_path_factory: pytest.TempPathFactory) -> bytes:
+    path = html_to_png(LIST_HTML, tmp_path_factory.mktemp("png") / "list.png", width=700)
+    return path.read_bytes()
+
+
+def line_box(png: bytes, text: str) -> tuple[float, float, float, float]:
+    import pytesseract
+
+    from evident.ingestion.vision import _tesseract
+
+    pytesseract.pytesseract.tesseract_cmd = _tesseract()
+    with Image.open(io.BytesIO(png)) as img:
+        data = pytesseract.image_to_data(img, output_type=pytesseract.Output.DICT)
+    i = next(i for i, word in enumerate(data["text"]) if word.strip(",") == text)
+    x, y, w, h = data["left"][i], data["top"][i], data["width"][i], data["height"][i]
+    return (x - 4.0, y - 4.0, x + w + 4.0, y + h + 4.0)
+
+
+def test_short_span_needs_whole_word(list_png: bytes) -> None:
+    box = line_box(list_png, "GitHub")
+    assert verify_bbox(list_png, box, "GitHub")
+    assert not verify_bbox(list_png, box, "Git")
+
+
+def test_box_on_neighbouring_line_not_verified(list_png: bytes) -> None:
+    # A 4% image margin used to pull the next line into the crop and accept this.
+    assert not verify_bbox(list_png, line_box(list_png, "Java"), "Python")
+    assert verify_bbox(list_png, line_box(list_png, "Python"), "Python")
+
+
+def test_stored_box_is_exactly_the_checked_region(tmp_path: Path, page_png: bytes) -> None:
+    from evident.ingestion.drafts import box_2d_to_pixels
+    from evident.ingestion.vision import ocr_region_score
+
+    box_2d = to_box_2d(page_png, 20, 30, 700, 100)
+    source, _ = run(tmp_path, page_png, box_2d)
+    w, h = size(page_png)
+    assert source.bbox_verified
+    assert source.bbox == box_2d_to_pixels(box_2d, w, h)
+    assert ocr_region_score(page_png, source.bbox, SPAN) >= 80
+
+
+def test_photo_ingestion_uses_extraction_v2(tmp_path: Path, page_png: bytes) -> None:
+    _, adapter = run(tmp_path, page_png, None)
+    assert adapter.calls[0].prompt.name == "extraction"
+    assert adapter.calls[0].prompt.version == "v2"

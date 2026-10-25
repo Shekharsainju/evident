@@ -13,7 +13,7 @@ import shutil
 from pathlib import Path
 
 import pytesseract
-from PIL import Image
+from PIL import Image, ImageOps
 from rapidfuzz import fuzz
 
 from evident.contracts.documents import Document
@@ -28,9 +28,12 @@ from evident.store.repository import Repository
 log = logging.getLogger("evident.ingestion")
 
 WINDOWS_TESSERACT = Path(r"C:\Program Files\Tesseract-OCR\tesseract.exe")
-CROP_MARGIN = 0.04
 VERIFY_THRESHOLD = 80.0
+OCR_UPSCALE = 2
+OCR_WHITE_BORDER = 12
+SHORT_SPAN_WORDS = 3
 IMAGE_PLACEHOLDER = "The document is the attached image."
+EXTRACTION_PROMPT_VERSION = "v2"
 
 
 def _tesseract() -> str:
@@ -47,27 +50,48 @@ def _normalise(text: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"[^\w\s%.]", " ", text.lower())).strip()
 
 
-def ocr_match_score(image: bytes, bbox: tuple[float, float, float, float],
-                    span_text: str) -> float:
+def _ocr_text(image: bytes, region: tuple[float, float, float, float]) -> str:
     pytesseract.pytesseract.tesseract_cmd = _tesseract()
     with Image.open(io.BytesIO(image)) as img:
-        w, h = img.size
-        mx, my = CROP_MARGIN * w, CROP_MARGIN * h
-        x0, y0, x1, y1 = bbox
-        crop = img.convert("L").crop((
-            int(max(0, x0 - mx)), int(max(0, y0 - my)),
-            int(min(w, x1 + mx)), int(min(h, y1 + my)),
-        ))
-        text = pytesseract.image_to_string(crop)
-    span, found = _normalise(span_text), _normalise(text)
+        x0, y0, x1, y1 = region
+        crop = img.convert("L").crop((int(x0), int(y0), int(x1), int(y1)))
+    # Blank border and upscaling help Tesseract read a tight crop without widening the region
+    # into neighbouring lines; widening it let wrong boxes pass (dev tuning, 2026-10-25).
+    crop = crop.resize((max(1, crop.width * OCR_UPSCALE), max(1, crop.height * OCR_UPSCALE)),
+                       Image.Resampling.LANCZOS)
+    crop = ImageOps.expand(crop, border=OCR_WHITE_BORDER * OCR_UPSCALE, fill=255)
+    return str(pytesseract.image_to_string(crop))
+
+
+def span_score(span_text: str, ocr_text: str) -> float:
+    """0 to 100. Short spans must appear as whole words, or "Git" would match "GitHub"."""
+    span, found = _normalise(span_text), _normalise(ocr_text)
     if not span or not found:
         return 0.0
+    if len(span.split()) <= SHORT_SPAN_WORDS:
+        return 100.0 if re.search(rf"(?<!\w){re.escape(span)}(?!\w)", found) else 0.0
     return float(fuzz.partial_ratio(span, found))
+
+
+def ocr_region_score(image: bytes, region: tuple[float, float, float, float],
+                     span_text: str) -> float:
+    """How well the OCR text of exactly this region matches span_text (0 to 100)."""
+    return span_score(span_text, _ocr_text(image, region))
 
 
 def verify_bbox(image: bytes, bbox: tuple[float, float, float, float], span_text: str,
                 threshold: float = VERIFY_THRESHOLD) -> bool:
-    return ocr_match_score(image, bbox, span_text) >= threshold
+    return ocr_region_score(image, bbox, span_text) >= threshold
+
+
+def request_photo_draft(content: bytes, media_type: str, adapter: ModelAdapter,
+                        prompt_version: str | None = None) -> ExtractionDraft:
+    prompt = load_prompt("extraction", prompt_version or EXTRACTION_PROMPT_VERSION)
+    parts: list[Part] = [
+        ImagePart(data=content, mime_type=media_type),
+        TextPart(render_prompt(prompt, content=IMAGE_PLACEHOLDER)),
+    ]
+    return adapter.generate_json(Role.extraction_vision, prompt, parts, ExtractionDraft).value
 
 
 def ingest_photo(doc: Document, content: bytes, adapter: ModelAdapter,
@@ -75,12 +99,7 @@ def ingest_photo(doc: Document, content: bytes, adapter: ModelAdapter,
     with Image.open(io.BytesIO(content)) as img:
         width, height = img.size
     whole = (0.0, 0.0, float(width), float(height))
-    prompt = load_prompt("extraction")
-    parts: list[Part] = [
-        ImagePart(data=content, mime_type=doc.media_type),
-        TextPart(render_prompt(prompt, content=IMAGE_PLACEHOLDER)),
-    ]
-    draft = adapter.generate_json(Role.extraction_vision, prompt, parts, ExtractionDraft).value
+    draft = request_photo_draft(content, doc.media_type, adapter)
 
     facts = []
     for index, item in enumerate(draft.facts, start=1):
@@ -91,7 +110,7 @@ def ingest_photo(doc: Document, content: bytes, adapter: ModelAdapter,
             except ValueError:
                 log.info("extraction draft %d: unusable box", index)
             else:
-                score = ocr_match_score(content, candidate, item.span_text)
+                score = ocr_region_score(content, candidate, item.span_text)
                 if score >= VERIFY_THRESHOLD:
                     bbox, verified = candidate, True
         source = VisionSource(
