@@ -1,0 +1,149 @@
+# Layer 1 lexicons (design: Deterministic check rules, Lexicons table). Versioned config.
+# Words not listed here pass Layer 1 and are left to the Layer 2 judge.
+# Keys are matched after normalisation (lowercase, NFKC), as whole words or phrases.
+
+version = "1"
+
+# Nouns that make a number or quantity word a scale figure.
+scale_nouns = ["users", "user", "customers", "customer", "clients", "visitors", "subscribers",
+               "requests", "traffic", "transactions", "queries"]
+
+seniority_words = ["senior", "lead", "principal", "staff", "head", "chief", "director",
+                   "manager", "executive", "founder", "cofounder", "co-founder"]
+
+credential_words = ["certified", "certification", "accredited", "licensed", "chartered",
+                    "phd", "doctorate", "masters", "master's", "mba", "honours", "honors",
+                    "distinction", "scholarship", "fellowship", "award", "awarded"]
+
+# Rank 1 contributed, 2 built, 3 led, matching the Ownership enum order.
+[ownership]
+contributed = 1
+assisted = 1
+supported = 1
+participated = 1
+helped = 1
+built = 2
+developed = 2
+implemented = 2
+created = 2
+wrote = 2
+led = 3
+owned = 3
+architected = 3
+managed = 3
+headed = 3
+spearheaded = 3
+directed = 3
+
+# Rank 1 concept, 2 prototype, 3 internal, 4 production, matching the Deployment enum order.
+[deployment]
+concept = 1
+designed = 1
+proposed = 1
+prototype = 2
+prototyped = 2
+demo = 2
+"proof of concept" = 2
+internal = 3
+pilot = 3
+"used by the team" = 3
+production = 4
+launched = 4
+shipped = 4
+live = 4
+"deployed to users" = 4
+"in production" = 4
+
+# Claim words that name a metric from the controlled vocabulary.
+[metric_keywords]
+latency = "latency"
+"response time" = "latency"
+"load time" = "latency"
+accuracy = "accuracy"
+accurate = "accuracy"
+cost = "cost"
+costs = "cost"
+spend = "cost"
+revenue = "revenue"
+sales = "revenue"
+users = "users"
+"active users" = "users"
+throughput = "throughput"
+"requests per second" = "throughput"
+"time saved" = "time_saved"
+"hours saved" = "time_saved"
+"error rate" = "error_rate"
+errors = "error_rate"
+coverage = "coverage"
+"test coverage" = "coverage"
+
+# Claim words that state the direction of a metric.
+[direction_words]
+cut = "decrease"
+reduced = "decrease"
+reduce = "decrease"
+lowered = "decrease"
+decreased = "decrease"
+dropped = "decrease"
+halved = "decrease"
+"brought down" = "decrease"
+raised = "increase"
+increased = "increase"
+improved = "increase"
+grew = "increase"
+boosted = "increase"
+lifted = "increase"
+doubled = "increase"
+
+
+# Quantity words that stand in for a number before a scale noun. Value is the lower bound they imply.
+[quantity_words]
+dozens = 24
+hundreds = 200
+thousands = 2000
+millions = 2000000
+
+# Count nouns and the fact kind they count.
+[aggregate_nouns]
+project = "project"
+projects = "project"
+deployment = "project"
+deployments = "project"
+application = "project"
+applications = "project"
+app = "project"
+apps = "project"
+role = "experience"
+roles = "experience"
+position = "experience"
+positions = "experience"
+job = "experience"
+jobs = "experience"
+internship = "experience"
+internships = "experience"
+placement = "experience"
+placements = "experience"
+degree = "education"
+degrees = "education"
+subject = "education"
+subjects = "education"
+course = "education"
+courses = "education"
+certification = "certification"
+certifications = "certification"
+certificate = "certification"
+certificates = "certification"
+award = "award"
+awards = "award"
+
+
+
+# Units treated as the same when a claim number is bound to a metric record.
+[unit_aliases]
+percent = ["percent", "%", "pct", "percentage", "percentage points"]
+seconds = ["seconds", "second", "s", "sec", "secs"]
+milliseconds = ["milliseconds", "millisecond", "ms"]
+minutes = ["minutes", "minute", "min", "mins"]
+hours = ["hours", "hour", "h", "hr", "hrs"]
+users = ["users", "user", "people", "students", "customers", "clients", "visitors"]
+usd = ["usd", "$", "dollars", "dollar", "aud"]
