@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from html.parser import HTMLParser
 from pathlib import Path
 
 import pytest
@@ -321,6 +322,60 @@ def test_drop_removes_review_claim_from_outputs(tmp_path: Path) -> None:
     assert all(o.claim_ids == [] for o in outputs(repo, run_id))
     again = client.post(f"/runs/{run_id}/claims/c_001/review", data={"action": "approve"})
     assert again.status_code == 400
+
+
+class _TryForm(HTMLParser):
+    """Reads the Live box form the way a browser would: its action, text input and the
+    fact checkboxes inside it."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.inside = False
+        self.action: str | None = None
+        self.fields: list[tuple[str, str, str]] = []  # (type, name, value)
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        a = dict(attrs)
+        if tag == "form" and (a.get("action") or "").endswith("/claims/try"):
+            self.inside, self.action = True, a.get("action")
+        elif self.inside and tag in ("input", "select", "textarea"):
+            self.fields.append((a.get("type") or tag, a.get("name") or "", a.get("value") or ""))
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "form":
+            self.inside = False
+
+
+def try_form(client: TestClient, run_id: str) -> _TryForm:
+    form = _TryForm()
+    form.feed(client.get(f"/runs/{run_id}/claims").text)
+    assert form.action == f"/runs/{run_id}/claims/try"
+    return form
+
+
+def test_try_form_posts_ticked_fact_as_the_browser_does(tmp_path: Path) -> None:
+    client, _, adapter, _, run_id, fact_id = done_run(tmp_path)
+    form = try_form(client, run_id)
+    boxes = [(n, v) for t, n, v in form.fields if t == "checkbox"]
+    assert ("fact_ref", f"{fact_id}@1") in boxes  # every confirmed fact is a box in the form
+    assert ("text", "text", "") in form.fields
+    adapter.responses[Role.judge] = [judge_reply()]
+    # A browser sends the text input and only the ticked boxes.
+    resp = client.post(form.action or "", data={"text": "Built a prototype clash checker",
+                                                "fact_ref": f"{fact_id}@1"})
+    assert resp.status_code == 200
+    assert "Built a prototype clash checker" in resp.text and "passed" in resp.text
+
+
+def test_try_form_with_no_fact_ticked_shows_readable_error(tmp_path: Path) -> None:
+    client, _, adapter, _, run_id, _ = done_run(tmp_path)
+    form = try_form(client, run_id)
+    calls = len(adapter.calls)
+    resp = client.post(form.action or "", data={"text": "Built a prototype clash checker"})
+    assert resp.status_code == 400
+    assert resp.headers["content-type"].startswith("text/html")
+    assert "Tick at least one fact" in resp.text
+    assert len(adapter.calls) == calls  # nothing sent to the judge
 
 
 def test_blocked_output_files_are_not_served(tmp_path: Path) -> None:

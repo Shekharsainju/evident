@@ -547,6 +547,8 @@ class RunService:
                              detail="No such run.")
         if not text.strip():
             raise _bad_input("Type a claim to try.")
+        if not refs:
+            raise _bad_input("Tick at least one fact for the claim to cite.")
         claim = Claim(claim_id="try", text=text.strip(), evidence=refs, section="Try",
                       emphasis=1, allowed_transformations=[],
                       output_types=[OutputType.visual_profile], parent_claim_id=None)

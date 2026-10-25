@@ -37,13 +37,16 @@
 <h2>Try an inflated claim <span class="badge warn">Live</span></h2>
 <div class="card">
   <p class="muted">Runs Layer 1 and the judge on the claim you type. It is never added to the plan.</p>
+  {% if try_error %}<div class="error">{{ try_error }}</div>{% endif %}
   <form method="post" action="/runs/{{ run.run_id }}/claims/try">
     <label for="try-text">Claim</label>
     <input id="try-text" type="text" name="text" value="{{ tried_text }}">
-    <label for="try-refs">Cited facts</label>
-    <select id="try-refs" name="fact_ref" multiple>
-      {% for f in facts %}<option value="{{ f.fact_id }}@{{ f.version }}">{{ f.fact_id }}@{{ f.version }}: {{ f.text }}</option>{% endfor %}
-    </select>
+    <fieldset>
+      <legend>Cited facts: tick at least one</legend>
+      {% for f in facts %}
+      <label class="check"><input type="checkbox" name="fact_ref" value="{{ f.fact_id }}@{{ f.version }}"{% if f.fact_id ~ '@' ~ f.version in tried_refs %} checked{% endif %}> {{ f.fact_id }}@{{ f.version }}: {{ f.text }}</label>
+      {% else %}<p class="muted">No confirmed facts yet.</p>{% endfor %}
+    </fieldset>
     <p><button type="submit">Validate</button></p>
   </form>
 </div>

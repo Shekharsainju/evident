@@ -186,7 +186,8 @@ def coverage_page(request: Request, run_id: str) -> Response:
 
 
 def _claims_page(request: Request, run: RunStatus, tried: ClaimValidation | None = None,
-                 tried_text: str = "", status_code: int = 200) -> Response:
+                 tried_text: str = "", tried_refs: list[str] | None = None,
+                 try_error: str | None = None, status_code: int = 200) -> Response:
     repo = _repo(request)
     plan = repo.get_plan(OWNER, run.plan_id) if run.plan_id else None
     report = repo.get_report(OWNER, run.plan_id) if run.plan_id else None
@@ -195,7 +196,8 @@ def _claims_page(request: Request, run: RunStatus, tried: ClaimValidation | None
              if f.status is FactStatus.confirmed]
     return TEMPLATES.TemplateResponse(request, "claims.html", {
         "run": run, "plan": plan, "report": report, "texts": texts, "facts": facts,
-        "tried": tried, "tried_text": tried_text,
+        "tried": tried, "tried_text": tried_text, "tried_refs": tried_refs or [],
+        "try_error": try_error,
     }, status_code=status_code)
 
 
@@ -213,12 +215,22 @@ def _parse_ref(value: str) -> FactRef:
 
 
 @router.post("/runs/{run_id}/claims/try", response_class=HTMLResponse)
-def try_claim(request: Request, run_id: str, text: Annotated[str, Form()],
-              fact_ref: Annotated[list[str], Form()]) -> Response:
+def try_claim(request: Request, run_id: str, text: Annotated[str, Form()] = "",
+              fact_ref: Annotated[list[str] | None, Form()] = None) -> Response:
+    # Both fields are optional here: a browser omits unticked boxes entirely, and a missing
+    # field must come back as a readable message on the page, not FastAPI's JSON error.
     run = _run(request, run_id)
-    refs = [_parse_ref(r) for r in fact_ref]
-    result = _service(request).try_claim(OWNER, run_id, text, refs)
-    return _claims_page(request, run, tried=result, tried_text=text)
+    ticked = fact_ref or []
+    try:
+        refs = [_parse_ref(r) for r in ticked]
+        result = _service(request).try_claim(OWNER, run_id, text, refs)
+    except StageError as exc:
+        if exc.category not in (ErrorCategory.input, ErrorCategory.validation) or (
+                exc.code == "not_found"):
+            raise
+        return _claims_page(request, run, tried_text=text, tried_refs=ticked,
+                            try_error=exc.detail or exc.code, status_code=400)
+    return _claims_page(request, run, tried=result, tried_text=text, tried_refs=ticked)
 
 
 @router.post("/runs/{run_id}/claims/{claim_id}/review")
