@@ -36,3 +36,12 @@ Proposals and temporary exceptions to the Decision log in `docs/design.md`. Noth
 - **Exception:** the slice uses the fallback, Playwright print-to-PDF, as its only converter. No PDF/UA or veraPDF check runs on these PDFs.
 - **Why:** Gotenberg needs Docker Compose services, which are out of scope before 2026-10-28. Playwright is already needed for screenshots and HTML checks.
 - **Ends when:** the Docker Compose services are set up after the slice, or phase 4 ("First outputs") starts, whichever comes first.
+
+## P4: Deck speaker notes cite fact versions without source text or location in the A3 slice (temporary exception)
+
+- **Status:** approved by the project owner on 2026-10-25 as a temporary exception for the A3 slice only.
+- **Spec and plan say:** speaker notes list each slide's claim IDs, plus the source text and location for each (spec, deck output). Plan Task 13 gives the line format `claim_id: fact_id@version, page or image, span_text`.
+- **Why it cannot be met as planned:** the planned `render_deck(plan, report, identity, out)` receives no fact versions, so it has no page, image or span text to print. This is a gap in the plan, found in the Task 13 review.
+- **Exception:** `render_deck` keeps the planned signature. Each `Sources:` line reads `claim_id: fact_id@version, page and span in the receipt`, where the trailing text is fixed template copy from `config/template_copy.toml`.
+- **Consequences:** the notes alone do not show the source text or where in the document it came from; the fact ID and version are the only link back.
+- **Ends when:** the deck renderer is next changed after the slice, or phase 4 ("First outputs") starts, whichever comes first. The fix then is to pass the cited fact versions into `render_deck`.
