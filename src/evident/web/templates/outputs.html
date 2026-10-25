@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Outputs{% endblock %}
+{% block content %}
+<h1>Outputs</h1>
+<p><a href="/runs/{{ run.run_id }}">Back to the run</a></p>
+{% for o in outputs %}
+<div class="card">
+  <p><strong>{{ o.output_type.value.replace("_", " ") }}</strong>
+  {% if o.post_render and o.post_render.passed %}<span class="badge ok">post-render verification passed</span>
+  {% else %}<span class="badge warn">blocked</span>{% endif %}</p>
+  {% if o.post_render and o.post_render.passed %}
+  <p>{% for name in o.files %}<a href="/outputs/{{ o.output_id }}/files/{{ name }}">{{ name }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</p>
+  {% elif o.post_render %}<ul>{% for p in o.post_render.problems %}<li>{{ p }}</li>{% endfor %}</ul>{% endif %}
+  <p class="muted">Claims: {{ o.claim_ids|join(", ") or "none" }}</p>
+</div>
+{% else %}
+<div class="card"><p class="muted">Nothing has been rendered yet.</p></div>
+{% endfor %}
+{% if report %}
+<h2>Validation report</h2>
+<div class="card">
+  <p><strong>Models by role</strong></p>
+  <ul>{% for role, model in report.models_by_role.items() %}<li>{{ role }}: {{ model }}</li>{% endfor %}</ul>
+  <p><strong>Limitations</strong></p>
+  <ul>{% for line in report.limitations %}<li>{{ line }}</li>{% endfor %}</ul>
+  <p class="muted">Dropped claims: {{ report.dropped_claim_ids|join(", ") or "none" }}</p>
+</div>
+{% endif %}
+{% endblock %}

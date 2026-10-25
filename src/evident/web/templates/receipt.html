@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Receipt {{ claim.claim_id }}{% endblock %}
+{% block content %}
+<h1>Receipt</h1>
+<div class="card">
+  <p class="muted">{{ claim.claim_id }} v{{ claim.version }}</p>
+  <p>{{ claim.text }}</p>
+</div>
+{% for f in facts %}
+<div class="card fact">
+  <div>
+    <p class="muted">{{ f.fact_id }}@{{ f.version }} ({{ f.kind.value }}){% if f.edited_by_user %} <span class="badge">written by you</span>{% endif %}</p>
+    <p>{{ f.text }}</p>
+    <p class="muted">Source text: {{ f.source.span_text }}</p>
+  </div>
+  {% if f.source.document_id is defined %}
+  <img alt="Source crop for {{ f.fact_id }}" src="/documents/{{ f.source.document_id }}/source?fact_id={{ f.fact_id }}&amp;version={{ f.version }}">
+  {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

@@ -8,5 +8,9 @@
   {% if problem %}<div class="error">{{ run.message }}</div>{% else %}<p>{{ run.message }}</p>{% endif %}
   {% if refresh %}<p class="muted">This page refreshes every 2 seconds.</p>{% endif %}
   {% if run.stage.value == "review" %}<p><a href="/runs/{{ run.run_id }}/facts">Review the extracted facts</a></p>{% endif %}
+  {% if run.state.value in ("quota_exhausted", "failed") and run.stage.value != "ingest" %}
+  <form method="post" action="/runs/{{ run.run_id }}/continue"><button type="submit">Continue from this stage</button></form>
+  {% endif %}
+  <p><a href="/runs/{{ run.run_id }}/facts">Facts</a> · <a href="/runs/{{ run.run_id }}/coverage">Coverage</a> · <a href="/runs/{{ run.run_id }}/claims">Claims</a> · <a href="/runs/{{ run.run_id }}/outputs">Outputs</a></p>
 </div>
 {% endblock %}
