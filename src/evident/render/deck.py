@@ -38,10 +38,9 @@ def render_deck(plan: ContentPlan, report: ValidationReport, identity: dict[str,
     narratives = [c for c in claims if c.parent_claim_id is not None]
 
     deck = Presentation()
-    # Only template copy on the title slide: Task 14's verify_pptx takes no identity, so a
-    # name here would fail verification on a correct deck.
+    # One paragraph per identity value, so verification can match each one exactly.
     title = deck.slides.add_slide(deck.slide_layouts[TITLE_LAYOUT])
-    title.shapes.title.text = COPY["deck_title"]
+    title.shapes.title.text = "\n".join(identity.values()) or COPY["deck_title"]
     title.placeholders[1].text = COPY["marker"]
 
     for heading, section_claims in by_section(body):

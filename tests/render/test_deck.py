@@ -79,11 +79,21 @@ def test_each_claim_has_own_text_box_named_by_claim_id(tmp_path: Path) -> None:
     assert named == [(c.claim_id, c.text) for c in claims]
 
 
-def test_title_slide_has_no_identity_name(tmp_path: Path) -> None:
+def title_paragraphs(path: Path) -> list[str]:
+    title = list(Presentation(str(path)).slides)[0]
+    return [p.text for p in title.shapes.title.text_frame.paragraphs]
+
+
+def test_title_slide_shows_name_and_target_role(tmp_path: Path) -> None:
     c = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
-    out = render_deck(plan_of(c), report_of(validation(c)), ID, tmp_path / "deck.pptx")
+    identity = {"name": "Alex Example", "target_role": "Graduate AI Engineer"}
+    out = render_deck(plan_of(c), report_of(validation(c)), identity, tmp_path / "deck.pptx")
 
-    title = list(Presentation(str(out)).slides)[0]
-    text = " ".join(shape.text_frame.text for shape in title.shapes if shape.has_text_frame)
+    assert title_paragraphs(out) == ["Alex Example", "Graduate AI Engineer"]
 
-    assert ID["name"] not in text
+
+def test_title_slide_without_identity_uses_template_title(tmp_path: Path) -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
+    out = render_deck(plan_of(c), report_of(validation(c)), {}, tmp_path / "deck.pptx")
+
+    assert title_paragraphs(out) == ["Interview deck"]

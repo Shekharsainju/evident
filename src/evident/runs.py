@@ -38,6 +38,7 @@ from evident.coverage.grading import check_coverage_gate, grade_requirements
 from evident.coverage.requirements import extract_requirements
 from evident.errors import ErrorCategory, StageError
 from evident.eval.assets import JOB_SCREENSHOT, TEMPLATES, cv_pdf_path, cv_photo_path
+from evident.eval.datasets import load_enriched_profiles
 from evident.ingestion.pdf_text import ingest_pdf
 from evident.ingestion.vision import ingest_photo
 from evident.models.adapter import ModelAdapter
@@ -63,8 +64,6 @@ JOBS = Path("data/synthetic/jobs.jsonl")
 PROFILE_IDS = [f"student_profile_0{i}" for i in range(1, 6)]
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 QUOTA_CODES = {"daily_quota", "rate_limited"}
-# No contact details in outputs until the owner decides where a display name comes from.
-IDENTITY: dict[str, str] = {}
 SAFE_SEGMENT = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 SUPERSEDED = ".superseded"
 NO_CLAIMS = "No validated claims for this output."
@@ -94,6 +93,18 @@ def sample_cvs() -> dict[str, Path]:
             samples[f"{profile}_{template}"] = cv_pdf_path(profile, template)
             samples[f"{profile}_{template}_photo"] = cv_photo_path(profile, template)
     return samples
+
+
+def sample_profile(doc: Document) -> str | None:
+    """The synthetic profile a CV was rendered from. Matched on filename and content, so an
+    upload that only borrows a sample's filename gets no profile name."""
+    for profile in PROFILE_IDS:
+        for template in TEMPLATES:
+            for path in (cv_pdf_path(profile, template), cv_photo_path(profile, template)):
+                if (path.name == doc.filename
+                        and hashlib.sha256(path.read_bytes()).hexdigest() == doc.sha256):
+                    return profile
+    return None
 
 
 def load_jobs() -> list[dict[str, Any]]:
@@ -381,8 +392,20 @@ class RunService:
                  if f is not None]
         return claim, facts
 
+    def identity(self, owner_id: str, run: RunStatus) -> dict[str, str]:
+        """Output header: the synthetic profile's name and the target job title, both fictional
+        A1 data (owner decision for the A3 slice). Never contact details."""
+        identity: dict[str, str] = {}
+        doc = self.repo.get_document(owner_id, run.document_id)
+        profile = sample_profile(doc) if doc is not None else None
+        if profile is not None:
+            names = {p["document_id"]: p["name"] for p in load_enriched_profiles()}
+            identity["name"] = str(names[profile])
+        identity["target_role"] = self._target(owner_id, run).title
+        return identity
+
     def _render_one(self, owner_id: str, plan: ContentPlan, report: ValidationReport,
-                    output_type: OutputType) -> Output:
+                    output_type: OutputType, identity: dict[str, str]) -> Output:
         output_id = _new_id("out")
         folder = self._output_dir(owner_id, output_id)
         claims = renderable_claims(plan, report, output_type)
@@ -393,16 +416,17 @@ class RunService:
             result = PostRenderResult(passed=False,
                                       problems=[_no_claims_reason(plan, report, output_type)])
         elif output_type is OutputType.visual_profile:
-            html = render_profile(plan, report, IDENTITY, "/receipts/")
-            result = verify_html(html, expected, IDENTITY, TEMPLATE_COPY)
+            html = render_profile(plan, report, identity, "/receipts/")
+            result = verify_html(html, expected, identity, TEMPLATE_COPY)
             if result.passed:
                 folder.mkdir(parents=True, exist_ok=True)
                 page = folder / "profile.html"
                 page.write_text(html, encoding="utf-8")
                 written = [page, render_profile_pdf(html, folder / "profile.pdf")]
         else:
-            deck = render_deck(plan, report, IDENTITY, folder / "deck.pptx")
-            result = verify_pptx(deck, expected, TEMPLATE_COPY)
+            deck = render_deck(plan, report, identity, folder / "deck.pptx")
+            # verify_pptx has no identity parameter, so the identity values join the whitelist.
+            result = verify_pptx(deck, expected, TEMPLATE_COPY | set(identity.values()))
             if result.passed:
                 written = [deck]
             else:
@@ -431,7 +455,8 @@ class RunService:
                 raise StageError(code="not_found", category=ErrorCategory.input,
                                  detail="Plan and validate the claims first.")
             current = self.current_plan(owner_id, plan)
-            outs = [self._render_one(owner_id, current, report, t) for t in OutputType]
+            identity = self.identity(owner_id, run)
+            outs = [self._render_one(owner_id, current, report, t, identity) for t in OutputType]
             for out in outs:
                 self.repo.put_output(out)
         except Exception as exc:  # never let a background task die silently

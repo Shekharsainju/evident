@@ -12,7 +12,7 @@ from evident.contracts.enums import ClaimOutcome, OutputType, RunStage, RunState
 from evident.contracts.outputs import Output, PostRenderResult
 from evident.contracts.runs import RunStatus
 from evident.errors import ErrorCategory, StageError
-from evident.runs import RunService
+from evident.runs import RunService, sample_cvs
 from evident.settings import LOCAL_OWNER_ID, Role, Settings
 from evident.store.files import FileRepository
 from evident.web.app import create_app
@@ -174,6 +174,35 @@ def test_dropped_claim_text_never_rendered(tmp_path: Path) -> None:
         texts.append(slide.notes_slide.notes_text_frame.text)
     joined = "\n".join(texts)
     assert GOOD in joined and INFLATED not in joined and "c_002" not in joined
+
+
+def test_outputs_show_profile_name_and_target_role(tmp_path: Path) -> None:
+    from pptx import Presentation
+
+    _, repo, _, settings, run_id, _ = done_run(tmp_path)
+    outs = {o.output_type: o for o in outputs(repo, run_id)}
+    for o in outs.values():
+        assert o.post_render is not None and o.post_render.passed, o.post_render
+    html = (settings.data_dir / outs[OutputType.visual_profile].files["profile.html"]).read_text(
+        encoding="utf-8")
+    assert '<span data-identity="name">Maya Chen</span>' in html
+    assert '<span data-identity="target_role">Graduate AI Engineer</span>' in html
+    assert "Synthetic profile, A3 testing" in html
+    deck = Presentation(str(settings.data_dir / outs[OutputType.interview_deck].files["deck.pptx"]))
+    title = list(deck.slides)[0].shapes.title.text_frame.paragraphs
+    assert [p.text for p in title] == ["Maya Chen", "Graduate AI Engineer"]
+
+
+def test_upload_named_like_a_sample_gets_no_profile_name(tmp_path: Path) -> None:
+    client, repo, _, _ = make(tmp_path)
+    sample = sample_cvs()[SAMPLE]
+    resp = client.post("/runs", data={"job_id": "graduate_ai_engineer"},
+                       files={"upload": (sample.name, b"%PDF-1.4 not the sample",
+                                         "application/pdf")},
+                       follow_redirects=False)
+    run = get_run(repo, str(resp.headers["location"]).rsplit("/", 1)[-1])
+
+    assert service_of(client).identity(OWNER, run) == {"target_role": "Graduate AI Engineer"}
 
 
 def done_run(tmp_path: Path, good_confidence: float = 0.95) -> tuple[
