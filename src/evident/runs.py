@@ -401,7 +401,7 @@ class RunService:
         if profile is not None:
             names = {p["document_id"]: p["name"] for p in load_enriched_profiles()}
             identity["name"] = str(names[profile])
-        identity["target_role"] = self._target(owner_id, run).title
+        identity["target_role"] = self._target(owner_id, run).title.removesuffix(" (screenshot)")
         return identity
 
     def _render_one(self, owner_id: str, plan: ContentPlan, report: ValidationReport,

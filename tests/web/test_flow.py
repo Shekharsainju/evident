@@ -205,6 +205,16 @@ def test_upload_named_like_a_sample_gets_no_profile_name(tmp_path: Path) -> None
     assert service_of(client).identity(OWNER, run) == {"target_role": "Graduate AI Engineer"}
 
 
+def test_screenshot_target_role_is_shown_without_source_note(tmp_path: Path) -> None:
+    client, repo, _, _ = make(tmp_path)
+    resp = client.post("/runs", data={"cv": SAMPLE, "use_job_screenshot": "true"},
+                       follow_redirects=False)
+    run = get_run(repo, str(resp.headers["location"]).rsplit("/", 1)[-1])
+
+    assert service_of(client).identity(OWNER, run) == {"name": "Maya Chen",
+                                                       "target_role": "Graduate AI Engineer"}
+
+
 def done_run(tmp_path: Path, good_confidence: float = 0.95) -> tuple[
         TestClient, FileRepository, FakeAdapter, Settings, str, str]:
     client, repo, adapter, settings = make(tmp_path)
