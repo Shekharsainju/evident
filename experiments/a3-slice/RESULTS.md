@@ -175,3 +175,102 @@ rejected by the judge alone (three written project or role dates, one subject cl
 two-project aggregate, both four-subject aggregates, a project scope claim) and 1 by both layers (the
 metric claim of issue 3). Nothing was tuned in response; the dev false reject rate (45%) is
 well above the 10% test criterion, so a test fail on that criterion is expected.
+
+## Test split results
+
+Run started 2026-10-30T21:33:08+00:00 (UTC). One locked run; nothing was tuned on this split.
+
+- Models configured: extraction_text `gemini-3.5-flash-lite`, extraction_vision `gemini-3.5-flash-lite`, requirements `gemini-3.5-flash-lite`, coverage `gemini-3.5-flash-lite`, planner `gemini-3.5-flash-lite`, judge `qwen3:4b-instruct-2507-q4_K_M`
+- Ollama digests: {'qwen3:4b-instruct-2507-q4_K_M': '0edcdef34593'}
+- Prompt versions: extraction `v2`, judge `v2` (chosen on the dev split, see the Dev tuning log)
+- Dataset version: `a3_enriched` tree `b8bcfa4afe49d7783da7df675851986480fb1feb`
+- Lexicons version 1, aliases version 1, `as_of` 2026-10
+- Cache hits: 0/109 calls; uncached Gemini calls planned at pre-flight: 24
+
+### Extraction F1 (spec 9.1)
+
+Field-level counts; F1 = 2tp / (2tp + fp + fn). Interval: 95% bootstrap resampling whole underlying profiles (10,000 resamples, seed 0).
+
+| Path | tp | fp | fn | Precision | Recall | F1 | 95% interval |
+|---|---|---|---|---|---|---|---|
+| Digital PDF (pdf_text) | 643 | 41 | 56 | 0.940 | 0.920 | 0.930 | 0.926 to 0.933 (4 profiles) |
+| Simulated photo (vision) | 619 | 54 | 80 | 0.920 | 0.886 | 0.902 | 0.876 to 0.928 (4 profiles) |
+
+Per template:
+
+| Path | Template | tp | fp | fn | Precision | Recall | F1 | 95% interval |
+|---|---|---|---|---|---|---|---|---|
+| Digital PDF (pdf_text) | classic | 215 | 14 | 18 | 0.939 | 0.923 | 0.931 | 0.919 to 0.949 (4 profiles) |
+| Digital PDF (pdf_text) | compact | 218 | 12 | 15 | 0.948 | 0.936 | 0.942 | 0.929 to 0.954 (4 profiles) |
+| Digital PDF (pdf_text) | sidebar | 210 | 15 | 23 | 0.933 | 0.901 | 0.917 | 0.911 to 0.921 (4 profiles) |
+| Simulated photo (vision) | classic | 217 | 15 | 16 | 0.935 | 0.931 | 0.933 | 0.905 to 0.961 (4 profiles) |
+| Simulated photo (vision) | compact | 197 | 16 | 36 | 0.925 | 0.845 | 0.883 | 0.850 to 0.903 (4 profiles) |
+| Simulated photo (vision) | sidebar | 205 | 23 | 28 | 0.899 | 0.880 | 0.889 | 0.825 to 0.923 (4 profiles) |
+
+### Claim grounding (spec 9.2)
+
+Judge prompt `judge/v2`, threshold 0.80. A claim in user review is not accepted, so it is not a false accept.
+
+- False accept rate (unsupported accepted / all unsupported): 0/45 (0.0%, 95% upper 6.4%)
+- False reject rate (supported rejected / all supported): 13/40 (32.5%, 95% upper 46.6%)
+- User review, unsupported claims: 4/45 (8.9%, 95% upper 19.2%)
+- User review, supported claims: 3/40 (7.5%, 95% upper 18.3%)
+- Judge errors: 0 of 85 claims
+
+Per category (unsupported claims):
+
+| Category | n | False accepts | User review | Rejected |
+|---|---|---|---|---|
+| wrong_number | 5 | 0/5 (0.0%, 95% upper 45.1%) | 0/5 (0.0%, 95% upper 45.1%) | 5/5 (100.0%, 95% upper 100.0%) |
+| wrong_date | 5 | 0/5 (0.0%, 95% upper 45.1%) | 0/5 (0.0%, 95% upper 45.1%) | 5/5 (100.0%, 95% upper 100.0%) |
+| inflated_ownership | 5 | 0/5 (0.0%, 95% upper 45.1%) | 0/5 (0.0%, 95% upper 45.1%) | 5/5 (100.0%, 95% upper 100.0%) |
+| inflated_deployment | 5 | 0/5 (0.0%, 95% upper 45.1%) | 1/5 (20.0%, 95% upper 65.7%) | 4/5 (80.0%, 95% upper 99.0%) |
+| unsupported_skill | 5 | 0/5 (0.0%, 95% upper 45.1%) | 0/5 (0.0%, 95% upper 45.1%) | 5/5 (100.0%, 95% upper 100.0%) |
+| wrong_entity | 5 | 0/5 (0.0%, 95% upper 45.1%) | 2/5 (40.0%, 95% upper 81.1%) | 3/5 (60.0%, 95% upper 92.4%) |
+| fake_id | 5 | 0/5 (0.0%, 95% upper 45.1%) | 1/5 (20.0%, 95% upper 65.7%) | 4/5 (80.0%, 95% upper 99.0%) |
+| wrong_aggregate | 5 | 0/5 (0.0%, 95% upper 45.1%) | 0/5 (0.0%, 95% upper 45.1%) | 5/5 (100.0%, 95% upper 100.0%) |
+| paraphrase_overstatement | 5 | 0/5 (0.0%, 95% upper 45.1%) | 0/5 (0.0%, 95% upper 45.1%) | 5/5 (100.0%, 95% upper 100.0%) |
+
+Which layer flagged each unsupported claim (regardless of final outcome):
+
+- layer1 and judge: 35/45 (77.8%, 95% upper 87.4%)
+- layer1 only: 2/45 (4.4%, 95% upper 13.3%)
+- judge only: 8/45 (17.8%, 95% upper 29.8%)
+- none: 0/45 (0.0%, 95% upper 6.4%)
+
+Which layer flagged each falsely rejected supported claim (13):
+
+- layer1 and judge: 0
+- layer1 only: 0
+- judge only: 13
+- none: 0
+
+### Cost and latency (observations, no criterion)
+
+Estimated cost uses paid list prices from `config/models.toml`; actual cost is zero on the free tier. Latency is for uncached calls only.
+
+| Role | Calls | Cached | Model IDs | Prompt versions | Tokens in/out | Est. cost USD | Uncached latency |
+|---|---|---|---|---|---|---|---|
+| extraction_text | 12 | 0 | gemini-3.5-flash-lite | v2 | 10542/29902 | 0.0779 | n=12, p50 5.6 s, p90 5.7 s |
+| extraction_vision | 12 | 0 | gemini-3.5-flash-lite | v2 | 19488/34197 | 0.0913 | n=12, p50 8.0 s, p90 10.3 s |
+| judge | 85 | 0 | qwen3:4b-instruct-2507-q4_K_M | v2 | 31206/5225 | 0.0000 | n=85, p50 3.1 s, p90 4.2 s |
+
+### Pass or fail against the stated criteria
+
+- Extraction F1 on digital PDFs >= 0.95: **Fail**
+- Extraction F1 on photos >= 0.9: **Pass**
+- Zero false accepts on the test split: **Pass**
+- False reject rate <= 10%: **Fail**
+
+A pass on extraction does not establish the phase 0 result: the CVs are synthetic, the photos simulated, and there are only 4 test profiles.
+
+### Limitations
+
+- Pilot results on synthetic data: only 5 underlying profiles, and 4 of them in the extraction test split, so every interval is wide
+- Simulated photos (warp, tilt, uneven light, blur, noise, JPEG), easier than real phone photos
+- Claims are built from templates and hand-checked by the builder, not the owner; real planner output is more varied
+- About 45 unsupported test claims: 0 false accepts gives an upper bound near 6.4%, so even a pass can't show the design's 2% target
+- Layer 1 metric direction (known, not fixed by owner decision): a decrease word such as "cut" does not bind to a metric recorded as absolute, so such supported claims are rejected (fails closed)
+- Layer 1 entity rule: two names each found whole in the evidence can combine through "and" into a name no fact mentions; see the dev tuning log for the full list
+- Small local judge: qwen3:4b-instruct-2507-q4_K_M, 4B quantised, self-reported uncalibrated confidence (P1)
+- Free-tier gemini-3.5-flash-lite for extraction, coverage and planning, not a Pro-class model (P3)
