@@ -44,6 +44,8 @@ RENDERER_LIMITS = (
 # The deck limits stated in RENDERER_LIMITS, enforced when the deck claims are chosen.
 MAX_DECK_SLIDES = 4
 MAX_CLAIMS_PER_SLIDE = 3
+# Owner decision: every claim goes to both outputs unless it is too long for a slide.
+MAX_DECK_CLAIM_CHARS = 220
 FEEDBACK_HEADING = "Rejected claims and reasons"
 CLAIM_ID = re.compile(r"^c_(\d+)$")
 
@@ -147,23 +149,28 @@ def _check_draft(d: DraftClaim, supported: set[FactRef]) -> tuple[_Kept | None, 
     return _Kept(index=-1, text=text, refs=refs, draft=d, output_types=types), ""
 
 
+def _body_output_types(text: str) -> list[OutputType]:
+    """The model's output types are ignored for body claims: the owner chose to tag every
+    claim for both outputs, except ones too long to fit on a slide."""
+    if len(text) > MAX_DECK_CLAIM_CHARS:
+        return [OutputType.visual_profile]
+    return [OutputType.visual_profile, OutputType.interview_deck]
+
+
 def _choose_deck(claims: list[Claim]) -> list[Claim]:
     """Decide the deck claims here, before validation, so the stored output types are the
     ones validated and the deck renderer draws exactly the deck claims that pass.
 
-    If the planner tagged no claim for the deck, every claim is a candidate (the fallback).
-    Candidates are grouped into slides the way the renderer groups them and trimmed to the
-    deck limits, highest emphasis first. Narratives follow their parent onto the deck or
+    Candidates are the claims tagged for the deck (see _body_output_types). They are
+    grouped into slides the way the renderer groups them and trimmed to the deck limits,
+    highest emphasis first. Narratives follow their parent onto the deck or
     are dropped with it.
     """
     body = [c for c in claims if c.parent_claim_id is None]
     tagged = [c for c in body if OutputType.interview_deck in c.output_types]
-    candidates = tagged or body
-    chosen = {c.claim_id for _, group in by_section(candidates)[:MAX_DECK_SLIDES]
+    chosen = {c.claim_id for _, group in by_section(tagged)[:MAX_DECK_SLIDES]
               for c in group[:MAX_CLAIMS_PER_SLIDE]}
-    if not tagged and chosen:
-        log.info("planner deck fallback tagged=%d of claims=%d", len(chosen), len(body))
-    elif len(chosen) < len(tagged):
+    if len(chosen) < len(tagged):
         log.info("planner deck trimmed=%d to limits kept=%d", len(tagged) - len(chosen),
                  len(chosen))
 
@@ -264,7 +271,8 @@ def build_plan(
             claim_id=ids[k.text], text=k.text, evidence=k.refs,
             section=k.draft.section.strip(), emphasis=k.draft.emphasis,
             allowed_transformations=[],  # set in _choose_deck, once narratives are final
-            output_types=[OutputType.interview_deck] if narrative else k.output_types,
+            output_types=([OutputType.interview_deck] if narrative
+                          else _body_output_types(k.text)),
             parent_claim_id=ids[(k.draft.narrative_for or "").strip()] if narrative else None))
 
     claims: list[Claim] = []

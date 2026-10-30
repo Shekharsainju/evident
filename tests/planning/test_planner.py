@@ -109,10 +109,12 @@ def test_claims_cite_fact_versions() -> None:
 
 
 def test_claim_ids_stable_and_unique() -> None:
+    # Same reach as the new plan gives it, so the version is kept.
+    both = [OutputType.visual_profile, OutputType.interview_deck]
+    reused = claim("c_002", "Contributed to a chatbot prototype", version=2)
     prev = previous_plan(claim("c_001", "Built a clash checker"),
-                         claim("c_002", "Contributed to a chatbot prototype", version=2))
-    plan, _ = plan_with(draft("Contributed to a chatbot prototype",
-                              output_types=["visual_profile"]),
+                         reused.model_copy(update={"output_types": both}))
+    plan, _ = plan_with(draft("Contributed to a chatbot prototype"),
                         draft("Used Flask for a web API"),
                         draft("Used Flask for a web API"),
                         previous=prev)
@@ -235,18 +237,31 @@ def deck_ids(plan: ContentPlan) -> list[str]:
     return [c.claim_id for c in plan.claims if OutputType.interview_deck in c.output_types]
 
 
-def test_deck_fallback_tags_claims_when_none_marked_for_deck(
-        caplog: pytest.LogCaptureFixture) -> None:
-    with caplog.at_level(logging.INFO, logger="evident.planning"):
-        plan, _ = plan_with(draft("Built a clash checker", section="Projects", emphasis=4,
-                                  output_types=["visual_profile"]),
-                            draft("Studied computing", section="Education", emphasis=2,
-                                  output_types=["visual_profile"]))
+BOTH = [OutputType.visual_profile, OutputType.interview_deck]
+
+
+def test_every_claim_tagged_for_both_outputs_whatever_the_model_chose() -> None:
+    plan, _ = plan_with(draft("Built a clash checker", section="Projects", emphasis=4,
+                              output_types=["visual_profile"]),
+                        draft("Studied computing", section="Education", emphasis=2,
+                              output_types=["interview_deck"]))
     assert deck_ids(plan) == ["c_001", "c_002"]
-    assert all(c.output_types == [OutputType.visual_profile, OutputType.interview_deck]
-               for c in plan.claims)
-    assert "deck fallback" in caplog.text and "tagged=2" in caplog.text
-    assert "clash checker" not in caplog.text and "computing" not in caplog.text
+    assert all(c.output_types == BOTH for c in plan.claims)
+
+
+def test_claim_over_220_characters_stays_off_the_deck() -> None:
+    at_limit = "a" * 220
+    over = "b" * 221
+    plan, _ = plan_with(draft(at_limit), draft(over, output_types=["interview_deck"]))
+    by_text = {c.text: c for c in plan.claims}
+    assert by_text[at_limit].output_types == BOTH
+    assert by_text[over].output_types == [OutputType.visual_profile]
+
+
+def test_no_deck_claims_when_every_claim_is_too_long() -> None:
+    plan, _ = plan_with(draft("a" * 221), draft("b" * 230, section="Education"))
+    assert deck_ids(plan) == []
+    assert all(c.output_types == [OutputType.visual_profile] for c in plan.claims)
 
 
 def test_deck_limited_to_four_slides_of_three_claims_by_emphasis() -> None:
@@ -269,11 +284,12 @@ def test_deck_limited_to_four_slides_of_three_claims_by_emphasis() -> None:
     assert all(OutputType.visual_profile in c.output_types for c in plan.claims)
 
 
-def test_deck_only_claim_not_chosen_is_dropped() -> None:
+def test_deck_only_draft_not_chosen_stays_on_profile() -> None:
     drafts = [draft(f"Projects claim {i}", emphasis=5) for i in range(1, 4)]
     plan, _ = plan_with(*drafts, draft("Minor deck-only claim", emphasis=1,
                                        output_types=["interview_deck"]))
-    assert "Minor deck-only claim" not in {c.text for c in plan.claims}
+    minor = next(c for c in plan.claims if c.text == "Minor deck-only claim")
+    assert minor.output_types == [OutputType.visual_profile]
 
 
 def test_narrative_dropped_when_parent_left_off_deck() -> None:
