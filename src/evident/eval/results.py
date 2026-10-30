@@ -30,6 +30,11 @@ DATA_LIMITATIONS = [
     "planner output is more varied",
     "About 45 unsupported test claims: 0 false accepts gives an upper bound near 6.4%, so "
     "even a pass can't show the design's 2% target",
+    "Layer 1 metric direction (known, not fixed by owner decision): a decrease word such as "
+    "\"cut\" does not bind to a metric recorded as absolute, so such supported claims are "
+    "rejected (fails closed)",
+    "Layer 1 entity rule: two names each found whole in the evidence can combine through "
+    "\"and\" into a name no fact mentions; see the dev tuning log for the full list",
 ]
 
 

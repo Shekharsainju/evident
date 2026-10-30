@@ -66,7 +66,7 @@ Written and committed before any dev or test model call for this evaluation. Spe
 
 Dev split only: extraction on profile 01 (3 PDFs, 3 photos), grounding on the 40 dev
 claims (profiles 01 and 02). Run records: `runs/dev_all_judge-v1.json` and
-`runs/dev_grounding_judge-v2.json` (the v1 run also covered extraction, `--suite all`;
+`runs/dev_grounding_judge-v2_before-entity-fix.json` (the v1 run also covered extraction, `--suite all`;
 the v2 run was grounding only, since extraction doesn't depend on the judge). Models: `gemini-3.5-flash-lite` (extraction),
 `qwen3:4b-instruct-2507-q4_K_M` digest `0edcdef34593` via Ollama (judge). Dataset
 `a3_enriched` tree `b8bcfa4afe49d7783da7df675851986480fb1feb`, judge threshold 0.80,
@@ -114,5 +114,64 @@ claims:
    bind: the ground-truth metric is `absolute`, and "cut" is a decrease word.
 
 These all fail closed: none can cause a false accept. Step 7 allows changes only to the
-extraction prompt, the judge prompt and the threshold, so Layer 1 is unchanged and the
-test-split false reject rate will include these.
+extraction prompt, the judge prompt and the threshold, so Layer 1 was not changed as part of
+the tuning.
+
+### Owner decision: fix issues 1 and 2, keep issue 3 (2026-10-31)
+
+The owner asked for issues 1 and 2 to be fixed as a separate task, test first with a fresh
+reviewer, and issue 3 to stay as it is. Commit `76fb242` changes only the entity rule:
+
+- Written dates the date rule reads (a month or season directly before a year, with an
+  optional leading day: "Mar 2025", "3 June 2025") are cut out of name runs. "June 3, 2025"
+  is not cut, because the date rule would check only its year.
+- Name runs are split on "and", and each part must equal a whole name in the evidence
+  (title, organisation, skill, or a capitalised run in the fact text). A word in plain
+  prose, a fragment of a longer name, or a lone word opening a sentence, line or bullet does
+  not count.
+
+Eight fresh reviews; the first seven each found a false accept path, now each a regression
+test. The eighth approved after comparing about 10,000 generated claims against the previous
+code. The judge prompt, threshold, claim sets and labels did not change.
+
+Known limitations of the entity rule after the fix (all from reviews, not from test data):
+
+- Two names that each appear whole in the evidence can be joined with "and" into a name no
+  fact mentions ("Marks" and "Spencer" make "Marks and Spencer" pass).
+- A name whose first word is an ownership verb ("Led Zeppelin") can lose that word at the
+  start of a sentence.
+- Older, not from this change: at the start of a sentence any first word is dropped, so
+  "Goldman Sachs backed the planner." passes with no evidence (a single word is skipped).
+- Fail-closed rejects: "Joined May 2024 ..." (rejected on "Joined"), "June 3, 2025" style
+  dates, and an evidence name followed by a date.
+
+### Known limitation: metric direction (issue 3, not fixed)
+
+"Cut timetable clash checks to under 2 seconds" is rejected because the ground-truth metric
+has direction `absolute` while "cut" reads as a decrease, so the number doesn't bind. The
+owner decided to leave the metric direction rule unchanged. It fails closed: claims like
+this are rejected, never passed. Expect it in test-split false rejects for metric claims
+whose ground truth is absolute.
+
+### Dev re-run after the entity fix (2026-10-31)
+
+Run record `runs/dev_grounding_judge-v2.json`, `judge/v2`, threshold 0.80, same 40 dev
+claims, same models and digest as above.
+
+| Measure | v2 before fix | v2 after fix |
+|---|---|---|
+| False accepts (unsupported passed / unsupported) | 0/20 | 0/20 |
+| Unsupported routed to user review / unsupported | 1/20 | 1/20 |
+| False rejects (supported rejected / supported) | 9/20 | 9/20 |
+| Supported in user review / supported | 5/20 | 1/20 |
+| Supported passed / supported | 6/20 | 10/20 |
+| Judge errors | 0/40 | 0/40 |
+
+False accepts stay at 0/20, so the owner's condition for the locked test run is met. Every
+unsupported claim is still caught: 15 by both layers, 4 by the judge only, 1 by Layer 1
+only. The fix moved four supported claims from user review to passed. The false rejects did
+not fall, because the judge also rejects most of the same claims: 8 of the 9 are now
+rejected by the judge alone (three written project or role dates, one subject claim, a
+two-project aggregate, both four-subject aggregates, a project scope claim) and 1 by both layers (the
+metric claim of issue 3). Nothing was tuned in response; the dev false reject rate (45%) is
+well above the 10% test criterion, so a test fail on that criterion is expected.

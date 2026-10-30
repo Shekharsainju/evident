@@ -1,5 +1,5 @@
 {
-  "started": "2026-10-30T17:40:09+00:00",
+  "started": "2026-10-30T21:31:58+00:00",
   "split": "dev",
   "suite": "grounding",
   "judge_prompt_version": "v2",
@@ -25,13 +25,13 @@
   },
   "uncached_gemini_calls_planned": 0,
   "cache_hit_share": [
-    0,
+    40,
     40
   ],
   "calls": {
     "judge": {
       "calls": 40,
-      "cached": 0,
+      "cached": 40,
       "model_ids": [
         "qwen3:4b-instruct-2507-q4_K_M"
       ],
@@ -42,9 +42,7 @@
       "output_tokens": 2431,
       "est_cost_usd": 0.0,
       "uncached_latency_ms": {
-        "n": 40,
-        "p50": 3436.5,
-        "p90": 4516.5
+        "n": 0
       }
     }
   },
@@ -65,7 +63,7 @@
       20
     ],
     "review_supported": [
-      5,
+      1,
       20
     ],
     "per_category": {
@@ -125,30 +123,30 @@
       }
     },
     "caught_by": {
-      "layer1 and judge": 17,
-      "layer1 only": 1,
-      "judge only": 2
+      "layer1 and judge": 15,
+      "judge only": 4,
+      "layer1 only": 1
     },
     "false_rejects_by": {
-      "layer1 and judge": 5,
-      "judge only": 4
+      "judge only": 8,
+      "layer1 and judge": 1
     },
     "judge_errors": 0,
     "outcomes": {
       "dev_001": "passed",
       "dev_002": "passed",
       "dev_003": "rejected",
-      "dev_004": "user_review",
+      "dev_004": "passed",
       "dev_005": "rejected",
       "dev_006": "passed",
       "dev_007": "rejected",
-      "dev_008": "user_review",
-      "dev_009": "user_review",
+      "dev_008": "passed",
+      "dev_009": "passed",
       "dev_010": "user_review",
       "dev_011": "rejected",
       "dev_012": "passed",
       "dev_013": "passed",
-      "dev_014": "user_review",
+      "dev_014": "passed",
       "dev_015": "rejected",
       "dev_016": "rejected",
       "dev_017": "rejected",
