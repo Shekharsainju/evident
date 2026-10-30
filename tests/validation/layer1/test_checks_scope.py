@@ -10,7 +10,7 @@ from evident.validation.layer1.checks_scope import (
 )
 from evident.validation.layer1.run import run_layer1
 from tests.builders import attrs
-from tests.validation.support import claim, confirmed, context, project
+from tests.validation.support import claim, confirmed, context, metric, project
 
 
 def test_since_2023_rejected_when_fact_starts_2025_02() -> None:
@@ -129,3 +129,216 @@ def test_inflated_claim_collects_every_failure() -> None:
         claim("Led a production clash checker with Kubernetes since 2023", f), context(f)
     )
     assert {x.rule for x in result.failures} == {"ownership", "deployment", "skills", "dates"}
+
+
+# Written dates are not names (A3 dev false rejects); the date rule still covers them.
+
+
+def test_written_dates_are_not_names() -> None:
+    f = project(start="2024-02", end="2025-06")
+    for text in ("Worked on the Team Course Planner project from Mar 2025 to Jun 2025.",
+                 "Building the Team Course Planner since February 2024",
+                 "Since February 2024, built the Team Course Planner",
+                 "From Mar 2025 to Jun 2025 worked on the Team Course Planner",
+                 "Started the Team Course Planner in Feb 2024."):
+        assert check_entities(claim(text, f), [f], context(f)) == [], text
+
+
+def test_date_outside_fact_range_still_rejected_by_date_rule() -> None:
+    f = project(start="2025-02", end="2025-06")
+    result = run_layer1(claim("Worked on the Team Course Planner project from Mar 2024 to "
+                              "Jun 2025.", f), context(f))
+    assert {x.rule for x in result.failures} == {"dates"}
+
+
+def test_unknown_name_next_to_a_date_still_rejected() -> None:
+    f = project()
+    for text in ("Built a clash checker at Acme Robotics in Mar 2025",
+                 "Built a clash checker for Acme Robotics Mar 2025"):
+        (failure,) = check_entities(claim(text, f), [f], context(f))
+        assert failure.phrase == "Acme Robotics", text
+
+
+def test_month_word_inside_a_name_still_checked() -> None:
+    f = project()
+    (failure,) = check_entities(claim("Built a clash checker at March Networks", f), [f],
+                                context(f))
+    assert failure.phrase == "March Networks"
+
+
+# Name runs split on "and": each part is its own name.
+
+
+def test_names_joined_by_and_checked_separately() -> None:
+    a = project("p_a", title="Coursework Retrieval Assistant")
+    b = project("p_b", title="Text Classification Study")
+    c = claim("Worked on two projects: Coursework Retrieval Assistant and Text Classification "
+              "Study.", a, b)
+    assert check_entities(c, [a, b], context(a, b)) == []
+
+
+def test_unknown_name_joined_by_and_still_rejected() -> None:
+    f = project()
+    (failure,) = check_entities(claim("Worked on two projects: Team Course Planner and Acme "
+                                      "Robotics Platform.", f), [f], context(f))
+    assert failure.phrase == "Acme Robotics Platform."
+
+
+def test_unknown_single_word_in_and_list_still_rejected() -> None:
+    # "Go" is not a skill alias, so the skill check can't see it; the name check must.
+    f = project()
+    c = claim("Built the clash checker as a prototype, using Python and Go.", f)
+    (failure,) = check_entities(c, [f], context(f))
+    assert failure.phrase == "Go."
+    assert not run_layer1(c, context(f)).passed
+
+
+def test_verb_before_an_and_list_is_not_part_of_the_name() -> None:
+    a = project("p_a", title="Team Course Planner")
+    b = project("p_b", title="Text Classification Study")
+    c = claim("Built Team Course Planner and Text Classification Study", a, b)
+    assert check_entities(c, [a, b], context(a, b)) == []
+    # "Planner" alone is not a whole name in the evidence ("Team Course Planner").
+    failures = check_entities(claim("Built Planner and Tracker", a, b), [a, b], context(a, b))
+    assert {x.phrase for x in failures} == {"Planner", "Tracker"}
+
+
+# Reviewer counterexamples: a removed date or an "and" split must not let a name through.
+
+
+def test_single_word_name_beside_a_date_still_rejected() -> None:
+    f = project()
+    (failure,) = check_entities(claim("Interned at Google Mar 2025.", f), [f], context(f))
+    assert failure.phrase == "Google"
+    failures = check_entities(claim("Worked at Acme Fall 2025 and Initech.", f), [f], context(f))
+    assert {x.phrase for x in failures} == {"Acme", "Initech."}
+
+
+def test_and_parts_must_match_a_name_not_a_prose_word() -> None:
+    marks = project(text="Achieved top marks in Python and Flask, supervised by Dr Spencer")
+    failures = check_entities(claim("Worked at Marks and Spencer.", marks), [marks],
+                              context(marks))
+    assert {x.phrase for x in failures} == {"Marks", "Spencer."}  # "Dr Spencer" is the name
+    dept = project(text="Studied at the Department of Science, with a focus on technology")
+    (failure,) = check_entities(claim("Worked at the Department of Science and Technology.",
+                                      dept), [dept], context(dept))
+    assert failure.phrase == "Technology."
+
+
+def test_listed_word_found_only_in_prose_still_rejected() -> None:
+    f = project(text="Built a clash checker in Python and Flask ready to go live")
+    (failure,) = check_entities(claim("Built the clash checker using Python and Go.", f), [f],
+                                context(f))
+    assert failure.phrase == "Go."
+
+
+def test_verb_trimmed_from_a_two_word_list_item() -> None:
+    f = project()
+    failures = check_entities(claim("Built Acme and Initech.", f), [f], context(f))
+    assert {x.phrase for x in failures} == {"Acme", "Initech."}
+    # A word outside the verb lexicons stays in the name, which still fails.
+    failures = check_entities(claim("Joined Acme and Initech.", f), [f], context(f))
+    assert {x.phrase for x in failures} == {"Joined Acme", "Initech."}
+
+
+def test_strict_part_must_equal_a_whole_evidence_name() -> None:
+    cases = [
+        ("Worked at Johnson and Johnson.", project(text="Worked with Dr Johnson in Python")),
+        ("Worked at Johnson and Johnson.", project(organisation="Johnson Controls")),
+        ("Worked at Amazon Mar 2025.", project(text="Deployed on Amazon Web Services")),
+    ]
+    for text, f in cases:
+        assert check_entities(claim(text, f), [f], context(f)) != [], text
+        assert not run_layer1(claim(text, f), context(f)).passed, text
+
+
+def test_word_opening_an_evidence_sentence_is_not_a_name() -> None:
+    cases = [
+        ("Worked at Ernst and Young.", "Ernst reviewed it. Young users liked it"),
+        ("Worked at Marks and Spencer.", "Marks were top. Supervised by Spencer"),
+        ("Worked at Department of Science and Technology.",
+         "Member of the Department of Science. Joined the Technology Society"),
+        ("Worked at Built Mar 2025.", "Built a timetable clash checker in Python and Flask"),
+    ]
+    for text, evidence in cases:
+        f = project(text=evidence)
+        assert check_entities(claim(text, f), [f], context(f)) != [], text
+
+
+def test_sentence_opening_evidence_run_is_only_a_whole_name() -> None:
+    cases = [
+        ("Worked at Johnson and Johnson.", "Dr Johnson supervised the clash checker in Python"),
+        ("Interned at Johnson Mar 2025.", "Dr Johnson supervised the clash checker in Python"),
+        ("Interned at Spencer Mar 2025.", "Built a clash checker. Professor Spencer marked it"),
+        ("Interned at Sachs Mar 2025.", "Goldman Sachs sponsored the clash checker"),
+        ("Worked at Web Services and Team Course Planner.", "Amazon Web Services hosted it"),
+        ("Worked at Marks and Spencer.", "Mr Marks reviewed it. Professor Spencer marked it"),
+    ]
+    for text, evidence in cases:
+        f = project(text=evidence)
+        assert not run_layer1(claim(text, f), context(f)).passed, text
+
+
+def test_date_preposition_in_the_name_slot_is_a_name() -> None:
+    f = project()
+    for text in ("Interned at After Mar 2025.", "Interned at Between Mar 2025."):
+        assert not run_layer1(claim(text, f), context(f)).passed, text
+
+
+def test_only_a_known_verb_is_trimmed_from_a_strict_part() -> None:
+    cases = [
+        ("Goldman Sachs and Acme backed the planner.",
+         project(text="Reviewed by Sachs, then Acme hired me")),
+        ("Goldman Sachs Mar 2025 backed the planner.",
+         project(text="Reviewed by Sachs while building the planner")),
+        ("Goldman Sachs Mar 2025 backed the planner.", project(organisation="Sachs")),
+    ]
+    for text, f in cases:
+        assert not run_layer1(claim(text, f), context(f)).passed, text
+
+
+def test_lexicon_words_that_are_not_verbs_stay_in_the_name() -> None:
+    prod = {"deployment": "production"}
+    cases = [
+        ("Internal Revenue Service Mar 2025 audited the planner.",
+         project(text="Built the planner, checked by Revenue Service staff", **prod)),
+        ("Live Nation Mar 2025 used the planner.",
+         project(text="Built the planner, shown to Nation staff", **prod)),
+        ("Pilot Corp Mar 2025 used the planner.", project(organisation="Corp", **prod)),
+        ("Internal Revenue Service and Acme Robotics audited the planner.",
+         project(text="Built the planner, checked by Revenue Service staff. Hosted by Acme "
+                      "Robotics", **prod)),
+    ]
+    for text, f in cases:
+        assert not run_layer1(claim(text, f), context(f)).passed, text
+
+
+def test_skill_alias_beside_a_date_must_be_a_cited_name() -> None:
+    f = project(text="Joined March Networks as a developer")
+    assert not run_layer1(claim("Interned at Networks Mar 2025.", f), context(f)).passed
+
+
+def test_name_after_a_joiner_in_evidence_is_a_name() -> None:
+    f = project(text="Interned at Acme on the planner", start="2025-02", end="2025-06")
+    assert check_entities(claim("Interned at Acme Mar 2025.", f), [f], context(f)) == []
+
+
+def test_word_opening_an_evidence_line_or_bullet_is_not_a_name() -> None:
+    for evidence in ("Built the planner\nYoung users liked it",
+                     "Built the planner\n• Young users liked it",
+                     "Built the planner\n - Young users liked it",
+                     "Built the planner (Young users liked it)"):
+        f = project(text=evidence)
+        c = claim("Interned at Young Mar 2025.", f)
+        assert not run_layer1(c, context(f)).passed, evidence
+
+
+def test_date_the_date_rule_cannot_read_is_not_cut_out() -> None:
+    # "December 2, 2025" reads as all of 2025 to the date rule, so the month is unchecked;
+    # the entity rule must not cut it out and let it pass.
+    f = project(text="Cut timetable clash checks to under 2 seconds at Acme Robotics",
+                metrics=[metric()])
+    for text in ("Cut timetable clash checks to under 2 seconds at Acme Robotics December 2, "
+                 "2025.",
+                 "Cut timetable clash checks to under 2 seconds at Acme Robotics Dec 2 2025."):
+        assert not run_layer1(claim(text, f), context(f)).passed, text

@@ -32,6 +32,8 @@ _MONTHS = {
 _SEASONS = {"summer": (12, 2), "autumn": (3, 5), "fall": (3, 5), "winter": (6, 8),
             "spring": (9, 11), "semester": (1, 12), "q1": (1, 3), "q2": (4, 6), "q3": (7, 9),
             "q4": (10, 12)}
+# Words that open a written date ("Mar 2025", "Summer 2024"), for checks that must skip dates.
+DATE_WORDS = frozenset(_MONTHS) | frozenset(s for s in _SEASONS if s != "semester")
 _DURATION_UNITS = {"year": 12.0, "years": 12.0, "yr": 12.0, "yrs": 12.0, "month": 1.0,
                    "months": 1.0, "mo": 1.0, "mos": 1.0, "week": 12 / 52, "weeks": 12 / 52,
                    "wk": 12 / 52, "wks": 12 / 52}
