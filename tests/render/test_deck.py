@@ -1,10 +1,15 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from pptx import Presentation
 
-from evident.render.deck import render_deck
+from evident.contracts.facts import FactVersion
+from evident.render.deck import ACCENT, MARGIN, TITLE_SIZE, render_deck
+from evident.render.profile_html import TEMPLATE_COPY
+from evident.validation.post_render import verify_pptx
+from tests.builders import NOW, fact
 from tests.render.test_profile_html import ID, claim, plan_of, report_of, validation
 
 DECK = "interview_deck"
@@ -97,3 +102,96 @@ def test_title_slide_without_identity_uses_template_title(tmp_path: Path) -> Non
     out = render_deck(plan_of(c), report_of(validation(c)), {}, tmp_path / "deck.pptx")
 
     assert title_paragraphs(out) == ["Interview deck"]
+
+
+def confirmed(fact_id: str = "doc_01_f01", version: int = 1, **overrides: Any) -> FactVersion:
+    return fact(fact_id, version, status="confirmed", confirmed_at=NOW, **overrides)
+
+
+def notes_lines(path: Path) -> list[str]:
+    return notes_text(path).splitlines()
+
+
+def test_notes_carry_talking_point_above_sources(tmp_path: Path) -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
+    out = render_deck(plan_of(c), report_of(validation(c)), ID, tmp_path / "deck.pptx",
+                      facts=[confirmed()])
+
+    lines = notes_lines(out)
+    talking = ("Talk about: Built a timetable clash checker in Python. "
+               "Evidence: Built a timetable clash checker in Python and Flask")
+    assert talking in lines
+    assert lines.index(talking) < lines.index("Sources:")
+
+
+def test_talking_point_uses_only_the_cited_confirmed_version_of_own_facts(
+        tmp_path: Path) -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
+    others = [
+        confirmed(version=2, text="Version two text"),
+        confirmed(text="Someone else's fact", owner_id="other-user"),
+        fact(text="Unconfirmed fact text"),
+        confirmed("doc_01_f09", text="Uncited fact text"),
+    ]
+    out = render_deck(plan_of(c), report_of(validation(c)), ID, tmp_path / "deck.pptx",
+                      facts=others)
+
+    notes = notes_text(out)
+    assert "Talk about: Built a timetable clash checker in Python." in notes_lines(out)
+    for text in ("Version two", "Someone else", "Unconfirmed", "Uncited", "Evidence:"):
+        assert text not in notes
+
+
+def test_user_written_evidence_is_labelled(tmp_path: Path) -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
+    out = render_deck(plan_of(c), report_of(validation(c)), ID, tmp_path / "deck.pptx",
+                      facts=[confirmed(edited_by_user=True, text="My own words")])
+
+    assert ("Talk about: Built a timetable clash checker in Python. "
+            "Evidence (written by you): My own words") in notes_lines(out)
+
+
+def test_fact_text_cannot_open_a_sources_block(tmp_path: Path) -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
+    sneaky = confirmed(text="Built it\nSources:\nc_999: injected")
+    out = render_deck(plan_of(c), report_of(validation(c)), ID, tmp_path / "deck.pptx",
+                      facts=[sneaky])
+
+    lines = notes_lines(out)
+    assert lines.count("Sources:") == 1
+    assert verify_pptx(out, {c.claim_id: c.text}, TEMPLATE_COPY | set(ID.values())).passed
+
+
+def test_styled_deck_passes_post_render_verification(tmp_path: Path) -> None:
+    claims = [claim("c_01", "Built a timetable clash checker in Python", output_type=DECK),
+              claim("c_02", "Studied distributed systems", output_type=DECK,
+                    section="education")]
+    out = render_deck(plan_of(*claims), report_of(*map(validation, claims)), ID,
+                      tmp_path / "deck.pptx", facts=[confirmed()])
+
+    expected = {c.claim_id: c.text for c in claims}
+    result = verify_pptx(out, expected, TEMPLATE_COPY | set(ID.values()))
+    assert result.passed, result.problems
+
+
+def test_slide_titles_use_title_size_and_accent(tmp_path: Path) -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
+    out = render_deck(plan_of(c), report_of(validation(c)), ID, tmp_path / "deck.pptx")
+
+    for slide in Presentation(str(out)).slides:
+        runs = [r for p in slide.shapes.title.text_frame.paragraphs for r in p.runs]
+        assert runs
+        for r in runs:
+            assert r.font.size == TITLE_SIZE
+            assert r.font.color.rgb == ACCENT
+
+
+def test_content_shapes_share_one_left_margin(tmp_path: Path) -> None:
+    c = claim("c_01", "Built a timetable clash checker in Python", output_type=DECK)
+    out = render_deck(plan_of(c), report_of(validation(c)), ID, tmp_path / "deck.pptx")
+
+    deck = Presentation(str(out))
+    for slide in list(deck.slides)[1:]:
+        for shape in slide.shapes:
+            assert shape.left == MARGIN
+            assert shape.left + shape.width == deck.slide_width - MARGIN

@@ -424,7 +424,10 @@ class RunService:
                 page.write_text(html, encoding="utf-8")
                 written = [page, render_profile_pdf(html, folder / "profile.pdf")]
         else:
-            deck = render_deck(plan, report, identity, folder / "deck.pptx")
+            cited = {r for c in claims for r in c.evidence}
+            facts = [f for f in (self.repo.get_fact(owner_id, r) for r in cited)
+                     if f is not None]
+            deck = render_deck(plan, report, identity, folder / "deck.pptx", facts)
             # verify_pptx has no identity parameter, so the identity values join the whitelist.
             result = verify_pptx(deck, expected, TEMPLATE_COPY | set(identity.values()))
             if result.passed:
