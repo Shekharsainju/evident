@@ -61,3 +61,58 @@ Written and committed before any dev or test model call for this evaluation. Spe
   before any test-split call.
 - **Dataset version at the time of writing:** `a3_enriched` tree
   `b8bcfa4afe49d7783da7df675851986480fb1feb`.
+
+## Dev tuning log
+
+Dev split only: extraction on profile 01 (3 PDFs, 3 photos), grounding on the 40 dev
+claims (profiles 01 and 02). Run records: `runs/dev_all_judge-v1.json` and
+`runs/dev_grounding_judge-v2.json` (the v1 run also covered extraction, `--suite all`;
+the v2 run was grounding only, since extraction doesn't depend on the judge). Models: `gemini-3.5-flash-lite` (extraction),
+`qwen3:4b-instruct-2507-q4_K_M` digest `0edcdef34593` via Ollama (judge). Dataset
+`a3_enriched` tree `b8bcfa4afe49d7783da7df675851986480fb1feb`, judge threshold 0.80,
+`as_of` 2026-10.
+
+### Extraction (observation, no change)
+
+`extraction/v2`, all 6 replies from the cache of the earlier dev tuning.
+
+| Path | tp | fp | fn | Precision | Recall | F1 |
+|---|---|---|---|---|---|---|
+| Digital PDF (pdf_text) | 153 | 15 | 18 | 0.911 | 0.895 | 0.903 |
+| Simulated photo (vision) | 153 | 13 | 18 | 0.922 | 0.895 | 0.908 |
+
+Dev PDF F1 is below the 0.95 test criterion. The extraction prompt is not changed in this
+task (owner instruction: choose the judge prompt on dev, then one locked test run).
+
+### Judge prompt: v1 against v2 (2026-10-31)
+
+| Measure | judge/v1 | judge/v2 |
+|---|---|---|
+| False accepts (unsupported passed / unsupported) | 0/20 | 0/20 |
+| Unsupported routed to user review / unsupported | 3/20 | 1/20 |
+| False rejects (supported rejected / supported) | 7/20 | 9/20 |
+| Supported in user review / supported | 7/20 | 5/20 |
+| Judge errors | 0/40 | 0/40 |
+
+**Choice: `judge/v2`.** False accepts tie at 0. On the second rule v2 routes fewer
+unsupported claims to review instead of rejecting them (1 against 3: v2 rejects all three
+paraphrase overstatements, v1 sent two to review). The third rule (false rejects, where v1
+is better, 7 against 9) is not reached. `PROMPT_VERSION` in `src/evident/validation/judge.py`
+is now `v2`.
+
+### Finding: Layer 1 false rejects on faithful claims (not changed here)
+
+Of the 20 supported dev claims, 10 fail Layer 1, and the cause is in Layer 1, not the
+claims:
+
+1. **Written dates read as names (7 claims).** The entity check treats "Mar 2025",
+   "Feb 2024" and similar as names that no cited fact mentions. Every supported claim with
+   a written month fails (project dates, role dates, degree start).
+2. **Name runs across "and" (2 claims).** "Retrieval Assistant and Text Classification
+   Study" is read as one name, so both two-project aggregate claims fail.
+3. **Metric direction (1 claim).** "Cut timetable clash checks to under 2 seconds" doesn't
+   bind: the ground-truth metric is `absolute`, and "cut" is a decrease word.
+
+These all fail closed: none can cause a false accept. Step 7 allows changes only to the
+extraction prompt, the judge prompt and the threshold, so Layer 1 is unchanged and the
+test-split false reject rate will include these.

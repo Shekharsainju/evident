@@ -199,8 +199,8 @@ def test_judge_v2_changes_only_the_confidence_wording() -> None:
             "supported.", "")
 
 
-def test_validate_claim_defaults_to_the_pipeline_judge_prompt() -> None:
+def test_validate_claim_defaults_to_the_dev_chosen_judge_prompt() -> None:
     f = project()
     adapter = FakeAdapter({Role.judge: [judge_reply()]})
     validate_claim(claim("Built a timetable clash checker in Python", f), context(f), adapter)
-    assert adapter.calls[0].prompt.version == "v1"
+    assert adapter.calls[0].prompt.version == "v2"

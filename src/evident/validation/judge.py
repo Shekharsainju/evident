@@ -20,7 +20,7 @@ from evident.settings import ModelConfig, Provider, Role
 log = logging.getLogger("evident.validation")
 
 JUDGE_THRESHOLD = 0.8  # tuned only on the dev split (spec 8.5)
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v2"  # chosen on the dev split (Task 20, RESULTS.md dev tuning log)
 
 
 def _one_line(value: str) -> str:

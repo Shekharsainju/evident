@@ -1,0 +1,273 @@
+{
+  "started": "2026-10-30T17:37:17+00:00",
+  "split": "dev",
+  "suite": "all",
+  "judge_prompt_version": "v1",
+  "extraction_prompt_version": "v2",
+  "judge_threshold": 0.8,
+  "as_of": "2026-10",
+  "configured_models": {
+    "extraction_text": "gemini-3.5-flash-lite",
+    "extraction_vision": "gemini-3.5-flash-lite",
+    "requirements": "gemini-3.5-flash-lite",
+    "coverage": "gemini-3.5-flash-lite",
+    "planner": "gemini-3.5-flash-lite",
+    "judge": "qwen3:4b-instruct-2507-q4_K_M"
+  },
+  "ollama_digests": {
+    "qwen3:4b-instruct-2507-q4_K_M": "0edcdef34593"
+  },
+  "lexicons_version": "1",
+  "aliases_version": "1",
+  "dataset_version": {
+    "a3_enriched_tree": "b8bcfa4afe49d7783da7df675851986480fb1feb",
+    "uncommitted_changes": false
+  },
+  "uncached_gemini_calls_planned": 0,
+  "cache_hit_share": [
+    6,
+    46
+  ],
+  "calls": {
+    "extraction_text": {
+      "calls": 3,
+      "cached": 3,
+      "model_ids": [
+        "gemini-3.5-flash-lite"
+      ],
+      "prompt_versions": [
+        "v2"
+      ],
+      "input_tokens": 2587,
+      "output_tokens": 7171,
+      "est_cost_usd": 0.018704,
+      "uncached_latency_ms": {
+        "n": 0
+      }
+    },
+    "extraction_vision": {
+      "calls": 3,
+      "cached": 3,
+      "model_ids": [
+        "gemini-3.5-flash-lite"
+      ],
+      "prompt_versions": [
+        "v2"
+      ],
+      "input_tokens": 4872,
+      "output_tokens": 7961,
+      "est_cost_usd": 0.021364,
+      "uncached_latency_ms": {
+        "n": 0
+      }
+    },
+    "judge": {
+      "calls": 40,
+      "cached": 0,
+      "model_ids": [
+        "qwen3:4b-instruct-2507-q4_K_M"
+      ],
+      "prompt_versions": [
+        "v1"
+      ],
+      "input_tokens": 14844,
+      "output_tokens": 2614,
+      "est_cost_usd": 0.0,
+      "uncached_latency_ms": {
+        "n": 40,
+        "p50": 3749.5,
+        "p90": 4660.6
+      }
+    }
+  },
+  "extraction": [
+    {
+      "profile": "student_profile_01",
+      "template": "classic",
+      "path": "pdf_text",
+      "tp": 51,
+      "fp": 5,
+      "fn": 6,
+      "predicted_facts": 16,
+      "truth_facts": 16
+    },
+    {
+      "profile": "student_profile_01",
+      "template": "classic",
+      "path": "vision",
+      "tp": 51,
+      "fp": 4,
+      "fn": 6,
+      "predicted_facts": 16,
+      "truth_facts": 16
+    },
+    {
+      "profile": "student_profile_01",
+      "template": "sidebar",
+      "path": "pdf_text",
+      "tp": 51,
+      "fp": 5,
+      "fn": 6,
+      "predicted_facts": 16,
+      "truth_facts": 16
+    },
+    {
+      "profile": "student_profile_01",
+      "template": "sidebar",
+      "path": "vision",
+      "tp": 51,
+      "fp": 5,
+      "fn": 6,
+      "predicted_facts": 17,
+      "truth_facts": 16
+    },
+    {
+      "profile": "student_profile_01",
+      "template": "compact",
+      "path": "pdf_text",
+      "tp": 51,
+      "fp": 5,
+      "fn": 6,
+      "predicted_facts": 16,
+      "truth_facts": 16
+    },
+    {
+      "profile": "student_profile_01",
+      "template": "compact",
+      "path": "vision",
+      "tp": 51,
+      "fp": 4,
+      "fn": 6,
+      "predicted_facts": 16,
+      "truth_facts": 16
+    }
+  ],
+  "grounding": {
+    "judge_prompt_version": "v1",
+    "threshold": 0.8,
+    "false_accepts": [
+      0,
+      20
+    ],
+    "false_rejects": [
+      7,
+      20
+    ],
+    "review_unsupported": [
+      3,
+      20
+    ],
+    "review_supported": [
+      7,
+      20
+    ],
+    "per_category": {
+      "wrong_number": {
+        "n": 2,
+        "false_accepts": 0,
+        "review": 0,
+        "rejected": 2
+      },
+      "wrong_date": {
+        "n": 2,
+        "false_accepts": 0,
+        "review": 0,
+        "rejected": 2
+      },
+      "inflated_ownership": {
+        "n": 2,
+        "false_accepts": 0,
+        "review": 0,
+        "rejected": 2
+      },
+      "inflated_deployment": {
+        "n": 2,
+        "false_accepts": 0,
+        "review": 0,
+        "rejected": 2
+      },
+      "unsupported_skill": {
+        "n": 2,
+        "false_accepts": 0,
+        "review": 0,
+        "rejected": 2
+      },
+      "wrong_entity": {
+        "n": 2,
+        "false_accepts": 0,
+        "review": 0,
+        "rejected": 2
+      },
+      "fake_id": {
+        "n": 3,
+        "false_accepts": 0,
+        "review": 0,
+        "rejected": 3
+      },
+      "wrong_aggregate": {
+        "n": 2,
+        "false_accepts": 0,
+        "review": 1,
+        "rejected": 1
+      },
+      "paraphrase_overstatement": {
+        "n": 3,
+        "false_accepts": 0,
+        "review": 2,
+        "rejected": 1
+      }
+    },
+    "caught_by": {
+      "layer1 and judge": 17,
+      "layer1 only": 1,
+      "judge only": 2
+    },
+    "false_rejects_by": {
+      "layer1 and judge": 5,
+      "judge only": 2
+    },
+    "judge_errors": 0,
+    "outcomes": {
+      "dev_001": "passed",
+      "dev_002": "passed",
+      "dev_003": "rejected",
+      "dev_004": "user_review",
+      "dev_005": "rejected",
+      "dev_006": "passed",
+      "dev_007": "rejected",
+      "dev_008": "user_review",
+      "dev_009": "user_review",
+      "dev_010": "user_review",
+      "dev_011": "user_review",
+      "dev_012": "passed",
+      "dev_013": "passed",
+      "dev_014": "user_review",
+      "dev_015": "rejected",
+      "dev_016": "user_review",
+      "dev_017": "rejected",
+      "dev_018": "passed",
+      "dev_019": "rejected",
+      "dev_020": "rejected",
+      "dev_021": "rejected",
+      "dev_022": "rejected",
+      "dev_023": "rejected",
+      "dev_024": "rejected",
+      "dev_025": "rejected",
+      "dev_026": "rejected",
+      "dev_027": "rejected",
+      "dev_028": "rejected",
+      "dev_029": "rejected",
+      "dev_030": "rejected",
+      "dev_031": "rejected",
+      "dev_032": "rejected",
+      "dev_033": "rejected",
+      "dev_034": "rejected",
+      "dev_035": "rejected",
+      "dev_036": "rejected",
+      "dev_037": "user_review",
+      "dev_038": "user_review",
+      "dev_039": "user_review",
+      "dev_040": "rejected"
+    }
+  }
+}
