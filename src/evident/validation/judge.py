@@ -55,10 +55,15 @@ def evidence_block(facts: list[FactVersion]) -> str:
 
 
 def run_judge(
-    claim: Claim, facts: list[FactVersion], adapter: ModelAdapter
+    claim: Claim, facts: list[FactVersion], adapter: ModelAdapter,
+    prompt_version: str = PROMPT_VERSION,
 ) -> tuple[JudgeVerdict | None, str | None, str | None]:
-    """Returns (verdict, model_id, error). A provider or quota error becomes a judge error."""
-    prompt = load_prompt("judge", PROMPT_VERSION)
+    """Returns (verdict, model_id, error). A provider or quota error becomes a judge error.
+
+    `prompt_version` exists for the dev-split prompt comparison (Task 20); the pipeline uses
+    the default.
+    """
+    prompt = load_prompt("judge", prompt_version)
     text = render_prompt(prompt, cited_facts_with_spans=evidence_block(facts),
                          claim_text=_one_line(claim.text))
     try:

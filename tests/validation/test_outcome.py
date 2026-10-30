@@ -177,3 +177,30 @@ def test_validation_round_trips_as_json() -> None:
     data = json.loads(v.model_dump_json())
     assert data["judge"]["offending_phrase"] == "production"
     assert any(r.startswith("deployment:") for r in data["reasons"])
+
+
+def test_validate_claim_uses_requested_judge_prompt_version() -> None:
+    f = project()
+    adapter = FakeAdapter({Role.judge: [judge_reply()]})
+    validate_claim(claim("Built a timetable clash checker in Python", f), context(f), adapter,
+                   judge_prompt_version="v2")
+    assert adapter.calls[0].prompt.version == "v2"
+
+
+def test_judge_v2_changes_only_the_confidence_wording() -> None:
+    from evident.prompts import load_prompt
+
+    v1, v2 = load_prompt("judge", "v1").text, load_prompt("judge", "v2").text
+    assert "It is not the probability that the claim is supported." in " ".join(v2.split())
+    assert " ".join(v1.split()).replace("Return a confidence from 0 to 1.", "") == \
+        " ".join(v2.split()).replace(
+            "Return confidence: how sure you are that your verdict is correct, from 0 "
+            "(guessing) to 1 (certain). It is not the probability that the claim is "
+            "supported.", "")
+
+
+def test_validate_claim_defaults_to_the_pipeline_judge_prompt() -> None:
+    f = project()
+    adapter = FakeAdapter({Role.judge: [judge_reply()]})
+    validate_claim(claim("Built a timetable clash checker in Python", f), context(f), adapter)
+    assert adapter.calls[0].prompt.version == "v1"

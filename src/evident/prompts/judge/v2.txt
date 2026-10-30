@@ -1,0 +1,15 @@
+Decide whether the evidence proves the claim.
+
+- supported: every part of the claim is stated or directly implied
+- overstated: the claim goes beyond the evidence in scale, seniority,
+ownership, deployment, numbers or outcomes
+- unsupported: the evidence does not establish the claim
+
+If overstated or unsupported, return the exact phrase that goes beyond the
+evidence and a corrected phrasing the evidence does support. Return
+confidence: how sure you are that your verdict is correct, from 0
+(guessing) to 1 (certain). It is not the probability that the claim is
+supported. Judge only against the evidence given.
+
+<evidence>{cited_facts_with_spans}</evidence>
+Claim: {claim_text}

@@ -7,6 +7,7 @@ from evident.contracts.plan import Claim
 from evident.contracts.validation import ClaimValidation, JudgeVerdict
 from evident.models.adapter import ModelAdapter
 from evident.validation.judge import JUDGE_THRESHOLD, run_judge
+from evident.validation.judge import PROMPT_VERSION as JUDGE_PROMPT_VERSION
 from evident.validation.layer1.config import Layer1Context
 from evident.validation.layer1.run import resolve_facts, run_layer1
 
@@ -40,7 +41,8 @@ def _reasons(validation_layer1_failures: list[str], judge: JudgeVerdict | None,
 
 
 def validate_claim(
-    claim: Claim, ctx: Layer1Context, adapter: ModelAdapter, threshold: float = JUDGE_THRESHOLD
+    claim: Claim, ctx: Layer1Context, adapter: ModelAdapter, threshold: float = JUDGE_THRESHOLD,
+    judge_prompt_version: str = JUDGE_PROMPT_VERSION,
 ) -> ClaimValidation:
     """Layer 1, then the judge (always), then the outcome table."""
     layer1 = run_layer1(claim, ctx)
@@ -48,7 +50,7 @@ def validate_claim(
     # foreign fact is not evidence, so it must not be able to argue for the claim.
     facts = [f for f in resolve_facts(claim, ctx)
              if f.status is FactStatus.confirmed and f.owner_id == ctx.owner_id]
-    verdict, model_id, error = run_judge(claim, facts, adapter)
+    verdict, model_id, error = run_judge(claim, facts, adapter, judge_prompt_version)
     outcome = decide(layer1.passed, verdict, threshold)
     failures = [f"{f.rule}: {f.detail}" for f in layer1.failures]
     return ClaimValidation(
