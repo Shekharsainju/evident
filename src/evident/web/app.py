@@ -6,6 +6,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse, Response
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from evident.errors import ErrorCategory, StageError
@@ -27,6 +28,8 @@ def create_app(settings: Settings, repo: Repository, adapter: ModelAdapter) -> F
     app.state.settings = settings
     app.state.repo = repo
     app.state.service = RunService(repo, adapter, settings)
+    app.mount("/static", StaticFiles(directory=str(Path(__file__).parent / "static")),
+              name="static")
     app.include_router(router)
 
     @app.exception_handler(StageError)

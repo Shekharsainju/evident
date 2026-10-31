@@ -145,6 +145,34 @@ def test_pdf_contains_claim_text_and_marker(tmp_path: Path) -> None:
     assert text in pdf_text and MARKER in pdf_text
 
 
+def test_pdf_has_link_annotation_per_claim(tmp_path: Path) -> None:
+    first = claim("c_01", "Built a timetable clash checker in Python")
+    second = claim("c_02", "Wrote the Flask API for the clash checker")
+    html = render_profile(plan_of(first, second), report_of(validation(first), validation(second)),
+                          ID, "/receipts")
+    links = {
+        "c_01": "https://evident.test/receipts/c_01?plan_id=plan_01",
+        "c_02": "https://evident.test/receipts/c_02?plan_id=plan_01",
+    }
+    out = render_profile_pdf(html, tmp_path / "profile.pdf", links)
+
+    with pdfplumber.open(out) as pdf:
+        uris = {annot["uri"] for page in pdf.pages for annot in page.annots or []}
+
+    assert uris == set(links.values())
+
+
+def test_styled_profile_still_passes_post_render() -> None:
+    from evident.render.profile_html import TEMPLATE_COPY
+    from evident.validation.post_render import verify_html
+
+    c = claim("c_01", "Built a timetable clash checker in Python")
+    html = render_profile(plan_of(c), report_of(validation(c)), ID, "/receipts")
+    result = verify_html(html, {c.claim_id: c.text}, ID, TEMPLATE_COPY)
+
+    assert result.passed, result.problems
+
+
 # Fail-closed rules in renderable_claims
 
 

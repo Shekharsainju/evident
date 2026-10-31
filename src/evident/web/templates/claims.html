@@ -27,6 +27,7 @@
     {% call result(v, texts.get(v.claim_id, "")) %}
     <form class="inline" method="post" action="/runs/{{ run.run_id }}/claims/{{ v.claim_id }}/review"><input type="hidden" name="action" value="approve"><button type="submit">Approve</button></form>
     <form class="inline" method="post" action="/runs/{{ run.run_id }}/claims/{{ v.claim_id }}/review"><input type="hidden" name="action" value="drop"><button type="submit" class="secondary">Drop</button></form>
+    <details><summary>Edit wording and revalidate</summary><form method="post" action="/runs/{{ run.run_id }}/claims/{{ v.claim_id }}/review"><input type="hidden" name="action" value="edit"><label for="claim-{{ v.claim_id }}">Revised claim</label><input id="claim-{{ v.claim_id }}" type="text" name="text" value="{{ texts.get(v.claim_id, '') }}"><p class="muted">The revised wording is checked again against the same confirmed fact versions before any output is generated.</p><button type="submit">Revalidate and render</button></form></details>
     {% endcall %}
   {% else %}
     {{ result(v, texts.get(v.claim_id, "")) }}
