@@ -6,15 +6,15 @@
 {% if refresh %}<meta http-equiv="refresh" content="2">{% endif %}
 <title>{% block title %}Evident{% endblock %}</title>
 <style>
-  :root { --ink: #1f2933; --muted: #616e7c; --line: #d9e2ec; --accent: #1f5f8b; --warn: #8d2b0b; --ok: #1d6b3a; --bg: #f7f9fb; }
+  :root { --ink: #172a3a; --muted: #5f6f7e; --line: #d9e2ec; --accent: #1f5f8b; --accent-dark: #164665; --warn: #8d2b0b; --ok: #1d6b3a; --bg: #f4f7fa; }
   * { box-sizing: border-box; }
   body { margin: 0; font: 15px/1.5 "Segoe UI", Arial, sans-serif; color: var(--ink); background: var(--bg); }
-  header { background: #fff; border-bottom: 1px solid var(--line); padding: 12px 24px; display: flex; gap: 16px; align-items: baseline; }
+  header { background: #fff; border-bottom: 1px solid var(--line); padding: 14px max(24px, calc((100vw - 1100px) / 2)); display: flex; gap: 16px; align-items: baseline; }
   header a { color: var(--accent); font-weight: 600; text-decoration: none; font-size: 18px; }
   .synthetic { font-size: 13px; color: var(--muted); }
   main { max-width: 1100px; margin: 0 auto; padding: 24px; }
   h1 { font-size: 24px; margin: 0 0 16px; }
-  .card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 7px #17314b08; }
   .fact { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; }
   .fact img { max-width: 100%; border: 1px solid var(--line); }
   .muted { color: var(--muted); }
@@ -23,16 +23,24 @@
   .badge.ok { color: var(--ok); border-color: #a8dcb9; background: #f0fff4; }
   .error { background: #fff4f0; border: 1px solid #f0b8a8; color: var(--warn); padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; }
   .inline { display: inline; }
-  button { font: inherit; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+  button { font: inherit; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+  button:hover { background: var(--accent-dark); }
   button.secondary { background: #fff; color: var(--accent); }
   label { display: block; margin: 8px 0 2px; font-weight: 600; font-size: 13px; }
   label.check { font-weight: normal; }
   fieldset { border: 1px solid var(--line); border-radius: 6px; margin: 8px 0; }
   input[type=text], select { width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font: inherit; }
+  table { width: 100%; border-collapse: collapse; } th, td { padding: 9px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .receipt-popover { width: min(720px, calc(100vw - 32px)); max-height: min(80vh, 760px); overflow: auto; border: 0; border-radius: 12px; padding: 0; box-shadow: 0 18px 60px #15243955; }
+  .receipt-popover::backdrop { background: #15243988; } .popover-content { padding: 22px; } .popover-close { float: right; }
+  .receipt-trigger { cursor: pointer; } .receipt-trigger:focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (max-width: 720px) { header { padding: 12px 16px; display: block; } main { padding: 16px; } .fact { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <header><a href="/">Evident</a><span class="synthetic">A3 slice demo. All profiles and job ads here are synthetic.</span></header>
 <main>{% block content %}{% endblock %}</main>
+<dialog class="receipt-popover" id="receipt-popover" aria-label="Evidence receipt"><div class="popover-content"></div></dialog>
+<script src="/static/app.js" defer></script>
 </body>
 </html>

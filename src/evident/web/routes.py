@@ -235,9 +235,10 @@ def try_claim(request: Request, run_id: str, text: Annotated[str, Form()] = "",
 
 @router.post("/runs/{run_id}/claims/{claim_id}/review")
 def review_claim(request: Request, run_id: str, claim_id: str,
-                 action: Annotated[str, Form()]) -> Response:
+                 action: Annotated[str, Form()],
+                 text: Annotated[str | None, Form()] = None) -> Response:
     _run(request, run_id)  # the run must be the owner's before anything else is looked up
-    _service(request).review_claim(OWNER, run_id, claim_id, action)
+    _service(request).review_claim(OWNER, run_id, claim_id, action, text)
     return _see_other(f"/runs/{run_id}/claims")
 
 
@@ -259,16 +260,22 @@ def output_file(request: Request, output_id: str, name: str) -> Response:
     if path is None:
         raise StageError(code="not_found", category=ErrorCategory.input, detail="Not found.")
     media = MEDIA_TYPES.get(path.suffix, "application/octet-stream")
+    # The profile is an interactive HTML artifact: serving it inline lets its receipt
+    # popover fetch same-origin receipt fragments. Other output types retain downloads.
+    if path.suffix == ".html":
+        return FileResponse(path, media_type=media)
     return FileResponse(path, media_type=media, filename=path.name)
 
 
 @router.get("/receipts/{claim_id}", response_class=HTMLResponse)
-def receipt(request: Request, claim_id: str, plan_id: str) -> Response:
+def receipt(request: Request, claim_id: str, plan_id: str,
+            partial: bool = False) -> Response:
     found = _service(request).receipt(OWNER, plan_id, claim_id)
     if found is None:
         raise StageError(code="not_found", category=ErrorCategory.input, detail="Not found.")
     claim, facts = found
-    return TEMPLATES.TemplateResponse(request, "receipt.html", {"claim": claim, "facts": facts})
+    template = "receipt_fragment.html" if partial else "receipt.html"
+    return TEMPLATES.TemplateResponse(request, template, {"claim": claim, "facts": facts})
 
 
 @router.get("/documents/{document_id}/source")

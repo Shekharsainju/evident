@@ -26,6 +26,8 @@ CLAIM_SIZE = Pt(20)
 MARKER_SIZE = Pt(10)
 # python-pptx leaves RGBColor untyped.
 ACCENT = RGBColor(0x1F, 0x4E, 0x79)  # type: ignore[no-untyped-call]
+INK = RGBColor(0x15, 0x24, 0x39)  # type: ignore[no-untyped-call]
+PAPER = RGBColor(0xF7, 0xFA, 0xFC)  # type: ignore[no-untyped-call]
 CLAIM_TOP = Inches(1.5)
 CLAIM_HEIGHT = Inches(1.4)
 CLAIM_GAP = Inches(0.2)
@@ -49,6 +51,13 @@ def _style_title(slide: Any, width: Any) -> None:
     title.left, title.top = MARGIN, TITLE_TOP
     title.width, title.height = width - 2 * MARGIN, TITLE_HEIGHT
     _style_runs(title.text_frame, TITLE_SIZE, ACCENT)
+
+
+def _style_slide(slide: Any) -> None:
+    """Apply the same restrained, high-contrast visual language as the profile."""
+    fill = slide.background.fill
+    fill.solid()
+    fill.fore_color.rgb = PAPER
 
 
 def _add_marker(slide: Any, width: Any) -> None:
@@ -96,12 +105,14 @@ def render_deck(plan: ContentPlan, report: ValidationReport, identity: dict[str,
     deck = Presentation()
     # One paragraph per identity value, so verification can match each one exactly.
     title = deck.slides.add_slide(deck.slide_layouts[TITLE_LAYOUT])
+    _style_slide(title)
     title.shapes.title.text = "\n".join(identity.values()) or COPY["deck_title"]
     title.placeholders[1].text = COPY["marker"]
     _style_title(title, deck.slide_width)
 
     for heading, section_claims in by_section(body):
         slide = deck.slides.add_slide(deck.slide_layouts[TITLE_ONLY_LAYOUT])
+        _style_slide(slide)
         slide.shapes.title.text = heading
         _style_title(slide, deck.slide_width)
         # One text box per claim, named by claim ID, so verification can match each box to
@@ -113,7 +124,7 @@ def render_deck(plan: ContentPlan, report: ValidationReport, identity: dict[str,
             box.name = c.claim_id
             box.text_frame.word_wrap = True
             box.text_frame.text = c.text
-            _style_runs(box.text_frame, CLAIM_SIZE)
+            _style_runs(box.text_frame, CLAIM_SIZE, INK)
         _add_marker(slide, deck.slide_width)
 
         on_slide = {c.claim_id for c in section_claims}

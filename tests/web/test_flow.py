@@ -335,6 +335,19 @@ def test_receipts_only_for_rendered_claims(tmp_path: Path) -> None:
     assert client.get("/receipts/c_002", params={"plan_id": plan_id}).status_code == 404
 
 
+def test_receipt_partial_returns_fragment(tmp_path: Path) -> None:
+    client, repo, _, _, run_id, _ = done_run(tmp_path)
+    plan_id = get_run(repo, run_id).plan_id
+    assert plan_id is not None
+
+    response = client.get("/receipts/c_001", params={"plan_id": plan_id, "partial": "true"})
+
+    assert response.status_code == 200
+    assert "Evidence receipt" in response.text
+    assert "<html" not in response.text.lower()
+    assert "data-close-receipt" in response.text
+
+
 def test_failed_verification_leaves_no_files(tmp_path: Path,
                                              monkeypatch: pytest.MonkeyPatch) -> None:
     from evident.render.profile_html import render_profile as real
@@ -533,3 +546,28 @@ def test_review_approve_renders_claim_and_rejected_cannot_be_approved(tmp_path: 
     outs = outputs(repo, run_id)
     assert len(outs) == 2 and all(o.claim_ids == ["c_001"] for o in outs)
     assert all(o.post_render is not None and o.post_render.passed for o in outs)
+
+
+def test_edit_review_claim_revalidates_and_rerenders(tmp_path: Path) -> None:
+    client, repo, adapter, _ = make(tmp_path)
+    run_id, fact_id = reviewed_run(client, repo)
+    queue_pipeline(adapter, fact_id, good_confidence=0.5)
+    client.post(f"/runs/{run_id}/continue", follow_redirects=False)
+    previous_outputs = get_run(repo, run_id).output_ids
+    adapter.responses[Role.judge] = [judge_reply(confidence=0.95)]
+
+    response = client.post(f"/runs/{run_id}/claims/c_001/review", data={
+        "action": "edit", "text": "Built a timetable clash checker in Python",
+    }, follow_redirects=False)
+
+    assert response.status_code == 303
+    run = get_run(repo, run_id)
+    plan = repo.get_plan(OWNER, run.plan_id or "")
+    report = repo.get_report(OWNER, run.plan_id or "")
+    assert plan is not None and plan.claims[0].version == 2
+    versions = [(v.claim_id, v.claim_version) for v in report.results if v.claim_id == "c_001"]
+    assert report is not None and versions == [("c_001", 2)]
+    assert "edited, revalidated" in run.message
+    assert all(o.claim_ids == ["c_001"] for o in outputs(repo, run_id))
+    assert all(service_of(client).output_file(OWNER, output_id, "profile.html") is None
+               for output_id in previous_outputs)

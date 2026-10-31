@@ -1,7 +1,8 @@
-"""Rough visual profile: validated claims as HTML, then PDF (Task 13)."""
+"""Evidence-grounded visual profile HTML and PDF (Tasks 13 and 21)."""
 
 from __future__ import annotations
 
+import re
 import tomllib
 from collections import Counter
 from pathlib import Path
@@ -85,11 +86,48 @@ def by_section(claims: list[Claim]) -> list[tuple[str, list[Claim]]]:
 
 def render_profile(plan: ContentPlan, report: ValidationReport, identity: dict[str, str],
                    receipt_base: str) -> str:
-    # receipt_base is part of the interface now; the receipt links that use it come later.
     claims = renderable_claims(plan, report, OutputType.visual_profile)
     return _env.get_template("profile.html.j2").render(
-        copy=COPY, identity=identity, sections=by_section(claims))
+        copy=COPY, identity=identity, sections=by_section(claims),
+        receipt_base=receipt_base.rstrip("/"), plan_id=plan.plan_id)
 
 
-def render_profile_pdf(html: str, out: Path) -> Path:
-    return html_to_pdf(html, out)
+def _add_pdf_claim_links(html: str, claim_links: dict[str, str]) -> str:
+    """Attach receipt links without altering a claim's verified text.
+
+    ``render_profile`` normally supplies these links itself.  Keeping this small fallback
+    makes the PDF boundary explicit and protects callers which pass a previously-rendered
+    profile without links.
+    """
+    pattern = re.compile(r'(<span data-claim-id="(?P<id>[^"]+)"[^>]*>.*?</span>)', re.DOTALL)
+
+    def wrap(match: re.Match[str]) -> str:
+        claim_id = match.group("id")
+        href = claim_links.get(claim_id)
+        if href is None:
+            return match.group(0)
+        return f'<a class="claim-link" href="{href}">{match.group(0)}</a>'
+
+    return pattern.sub(wrap, html)
+
+
+def _replace_pdf_claim_links(html: str, claim_links: dict[str, str]) -> str:
+    """Use absolute URLs in the PDF; Chromium omits relative URL annotations."""
+    pattern = re.compile(
+        r'(<a class="claim-link" href=")[^"]+("\s*>\s*<span data-claim-id="(?P<id>[^"]+)")',
+        re.DOTALL,
+    )
+
+    def replace(match: re.Match[str]) -> str:
+        href = claim_links.get(match.group("id"))
+        return match.group(0) if href is None else f'{match.group(1)}{href}{match.group(2)}'
+
+    return pattern.sub(replace, html)
+
+
+def render_profile_pdf(html: str, out: Path, claim_links: dict[str, str] | None = None) -> Path:
+    """Render an A4 PDF, retaining receipt URLs as Chromium link annotations."""
+    links = claim_links or {}
+    linked = (_replace_pdf_claim_links(html, links) if 'class="claim-link"' in html
+              else _add_pdf_claim_links(html, links))
+    return html_to_pdf(linked, out)
