@@ -416,13 +416,16 @@ class RunService:
             result = PostRenderResult(passed=False,
                                       problems=[_no_claims_reason(plan, report, output_type)])
         elif output_type is OutputType.visual_profile:
-            html = render_profile(plan, report, identity, "/receipts/")
+            receipt_base = "/receipts"
+            html = render_profile(plan, report, identity, receipt_base)
             result = verify_html(html, expected, identity, TEMPLATE_COPY)
             if result.passed:
                 folder.mkdir(parents=True, exist_ok=True)
                 page = folder / "profile.html"
                 page.write_text(html, encoding="utf-8")
-                written = [page, render_profile_pdf(html, folder / "profile.pdf")]
+                links = {c.claim_id: f"http://localhost:8000{receipt_base}/{c.claim_id}?plan_id={plan.plan_id}"
+                         for c in claims}
+                written = [page, render_profile_pdf(html, folder / "profile.pdf", links)]
         else:
             cited = {r for c in claims for r in c.evidence}
             facts = [f for f in (self.repo.get_fact(owner_id, r) for r in cited)
@@ -550,16 +553,18 @@ class RunService:
         self._update(run, state=RunState.running, error=None)
         return True
 
-    def review_claim(self, owner_id: str, run_id: str, claim_id: str, action: str) -> None:
-        """Approve or drop a claim in user review, then render again."""
+    def review_claim(self, owner_id: str, run_id: str, claim_id: str, action: str,
+                     text: str | None = None) -> None:
+        """Approve, drop, or edit an uncertain claim, then render the current result."""
         with self._exclusive(run_id) as acquired:
             if not acquired:
                 raise StageError(code="run_busy", category=ErrorCategory.validation,
                                  detail="This run is still working. Try again when it finishes.")
             self.ensure_idle(owner_id, run_id)
-            self._review_claim(owner_id, run_id, claim_id, action)
+            self._review_claim(owner_id, run_id, claim_id, action, text)
 
-    def _review_claim(self, owner_id: str, run_id: str, claim_id: str, action: str) -> None:
+    def _review_claim(self, owner_id: str, run_id: str, claim_id: str, action: str,
+                      text: str | None) -> None:
         run = self.repo.get_run(owner_id, run_id)
         plan = self.repo.get_plan(owner_id, run.plan_id or "") if run is not None else None
         report = self.repo.get_report(owner_id, plan.plan_id) if plan is not None else None
@@ -567,13 +572,31 @@ class RunService:
         if run is None or report is None or claim is None:
             raise StageError(code="not_found", category=ErrorCategory.input,
                              detail="No such claim.")
+        assert plan is not None  # narrowed with the claim lookup above
         matches = [v for v in report.results
                    if v.claim_id == claim_id and v.claim_version == claim.version]
         if (not matches or claim_id in report.dropped_claim_ids
                 or any(v.outcome is not ClaimOutcome.user_review for v in matches)):
             raise StageError(code="not_in_review", category=ErrorCategory.validation,
                              detail="Only claims in user review can be approved or dropped.")
-        if action == "approve":
+        if action == "edit":
+            revised = (text or "").strip()
+            if not revised:
+                raise _bad_input("Type revised wording before revalidating the claim.")
+            new_claim = claim.model_copy(update={"version": claim.version + 1, "text": revised})
+            # Do not replace the previous version until both validation layers completed.
+            # This makes a quota/provider failure leave the existing review state intact.
+            validation = validate_claim(new_claim, self._context(owner_id), self.adapter)
+            plan = plan.model_copy(update={"claims": [
+                new_claim if c.claim_id == claim_id else c for c in plan.claims
+            ]})
+            results = [v for v in report.results if v.claim_id != claim_id]
+            report = report.model_copy(update={
+                "results": [*results, validation],
+                "dropped_claim_ids": [cid for cid in report.dropped_claim_ids if cid != claim_id],
+            })
+            self.repo.put_plan(ContentPlan.model_validate_json(plan.model_dump_json()))
+        elif action == "approve":
             results = [v.model_copy(update={"approved_by_user": True}) if v in matches else v
                        for v in report.results]
             report = report.model_copy(update={"results": results})
@@ -585,6 +608,12 @@ class RunService:
         self.repo.put_report(owner_id, ValidationReport.model_validate_json(
             report.model_dump_json()))
         self.run_render(owner_id, run_id)
+        if action == "edit":
+            updated = self.repo.get_run(owner_id, run_id)
+            if updated is not None:
+                message = (f"Claim {claim_id} was edited, revalidated, and outputs were "
+                           "re-rendered; earlier outputs are stale.")
+                self._update(updated, message=message)
 
     def try_claim(self, owner_id: str, run_id: str, text: str,
                   refs: list[FactRef]) -> ClaimValidation:

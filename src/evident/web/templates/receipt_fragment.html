@@ -1,0 +1,10 @@
+<button type="button" class="secondary popover-close" data-close-receipt>Close</button>
+<h2>Evidence receipt</h2>
+<p class="muted">{{ claim.claim_id }} v{{ claim.version }}</p>
+<p><strong>{{ claim.text }}</strong></p>
+{% for f in facts %}
+<div class="card fact">
+  <div><p class="muted">{{ f.fact_id }}@{{ f.version }} ({{ f.kind.value }}){% if f.edited_by_user %} <span class="badge">written by you</span>{% endif %}</p><p>{{ f.text }}</p><p class="muted">Source text: {{ f.source.span_text }}</p></div>
+  {% if f.source.document_id is defined %}<img alt="Source crop for {{ f.fact_id }}" src="/documents/{{ f.source.document_id }}/source?fact_id={{ f.fact_id }}&amp;version={{ f.version }}">{% endif %}
+</div>
+{% endfor %}
