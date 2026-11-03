@@ -1,12 +1,12 @@
 # Phase 1 improvements: spec
 
-- **Status:** draft, waiting for owner approval.
+- **Status:** approved by the owner on 2026-11-03, with these decisions: P8 approved (lower-is-better metrics may round away from zero, never toward it; tests show the old "1 second" and "0.5 seconds" false accepts against a 2 second record now fail); P5 approved and folded into `planner/v2`; work order changed to Layer 1 fixes before the judge comparison (section 12); every other [my call] approved as written; `CLAUDE.md` stays local and untracked.
 - **Date:** 2026-11-03. Branch `improve-grounding`, starting from the A3 submission (tag `v0.1-a3`).
 - **Why:** the A3 evaluation (`experiments/a3-slice/RESULTS.md`) passed on false accepts (0/45) and photo F1, but failed on false rejects (13/40, all from the judge) and digital PDF F1 (0.930). It also found Layer 1 gaps that fail closed, and a planner that leaves out skills and coursework. This phase fixes what the evaluation found and measures the fixes on a new held-out test set.
 - **Naming:** "phase 1" here means the first phase after the A3 submission. It is not phase 1 ("Contracts and harness") of the design's Build order, and it does not start any Build order phase.
 - **Implements:** design sections Grounding and validation, Deterministic check rules, Prompts (content planner), Evidence receipts (vision row), Evaluation harness, Validation plan (experiment 2 in a reduced form), Models and fallbacks (judge).
 - **Invariants touched:** `cv-builder-invariants` section 1 (grounding: metrics, entities, judge, receipts), section 2 (contracts: none changed, see 9), section 4 (untrusted content, local data only, logging) and section 5 (evaluation: dev and test splits, bounds, criteria before running). Section 3 (job queue) and RLS are out of scope.
-- **Decisions in force:** Decision log 1, 2, 3, 6 and 11; P1, P2, P3, P4 in `docs/decisions-proposed.md`. New entries this phase adds: P6 (judge comparison), P7 (owner decision on metric direction), P8 (lower-is-better metrics, needs approval). P5 is still only a proposal (see 5.3).
+- **Decisions in force:** Decision log 1, 2, 3, 6 and 11; P1, P2, P3, P4 in `docs/decisions-proposed.md`. New entries this phase adds: P6 (judge comparison), P7 (owner decision on metric direction), P8 (lower-is-better metrics, approved 2026-11-03). P5 is approved and folded into `planner/v2` (see 6).
 
 Items marked **[my call]** are defaults I chose that you did not decide. Everything else comes from your instructions, the design or the A3 results.
 
@@ -130,7 +130,7 @@ P6 in `docs/decisions-proposed.md` records the comparison, the winner and the ev
 ## 6. Item 3: planner Skills and Coursework claims
 
 - New prompt `src/evident/prompts/planner/v2.txt`, a copy of v1 plus one instruction: always include at least one claim in a `Skills` section citing confirmed skill facts, and at least one in a `Coursework` section citing confirmed education facts for subjects or coursework, unless no such confirmed facts exist. In that case the section is left out and nothing is invented. `PROMPT_VERSION` moves to `v2`.
-- **[my call] P5 conflict:** P5 also proposes a `planner/v2` (feedback inside a data tag, deck claims). P5 isn't approved, so this phase takes `v2` for Skills and Coursework only. If you approve P5 later, it becomes `v3`. Option: approve P5 now and I'll fold it into v2 (one cache invalidation instead of two). Tell me at approval.
+- **P5 (approved 2026-11-03, folded in):** `planner/v2` also moves the rejection feedback into its own `<evidence>` block after a fixed introduction line, and asks for deck claims (each claim tagged with every output it belongs in; at least one claim per deck content slide). The `build_plan` deck fallback and the empty-output block stay as a safety net.
 - These claims go through Layers 1 and 2 like any other. No deterministic fallback writes a skills claim: the claim text always comes from the planner and is validated. **[my call]** `build_plan` logs a warning, and the run record notes when a profile has confirmed skill or coursework facts but the plan has no claim for one, so the locked run can count it.
 - Dev check: planner runs on profiles 01 to 05 with one job ad each (about 5 to 10 Flash-Lite calls, cached), plus a unit test with a fake adapter showing the instruction is in the rendered prompt and that a plan with no skill facts doesn't demand one.
 
@@ -161,8 +161,8 @@ Each fix follows the same steps:
 - **Owner decision (yours, 2026-11-03):** this reverses the 2026-10-31 decision to leave issue 3 as it was. Recorded as P7 (approved).
 - **[my call] Fix:** when a direction word is followed by "to" and an optional bound word ("under", "below", "less than", "over", "above") before the number, the number states an end value. It may then bind to an `absolute` record as well as one with the matching direction. "Cut latency by 2 seconds" (with "by") still needs a `decrease` record.
 - **Found while writing this spec (confirmed with a probe on the current code):** the round-toward-zero rule assumes bigger is better. With a cited record `latency, absolute, 2 seconds`, Layer 1 passes "Clash checks run in 1 second" and "take 0.5 seconds". That is an existing Layer 1 false-accept path for lower-is-better metrics. The judge may still catch these, but Layer 1 alone doesn't. The 7.3 fix would widen it ("cut to under 1 second" would pass), so:
-  - **[my call]** Until you decide, the new 7.3 path binds lower-is-better metrics (latency, error rate, cost and the like, listed in the lexicon) only when the claimed value equals the record's. That meets both readings of the rule.
-  - **P8 (needs your approval, it changes an invariant's wording):** for lower-is-better metrics, a claimed value may round away from zero, never toward it. Applied everywhere, it closes the existing path. It is test-first with a fresh reviewer like the other fixes. If you don't approve P8, the existing gap stays open and is listed as a limitation in every report.
+  - **P8 (approved 2026-11-03):** for lower-is-better metrics (a list in `config/lexicons.toml`: latency, cost, error rate), a claimed value may round away from zero, never toward it. **[my call, needs a look]** This applies only to records with direction `absolute`. A `decrease` record of a lower-is-better metric ("cut latency by 45%") stores the size of the change, where a bigger number is the stronger claim, so round toward zero stays right there (the existing test `test_round_toward_zero_only` relies on it). Applied to every binding path, old and new, so the new 7.3 path can't widen the gap. Tests show "1 second" and "0.5 seconds" against a 2 second record now fail.
+  - The design's Deterministic check rules row and the `cv-builder-invariants` metrics rule are reworded to match, and P8 moves into the Decision log.
 
 ## 8. Item 5: photo receipts from OCR word positions
 
@@ -217,14 +217,11 @@ The A3 verified-box rate was not reported. It is recomputed from the cached A3 r
   - planner and receipts done;
   - locked run reported.
 
-## 12. Order of work
+## 12. Order of work (approved 2026-11-03)
 
 1. Item 1: profiles, rendering, ground truth, claim set, hand-check, pass criteria. Commit.
-2. Item 2: fit check, dev comparison, threshold choice, P6.
-3. Item 4: Layer 1 fixes (7.1, 7.2, 7.3, and P8 if you approve it). These run before the planner, so planner dev checks use the fixed Layer 1.
-4. Item 3: planner v2.
+2. Item 4: Layer 1 fixes (7.1, 7.2, 7.3, P8).
+3. Item 2: fit check, dev comparison with the fixed Layer 1, threshold choice, P6.
+4. Item 3: planner v2 (with P5).
 5. Item 5: photo receipts.
-6. Recompute the judge selection offline from the stored dev verdicts with the fixed Layer 1, since outcomes combine both layers. The judge's verdicts don't depend on Layer 1, so no model reruns. Report both versions. If the choice changes, P6 is updated.
-7. Locked run.
-
-Item 4 runs before item 3, unlike your list. The planner's dev check counts how many of its claims pass validation, and that count should come from the fixed Layer 1. The work itself doesn't change. Tell me if you want your order kept.
+6. Locked run.
