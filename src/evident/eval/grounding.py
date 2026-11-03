@@ -11,7 +11,7 @@ import json
 import random
 import re
 from collections import Counter
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass, field
 from enum import StrEnum
 from pathlib import Path
@@ -87,7 +87,7 @@ DEPLOYMENT_PHRASE = {Deployment.concept: "as a concept", Deployment.prototype: "
                      Deployment.internal: "for internal use",
                      Deployment.production: "in production"}
 DEPLOYMENT_ORDER = list(Deployment)
-NUMBER_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six"}
+NUMBER_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven"}
 # Metrics where a smaller number is the stronger claim.
 LOWER_IS_BETTER = {"latency", "cost", "error_rate"}
 OUTSIDE_SKILLS = ["Kubernetes", "Rust", "TensorFlow", "React", "AWS", "Terraform",
@@ -186,7 +186,8 @@ def _instances(profile_id: str) -> list[Instance]:
             [s], "education")
     for k in (f for f in facts if f.kind is FactKind.skill):
         add("skill", f"Skills include {k.attributes.skills[0]}.", [k], "skills")
-    add("aggregate_projects", f"Worked on {NUMBER_WORDS[len(projects)]} projects: "
+    noun = "project" if len(projects) == 1 else "projects"
+    add("aggregate_projects", f"Worked on {NUMBER_WORDS[len(projects)]} {noun}: "
         f"{' and '.join(str(p.attributes.title) for p in projects)}.", projects, "projects")
     add("aggregate_subjects", f"Enrolled in {NUMBER_WORDS[len(subjects)]} subjects at "
         f"{d.organisation}.", subjects, "education")
@@ -267,8 +268,11 @@ def _mutations(instances: list[Instance], rng: random.Random) -> list[Mutation]:
             add(Category.fake_id, i, i.text, (fake, *i.refs[1:]))
         if i.template.startswith("aggregate_"):
             n = len(i.refs)
-            add(Category.wrong_aggregate, i,
-                i.text.replace(NUMBER_WORDS[n], NUMBER_WORDS[n + 1], 1))
+            text = i.text.replace(NUMBER_WORDS[n], NUMBER_WORDS[n + 1], 1)
+            if n == 1:
+                # "one project" becomes "two projects", not "two project".
+                text = text.replace(" project:", " projects:", 1)
+            add(Category.wrong_aggregate, i, text)
         if i.template == "project_scope":
             add(Category.paraphrase_overstatement, i,
                 i.text.removesuffix(".") + rng.choice(OVERSTATED_TAILS))
@@ -281,7 +285,7 @@ def _mutations(instances: list[Instance], rng: random.Random) -> list[Mutation]:
     return out
 
 
-def _round_robin[T](pools: list[list[T]], n: int) -> list[T]:
+def _round_robin[T](pools: list[list[T]], n: int, *, allow_short: bool = False) -> list[T]:
     """Take n items, one pool at a time in turn, skipping empty pools."""
     pools = [list(p) for p in pools]
     out: list[T] = []
@@ -289,7 +293,7 @@ def _round_robin[T](pools: list[list[T]], n: int) -> list[T]:
         for pool in pools:
             if pool and len(out) < n:
                 out.append(pool.pop(0))
-    if len(out) < n:
+    if len(out) < n and not allow_short:
         raise ValueError(f"only {len(out)} of {n} items available")
     return out
 
@@ -311,7 +315,7 @@ def _pick_supported(by_profile: dict[str, list[Instance]], n: int,
 
 
 def _pick_unsupported(by_profile: dict[str, list[Mutation]], category: Category, n: int,
-                      rng: random.Random) -> list[Mutation]:
+                      rng: random.Random, *, allow_short: bool = False) -> list[Mutation]:
     # Spread across profiles, and within a profile across the templates the mutation came
     # from, so a category is not tested on one sentence shape only.
     pools = []
@@ -324,7 +328,7 @@ def _pick_unsupported(by_profile: dict[str, list[Mutation]], category: Category,
         for g in groups:
             rng.shuffle(g)
         pools.append(_round_robin(groups, sum(len(g) for g in groups)))
-    return _round_robin(pools, n)
+    return _round_robin(pools, n, allow_short=allow_short)
 
 
 def _claim(claim_id: str, text: str, refs: Iterable[FactRef], section: str) -> Claim:
@@ -334,7 +338,8 @@ def _claim(claim_id: str, text: str, refs: Iterable[FactRef], section: str) -> C
 
 
 def _split(split: Split, profiles: tuple[str, ...], n_supported: int,
-           per_category: dict[Category, int], rng: random.Random) -> list[LabelledClaim]:
+           per_category: dict[Category, int], rng: random.Random,
+           allow_short: bool = False) -> list[LabelledClaim]:
     instances = {p: _instances(p) for p in profiles}
     mutations = {p: _mutations(instances[p], rng) for p in profiles}
     out: list[LabelledClaim] = []
@@ -348,7 +353,8 @@ def _split(split: Split, profiles: tuple[str, ...], n_supported: int,
                                  profile_id=i.key.split(":")[0], split=split,
                                  template=i.template))
     for category, n in per_category.items():
-        for m in _pick_unsupported(mutations, category, n, rng):
+        for m in _pick_unsupported(mutations, category, n, rng,
+                                    allow_short=allow_short):
             out.append(LabelledClaim(
                 claim=_claim(next_id(), m.text, m.refs, m.base.section), label="unsupported",
                 category=category, profile_id=m.base.key.split(":")[0], split=split,
@@ -357,8 +363,30 @@ def _split(split: Split, profiles: tuple[str, ...], n_supported: int,
     return out
 
 
-def build_claim_set(seed: int = 0) -> list[LabelledClaim]:
+@dataclass(frozen=True)
+class SplitSpec:
+    """One split to build: which profiles, how many supported claims, and how many
+    unsupported claims per category (one number for every category, or a map)."""
+
+    split: Split
+    profiles: tuple[str, ...]
+    n_supported: int
+    per_category: dict[Category, int] | int
+
+
+def build_claim_set(seed: int = 0, splits: Sequence[SplitSpec] | None = None
+                    ) -> list[LabelledClaim]:
+    """With splits=None, the A3 dev and test sets. With specs, exactly those splits; a
+    category with fewer mutations than asked for yields what exists (callers print counts)."""
     rng = random.Random(seed)
+    if splits is not None:
+        out: list[LabelledClaim] = []
+        for spec in splits:
+            counts = (dict.fromkeys(Category, spec.per_category)
+                      if isinstance(spec.per_category, int) else spec.per_category)
+            out += _split(spec.split, spec.profiles, spec.n_supported, counts, rng,
+                          allow_short=True)
+        return out
     categories = list(Category)
     # 20 dev unsupported over 9 categories: two each, and a third for two categories
     # chosen by the seed.

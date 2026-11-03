@@ -132,3 +132,24 @@ def test_role_claims_use_the_right_article() -> None:
     texts = [c.claim.text for c in build_claim_set()]
     assert not any(" a IT " in t for t in texts)
     assert any("Worked as an IT Support Assistant" in t for t in texts)
+
+
+# SHA-256 of dump_claims(build_claim_set(seed=0)) before the SplitSpec refactor (Task 3).
+A3_CLAIM_SET_SHA256 = "62208a76cfe0acbb56e968529bd710dbc20850e727b34b5e1710eb6db9b71f4f"
+
+
+def test_a3_claim_set_unchanged() -> None:
+    import hashlib
+
+    digest = hashlib.sha256(dump_claims(build_claim_set(seed=0)).encode()).hexdigest()
+    assert digest == A3_CLAIM_SET_SHA256
+
+
+def test_split_spec_builds_test_claims_from_given_profiles() -> None:
+    from evident.eval.grounding import SplitSpec
+
+    spec = SplitSpec("test", ("student_profile_06", "student_profile_07"), 10, 1)
+    claims = build_claim_set(seed=2, splits=[spec])
+    assert Counter(c.label for c in claims) == {"supported": 10, "unsupported": 9}
+    assert {c.profile_id for c in claims} <= {"student_profile_06", "student_profile_07"}
+    assert {c.split for c in claims} == {"test"}
