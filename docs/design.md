@@ -375,7 +375,7 @@ Each Layer 1 check normalises the claim and the evidence the same way before com
 | Check | Rule | Example rejection |
 |----|----|----|
 | Fact IDs | Every cited fact version exists, belongs to the user, and is confirmed | Claim cites exp_03 v1, which is superseded |
-| Metrics | Every number in the claim is bound to one cited metric record with the same metric, direction and unit (see Data model). The claimed value may round toward zero, never away. Numbers in evidence text with no metric record cannot support a claim | "Cut latency 60%" when the only 60% record is an accuracy increase |
+| Metrics | Every number in the claim is bound to one cited metric record with the same metric, direction and unit (see Data model). The claimed value may round toward zero, never away; for a lower-is-better metric recorded as an absolute value, it may round away from zero, never toward it. Numbers in evidence text with no metric record cannot support a claim | "Cut latency 60%" when the only 60% record is an accuracy increase |
 | Durations | A duration attached to a skill or role is compared with the months of cited facts that name that skill or role, overlaps counted once. A fact's full span counts for a skill only if the skill is in that fact's skills | "3 years of Python" from 20 months of facts naming Python |
 | Dates | Claimed dates fall inside the cited fact's range | "Since 2023" when the fact starts 2025-02 |
 | Ownership | Claim's ownership rank ≤ fact's ownership rank | "Led" on a fact marked built |
@@ -911,6 +911,7 @@ Each major decision is recorded once here, with the alternatives considered and 
 | 10 | Shared receipts use approved, redacted crops | Linking to the original upload | Prevents publishing personal data the user didn't choose to share | Validation experiment 6 fails, which removes public receipts entirely |
 | 11 | Exact one-sided bounds for proportions; bootstrap for other metrics | One interval method for everything | Each method fits its metric type | Never |
 | 12 | No generated faces; no inference of traits from voice, face or writing | Avatar generation; confidence or personality scoring | Misrepresentation and unreliable, potentially discriminatory inference | Never |
+| 13 | Lower-is-better metrics recorded as absolute values round away from zero, never toward it | One rounding direction for all metrics | A smaller latency, cost or error rate is a stronger claim, so rounding toward zero would let inflation through | Never; correctness requirement |
 
 ## Open questions
 
