@@ -77,7 +77,6 @@ def test_tuning_scripts_refuse_test_profiles(monkeypatch: pytest.MonkeyPatch) ->
         module.main()
 
 
-@pytest.mark.xfail(strict=True, reason="scripts/layer1_diff.py arrives in Task 4")
 def test_layer1_diff_script_refuses_test_profiles(monkeypatch: pytest.MonkeyPatch) -> None:
     module = _load_script("layer1_diff")
     monkeypatch.setattr(sys, "argv", ["diff", "--profile", "student_profile_07"])
