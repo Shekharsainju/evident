@@ -155,6 +155,7 @@ def _instances(profile_id: str) -> list[Instance]:
         out.append(Instance(key, template, text, tuple(_ref(f) for f in cited), section, cited,
                             metric))
 
+    # Only these kinds get claims. Certification and award facts are skipped: no templates yet.
     projects = [f for f in facts if f.kind is FactKind.project]
     roles = [f for f in facts if f.kind is FactKind.experience]
     education = [f for f in facts if f.kind is FactKind.education]

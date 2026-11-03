@@ -52,6 +52,9 @@ reported but not deciding; rates with one-sided 95% Clopper-Pearson upper bounds
   `wrong_number`, `wrong_date`, `inflated_ownership`, `unsupported_skill`, `wrong_entity`,
   `fake_id`, `wrong_aggregate`, `paraphrase_overstatement`; 6 for `inflated_deployment`
   (only 6 projects are not already in production).
+- **Distinct texts:** 57 of 80 supported texts and 77 of 86 unsupported texts are distinct.
+  The repeats are the same text (degree, subject and skill sentences) cited against different
+  profiles' facts, so the effective sample is smaller than n.
 - **Known gap:** profile 10's certification and award facts have no claims (the builder
   selects facts by kind and skips these two).
 - **Claim file SHA-256:** `3d08a1be410827bde1728e1f61dce8a07022c3c6a37ed06acdfc110f0214f215`,

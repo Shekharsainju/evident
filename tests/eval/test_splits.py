@@ -1,3 +1,11 @@
+"""Split guard tests.
+
+Contract for later scripts: any tuning or comparison script must refuse a profile from 06
+to 10 by raising LockedSplitError (via require_dev). The xfail tests below are switched on
+by the task that adds each script, and they accept nothing else, so an argparse exit on an
+unknown option can't pass for a guard.
+"""
+
 from __future__ import annotations
 
 import importlib.util
@@ -7,6 +15,7 @@ from pathlib import Path
 
 import pytest
 
+from evident.eval.grounding import load_claims
 from evident.eval.splits import (
     P1_DEV_PROFILES,
     P1_TEST_CLAIMS,
@@ -44,9 +53,9 @@ def test_test_claims_need_locked_flag() -> None:
 
 
 def test_test_claims_file_is_test_profiles_only() -> None:
-    # Reads the file text, not through the guard: this checks the file, nothing runs on it.
+    # Reads the file directly: ordinary unit tests never pass locked_run=True.
     assert (ROOT / P1_TEST_CLAIMS).exists()
-    claims = load_p1_test_claims(locked_run=True)
+    claims = load_claims(ROOT / P1_TEST_CLAIMS)
     assert {c.profile_id for c in claims} <= set(P1_TEST_PROFILES)
     assert {c.split for c in claims} == {"test"}
 
@@ -64,7 +73,7 @@ def _load_script(name: str):  # type: ignore[no-untyped-def]
 def test_tuning_scripts_refuse_test_profiles(monkeypatch: pytest.MonkeyPatch) -> None:
     module = _load_script("tune_extraction_dev")
     monkeypatch.setattr(sys, "argv", ["tune", "--profile", "student_profile_07"])
-    with pytest.raises(SystemExit):
+    with pytest.raises(SystemExit, match="Dev tuning uses student_profile_01 only."):
         module.main()
 
 
@@ -72,7 +81,7 @@ def test_tuning_scripts_refuse_test_profiles(monkeypatch: pytest.MonkeyPatch) ->
 def test_layer1_diff_script_refuses_test_profiles(monkeypatch: pytest.MonkeyPatch) -> None:
     module = _load_script("layer1_diff")
     monkeypatch.setattr(sys, "argv", ["diff", "--profile", "student_profile_07"])
-    with pytest.raises((SystemExit, LockedSplitError)):
+    with pytest.raises(LockedSplitError):
         module.main()
 
 
@@ -80,5 +89,5 @@ def test_layer1_diff_script_refuses_test_profiles(monkeypatch: pytest.MonkeyPatc
 def test_compare_judges_script_refuses_test_profiles(monkeypatch: pytest.MonkeyPatch) -> None:
     module = _load_script("compare_judges")
     monkeypatch.setattr(sys, "argv", ["compare", "--profile", "student_profile_07"])
-    with pytest.raises((SystemExit, LockedSplitError)):
+    with pytest.raises(LockedSplitError):
         module.main()
