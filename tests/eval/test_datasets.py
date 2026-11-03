@@ -114,3 +114,37 @@ def test_pipeline_does_not_import_ground_truth() -> None:
         if path.is_relative_to(root / "eval"):
             continue
         assert "ground_truth" not in path.read_text(encoding="utf-8"), path
+
+
+def test_dataset_for_routes_profiles() -> None:
+    import pytest
+
+    from evident.eval.datasets import A3_ENRICHED, HELDOUT_P1, dataset_for
+
+    assert dataset_for("student_profile_03") is A3_ENRICHED
+    assert dataset_for("student_profile_08") is HELDOUT_P1
+    assert dataset_for("student_profile_10") is HELDOUT_P1
+    for bad in ("student_profile_11", "student_profile_00", "other"):
+        with pytest.raises(ValueError):
+            dataset_for(bad)
+
+
+def test_a3_rebuild_is_byte_identical() -> None:
+    import json
+
+    from evident.eval.datasets import (
+        A3_ENRICHED,
+        GROUND_TRUTH_OWNER,
+        build_enriched_profiles,
+        dump_ground_truth,
+        ground_truth_path,
+    )
+
+    profiles = build_enriched_profiles(A3_ENRICHED)
+    written = "".join(json.dumps(p, ensure_ascii=False) + "\n" for p in profiles)
+    committed = A3_ENRICHED.profiles.read_text(encoding="utf-8").replace("\r\n", "\n")
+    assert written == committed
+    for p in profiles:
+        facts = ground_truth_facts(p, owner_id=GROUND_TRUTH_OWNER, document_id=p["document_id"])
+        on_disk = ground_truth_path(p["document_id"]).read_bytes().replace(b"\r\n", b"\n")
+        assert dump_ground_truth(facts) == on_disk, p["document_id"]

@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import copy
 import json
+import re
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -22,17 +24,79 @@ from evident.contracts.facts import (
 
 SYNTHETIC = Path("data/synthetic")
 A1_PROFILES = SYNTHETIC / "student_profiles.jsonl"
-ENRICHED_DIR = SYNTHETIC / "a3_enriched"
-OVERLAY = ENRICHED_DIR / "overlay.json"
-ENRICHED_PROFILES = ENRICHED_DIR / "profiles.jsonl"
-GROUND_TRUTH_DIR = ENRICHED_DIR / "ground_truth"
 GROUND_TRUTH_OWNER = "ground-truth"
 # A fixed time keeps the committed ground truth byte-for-byte reproducible.
 GROUND_TRUTH_CONFIRMED_AT = datetime(2026, 10, 25, tzinfo=UTC)
-ENRICHMENT_NOTE = (
-    "Dates, ownership, deployment, metrics and metric sentences are fictional, added for "
-    "A3 testing. See data/synthetic/a3_enriched/overlay.json."
+
+
+@dataclass(frozen=True)
+class Dataset:
+    """One folder of fictional profiles, built the same way: source records plus an overlay."""
+
+    name: str
+    dir: Path
+    source_profiles: Path
+    enrichment_note: str
+    marker: str
+
+    @property
+    def overlay(self) -> Path:
+        return self.dir / "overlay.json"
+
+    @property
+    def profiles(self) -> Path:
+        return self.dir / "profiles.jsonl"
+
+    @property
+    def ground_truth_dir(self) -> Path:
+        return self.dir / "ground_truth"
+
+    @property
+    def rendered_dir(self) -> Path:
+        return self.dir / "rendered"
+
+
+A3_ENRICHED = Dataset(
+    name="a3_enriched",
+    dir=SYNTHETIC / "a3_enriched",
+    source_profiles=A1_PROFILES,
+    enrichment_note=(
+        "Dates, ownership, deployment, metrics and metric sentences are fictional, added for "
+        "A3 testing. See data/synthetic/a3_enriched/overlay.json."
+    ),
+    marker="Synthetic profile, A3 testing",
 )
+# Profiles 06 to 10: the phase 1 locked test split (spec 4). The A1 files stay untouched.
+HELDOUT_P1 = Dataset(
+    name="heldout_p1",
+    dir=SYNTHETIC / "heldout_p1",
+    source_profiles=SYNTHETIC / "heldout_p1" / "source_profiles.jsonl",
+    enrichment_note=(
+        "Everything in this profile is fictional, written for phase 1 held-out testing. "
+        "See data/synthetic/heldout_p1/overlay.json."
+    ),
+    marker="Synthetic profile, phase 1 testing",
+)
+DATASETS = {d.name: d for d in (A3_ENRICHED, HELDOUT_P1)}
+_PROFILE_ID = re.compile(r"^student_profile_(\d{2})$")
+
+
+def dataset_for(document_id: str) -> Dataset:
+    match = _PROFILE_ID.match(document_id)
+    number = int(match.group(1)) if match else 0
+    if 1 <= number <= 5:
+        return A3_ENRICHED
+    if 6 <= number <= 10:
+        return HELDOUT_P1
+    raise ValueError(f"no synthetic dataset holds {document_id!r}")
+
+
+# Older names, kept so existing imports keep working.
+ENRICHED_DIR = A3_ENRICHED.dir
+OVERLAY = A3_ENRICHED.overlay
+ENRICHED_PROFILES = A3_ENRICHED.profiles
+GROUND_TRUTH_DIR = A3_ENRICHED.ground_truth_dir
+ENRICHMENT_NOTE = A3_ENRICHED.enrichment_note
 
 # SHA-256 of the A1 files with CRLF normalised to LF, recorded 2026-10-25 at commit 52ab483.
 A1_HASHES = {
@@ -52,13 +116,14 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in lines if line.strip()]
 
 
-def enrich(profile: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
-    """Return a copy of an A1 profile with its overlay merged in. The input is not modified."""
+def enrich(profile: dict[str, Any], overlay: dict[str, Any],
+           note: str = A3_ENRICHED.enrichment_note) -> dict[str, Any]:
+    """Return a copy of a source profile with its overlay merged in. The input is not modified."""
     out = copy.deepcopy(profile)
     extra = overlay[out["document_id"]]
     out["education_start"] = extra["education_start"]
     out["expected_graduation_month"] = extra["expected_graduation_month"]
-    out["enrichment_note"] = ENRICHMENT_NOTE
+    out["enrichment_note"] = note
     for section, key in (("projects", "title"), ("experience", "role")):
         additions = extra[section]
         for entry in out[section]:
@@ -73,13 +138,13 @@ def enrich(profile: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
-def build_enriched_profiles() -> list[dict[str, Any]]:
-    overlay = json.loads(OVERLAY.read_text(encoding="utf-8"))
-    return [enrich(p, overlay) for p in _read_jsonl(A1_PROFILES)]
+def build_enriched_profiles(ds: Dataset = A3_ENRICHED) -> list[dict[str, Any]]:
+    overlay = json.loads(ds.overlay.read_text(encoding="utf-8"))
+    return [enrich(p, overlay, ds.enrichment_note) for p in _read_jsonl(ds.source_profiles)]
 
 
-def load_enriched_profiles() -> list[dict[str, Any]]:
-    return _read_jsonl(ENRICHED_PROFILES)
+def load_enriched_profiles(ds: Dataset = A3_ENRICHED) -> list[dict[str, Any]]:
+    return _read_jsonl(ds.profiles)
 
 
 def _attrs(**fields: Any) -> FactAttributes:
@@ -150,7 +215,7 @@ def ground_truth_facts(
 
 
 def ground_truth_path(document_id: str) -> Path:
-    return GROUND_TRUTH_DIR / f"{document_id}.json"
+    return dataset_for(document_id).ground_truth_dir / f"{document_id}.json"
 
 
 def dump_ground_truth(facts: list[FactVersion]) -> bytes:

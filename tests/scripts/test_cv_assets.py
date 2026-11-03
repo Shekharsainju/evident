@@ -96,3 +96,19 @@ def test_photo_differs_from_source() -> None:
     photo = Image.open(io.BytesIO(simulate_photo(png, seed=1))).convert("L").resize(source.size)
     diff = np.abs(np.asarray(source, dtype=float) - np.asarray(photo, dtype=float)).mean()
     assert diff > 10
+
+
+def test_photo_seed_keeps_a3_seeds_and_extends_to_heldout() -> None:
+    from evident.eval.assets import photo_seed
+
+    assert [photo_seed("student_profile_01", t) for t in TEMPLATES] == [100, 101, 102]
+    assert [photo_seed("student_profile_05", t) for t in TEMPLATES] == [500, 501, 502]
+    assert [photo_seed("student_profile_06", t) for t in TEMPLATES] == [600, 601, 602]
+    assert photo_seed("student_profile_10", TEMPLATES[2]) == 1002
+
+
+def test_asset_paths_follow_the_profile_dataset() -> None:
+    assert cv_pdf_path("student_profile_02", "classic").parent == Path(
+        "data/synthetic/a3_enriched/rendered")
+    assert cv_photo_path("student_profile_07", "compact") == Path(
+        "data/synthetic/heldout_p1/rendered/student_profile_07_compact_photo.jpg")

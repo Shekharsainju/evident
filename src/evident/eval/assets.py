@@ -13,9 +13,9 @@ import pypdfium2 as pdfium
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from PIL import Image, ImageFilter
 
-from evident.eval.datasets import ENRICHED_DIR
+from evident.eval.datasets import A3_ENRICHED, ENRICHED_DIR, dataset_for
 
-MARKER = "Synthetic profile, A3 testing"
+MARKER = A3_ENRICHED.marker
 JOB_MARKER = "Synthetic job ad, A3 testing"
 TEMPLATES = ("classic", "sidebar", "compact")
 TEMPLATE_DIR = ENRICHED_DIR / "templates"
@@ -31,11 +31,16 @@ _env = Environment(
 
 
 def cv_pdf_path(document_id: str, template: str) -> Path:
-    return RENDERED_DIR / f"{document_id}_{template}.pdf"
+    return dataset_for(document_id).rendered_dir / f"{document_id}_{template}.pdf"
 
 
 def cv_photo_path(document_id: str, template: str) -> Path:
-    return RENDERED_DIR / f"{document_id}_{template}_photo.jpg"
+    return dataset_for(document_id).rendered_dir / f"{document_id}_{template}_photo.jpg"
+
+
+def photo_seed(document_id: str, template: str) -> int:
+    """Profile n, template j gets 100 * n + j: the seeds profiles 01 to 05 always had."""
+    return 100 * int(document_id.rsplit("_", 1)[1]) + TEMPLATES.index(template)
 
 
 def month(value: str) -> str:
@@ -64,7 +69,7 @@ def cv_context(profile: dict[str, Any]) -> dict[str, Any]:
             {**p, "dates": date_range(p["start"], p["end"])} for p in profile["projects"]
         ],
         "skills": profile["technical_skills"],
-        "marker": MARKER,
+        "marker": dataset_for(profile["document_id"]).marker,
     }
 
 
