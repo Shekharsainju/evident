@@ -201,7 +201,7 @@
     "owner_id": "ground-truth",
     "status": "confirmed",
     "kind": "experience",
-    "text": "Served customers at the counter, kept stock records up to date and trained new casual staff on the dispensary ordering routine. Trained 6 new casual staff over two years.",
+    "text": "Served customers at the counter, kept stock records up to date and trained new casual staff on the dispensary ordering routine. Trained 6 new casual staff in the last two years of the role.",
     "attributes": {
       "schema_version": "2.0",
       "ownership": "contributed",
@@ -217,7 +217,7 @@
           "unit": "count",
           "baseline": null,
           "subject": "new casual staff trained",
-          "span_text": "Trained 6 new casual staff over two years"
+          "span_text": "Trained 6 new casual staff in the last two years of the role"
         }
       ],
       "start": "2016-05",
@@ -237,7 +237,7 @@
         0.0,
         0.0
       ],
-      "span_text": "Served customers at the counter, kept stock records up to date and trained new casual staff on the dispensary ordering routine. Trained 6 new casual staff over two years.",
+      "span_text": "Served customers at the counter, kept stock records up to date and trained new casual staff on the dispensary ordering routine. Trained 6 new casual staff in the last two years of the role.",
       "confidence": 1.0,
       "span_found": true
     },

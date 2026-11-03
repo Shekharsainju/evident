@@ -28,7 +28,7 @@
         "end": "2022-12",
         "ownership": "contributed",
         "deployment": null,
-        "add_sentence": "Trained 6 new casual staff over two years.",
+        "add_sentence": "Trained 6 new casual staff in the last two years of the role.",
         "metrics": [
           {
             "metric": "count",
@@ -36,7 +36,7 @@
             "value": 6,
             "unit": "count",
             "subject": "new casual staff trained",
-            "span_text": "Trained 6 new casual staff over two years"
+            "span_text": "Trained 6 new casual staff in the last two years of the role"
           }
         ]
       },
