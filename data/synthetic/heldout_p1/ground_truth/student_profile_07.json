@@ -1,0 +1,632 @@
+[
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt01",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "Bachelor of Computing Science, University of Technology Sydney",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": "2024-02",
+      "end": null,
+      "skills": [],
+      "title": "Bachelor of Computing Science",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Bachelor of Computing Science, University of Technology Sydney",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt02",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43007 Advanced Artificial Intelligence",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43007 Advanced Artificial Intelligence",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43007 Advanced Artificial Intelligence",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt03",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "41092 Network Fundamentals",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "41092 Network Fundamentals",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "41092 Network Fundamentals",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt04",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "48024 Programming 2",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "48024 Programming 2",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "48024 Programming 2",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt05",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43030 Professional Practice in Computing",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43030 Professional Practice in Computing",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43030 Professional Practice in Computing",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt06",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "experience",
+    "text": "Helped run beach clean-up days and kept the volunteer sign-in sheets during a gap year before university. Helped organise 12 clean-up days.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "contributed",
+      "deployment": null,
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_01",
+          "metric": "count",
+          "direction": "absolute",
+          "value": 12.0,
+          "unit": "count",
+          "baseline": null,
+          "subject": "clean-up days organised",
+          "span_text": "Helped organise 12 clean-up days"
+        }
+      ],
+      "start": "2023-03",
+      "end": "2023-08",
+      "skills": [],
+      "title": "Gap Year Volunteer",
+      "organisation": "Fictional coastal conservation group"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Helped run beach clean-up days and kept the volunteer sign-in sheets during a gap year before university. Helped organise 12 clean-up days.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt07",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "experience",
+    "text": "Shelves returned items and helps visitors find books and use the self-checkout machines.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "contributed",
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": "2024-06",
+      "end": null,
+      "skills": [],
+      "title": "Library Shelving Assistant",
+      "organisation": "Fictional local council library"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Shelves returned items and helps visitors find books and use the self-checkout machines.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt08",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "project",
+    "text": "Built the shift sign-up pages for a web app that lets a volunteer group publish and fill weekend shifts. The group used it to fill 120 weekend shifts.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "contributed",
+      "deployment": "internal",
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_02",
+          "metric": "count",
+          "direction": "absolute",
+          "value": 120.0,
+          "unit": "count",
+          "baseline": null,
+          "subject": "weekend shifts filled",
+          "span_text": "used it to fill 120 weekend shifts"
+        }
+      ],
+      "start": "2025-03",
+      "end": "2025-06",
+      "skills": [
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "Git"
+      ],
+      "title": "Volunteer Roster Web App",
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Built the shift sign-up pages for a web app that lets a volunteer group publish and fill weekend shifts. The group used it to fill 120 weekend shifts.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt09",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "project",
+    "text": "Redesigned a student timetable page in Figma with larger touch targets and clearer colour contrast, then tested it with classmates.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "built",
+      "deployment": "concept",
+      "scale": null,
+      "metrics": [],
+      "start": "2025-08",
+      "end": "2025-10",
+      "skills": [
+        "Figma",
+        "HTML",
+        "CSS"
+      ],
+      "title": "Accessible Timetable Redesign",
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Redesigned a student timetable page in Figma with larger touch targets and clearer colour contrast, then tested it with classmates.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt10",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "JavaScript",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "JavaScript"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "JavaScript",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt11",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "HTML",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "HTML"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "HTML",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt12",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "CSS",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "CSS"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "CSS",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt13",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Python",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Python"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Python",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt14",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Git",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Git"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Git",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_07_gt15",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Figma",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Figma"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_07",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Figma",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  }
+]

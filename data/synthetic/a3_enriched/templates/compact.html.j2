@@ -18,6 +18,8 @@
 <header><h1>{{ cv.name }}</h1><div class="sub">{{ cv.degree }} | {{ cv.institution }}</div></header>
 <h2>Skills</h2>
 <p>{{ cv.skills | join(" | ") }}</p>
+{% if cv.credentials %}<h2>Certifications and awards</h2>
+<p>{{ cv.credentials | join(" | ") }}</p>{% endif %}
 <div class="grid">
   <div>
     <h2>Projects</h2>

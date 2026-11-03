@@ -82,7 +82,7 @@ _PROFILE_ID = re.compile(r"^student_profile_(\d{2})$")
 
 
 def dataset_for(document_id: str) -> Dataset:
-    match = _PROFILE_ID.match(document_id)
+    match = _PROFILE_ID.fullmatch(document_id)
     number = int(match.group(1)) if match else 0
     if 1 <= number <= 5:
         return A3_ENRICHED
@@ -135,6 +135,10 @@ def enrich(profile: dict[str, Any], overlay: dict[str, Any],
             entry["metrics"] = add["metrics"]
             if add.get("add_sentence"):
                 entry["description"] = f"{entry['description']} {add['add_sentence']}"
+    # Only held-out profile 10 has these; the A1 record format has no field for them.
+    for key in ("certifications", "awards"):
+        if key in extra:
+            out[key] = copy.deepcopy(extra[key])
     return out
 
 
@@ -192,6 +196,11 @@ def ground_truth_facts(
                      attrs.model_copy(update={"metrics": _metrics(p, counter)})))
     for skill in profile["technical_skills"]:
         rows.append(("skill", skill, _attrs(skills=[skill])))
+    # Appended last so the fact IDs of profiles without them stay as they were.
+    for kind, key in (("certification", "certifications"), ("award", "awards")):
+        for c in profile.get(key, []):
+            rows.append((kind, f"{c['title']}, {c['issuer']}", _attrs(
+                title=c["title"], organisation=c["issuer"], start=c["date"], end=c["date"])))
 
     facts = []
     for i, (kind, text, attrs) in enumerate(rows, start=1):

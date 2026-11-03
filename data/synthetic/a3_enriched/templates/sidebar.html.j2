@@ -27,6 +27,7 @@
     <p>{{ cv.degree }}</p><p>{{ cv.institution }}</p><p>{{ cv.education_dates }}</p>
   </section>
   <section><h2>Subjects</h2><ul>{% for s in cv.subjects %}<li>{{ s }}</li>{% endfor %}</ul></section>
+  {% if cv.credentials %}<section><h2>Certifications and awards</h2><ul>{% for c in cv.credentials %}<li>{{ c }}</li>{% endfor %}</ul></section>{% endif %}
 </aside>
 <main>
   <h1>{{ cv.name }}</h1>

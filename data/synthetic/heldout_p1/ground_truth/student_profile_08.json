@@ -1,0 +1,721 @@
+[
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt01",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "Bachelor of Computing Science, University of Technology Sydney",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": "2024-02",
+      "end": null,
+      "skills": [],
+      "title": "Bachelor of Computing Science",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Bachelor of Computing Science, University of Technology Sydney",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt02",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43007 Advanced Artificial Intelligence",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43007 Advanced Artificial Intelligence",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43007 Advanced Artificial Intelligence",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt03",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "31251 Data Structures and Algorithms",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "31251 Data Structures and Algorithms",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "31251 Data Structures and Algorithms",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt04",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "31271 Database Fundamentals",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "31271 Database Fundamentals",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "31271 Database Fundamentals",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt05",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43030 Professional Practice in Computing",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43030 Professional Practice in Computing",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43030 Professional Practice in Computing",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt06",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "experience",
+    "text": "Builds and maintains Django sites for small business clients and fixes reported bugs. Has shipped updates to 8 client sites.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "built",
+      "deployment": "production",
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_01",
+          "metric": "count",
+          "direction": "absolute",
+          "value": 8.0,
+          "unit": "count",
+          "baseline": null,
+          "subject": "client sites updated",
+          "span_text": "shipped updates to 8 client sites"
+        }
+      ],
+      "start": "2024-09",
+      "end": null,
+      "skills": [],
+      "title": "Junior Web Developer",
+      "organisation": "Fictional web studio"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Builds and maintains Django sites for small business clients and fixes reported bugs. Has shipped updates to 8 client sites.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt07",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "experience",
+    "text": "Wrote pytest tests and small fixes for an internal parcel tracking service and ran it locally in Docker. Raised test coverage of the service to 70%.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "contributed",
+      "deployment": "internal",
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_02",
+          "metric": "coverage",
+          "direction": "absolute",
+          "value": 70.0,
+          "unit": "percent",
+          "baseline": null,
+          "subject": "parcel tracking service test coverage",
+          "span_text": "Raised test coverage of the service to 70%"
+        }
+      ],
+      "start": "2024-12",
+      "end": "2025-02",
+      "skills": [],
+      "title": "Software Engineering Intern",
+      "organisation": "Fictional logistics software company"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Wrote pytest tests and small fixes for an internal parcel tracking service and ran it locally in Docker. Raised test coverage of the service to 70%.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt08",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "experience",
+    "text": "Takes orders, handles the till and closes the cafe two evenings a week.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "contributed",
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": "2023-04",
+      "end": null,
+      "skills": [],
+      "title": "Cafe Team Member",
+      "organisation": "Fictional campus cafe"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Takes orders, handles the till and closes the cafe two evenings a week.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt09",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "project",
+    "text": "Rewrote the booking page of a small clinic website so it loads fewer scripts and fetches availability on demand. The page now loads in 1.5 seconds on a typical phone connection.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "built",
+      "deployment": "production",
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_03",
+          "metric": "latency",
+          "direction": "absolute",
+          "value": 1.5,
+          "unit": "seconds",
+          "baseline": null,
+          "subject": "booking page load time",
+          "span_text": "loads in 1.5 seconds on a typical phone connection"
+        }
+      ],
+      "start": "2025-04",
+      "end": "2025-05",
+      "skills": [
+        "JavaScript",
+        "React",
+        "Django"
+      ],
+      "title": "Booking Page Speed-up",
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Rewrote the booking page of a small clinic website so it loads fewer scripts and fetches availability on demand. The page now loads in 1.5 seconds on a typical phone connection.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt10",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Python",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Python"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Python",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt11",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Django",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Django"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Django",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt12",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "PostgreSQL",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "PostgreSQL"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "PostgreSQL",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt13",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "JavaScript",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "JavaScript"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "JavaScript",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt14",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "React",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "React"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "React",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt15",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Git",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Git"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Git",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt16",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Docker basics",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Docker basics"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Docker basics",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_08_gt17",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "pytest",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "pytest"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_08",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "pytest",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  }
+]

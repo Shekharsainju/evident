@@ -69,6 +69,10 @@ def cv_context(profile: dict[str, Any]) -> dict[str, Any]:
             {**p, "dates": date_range(p["start"], p["end"])} for p in profile["projects"]
         ],
         "skills": profile["technical_skills"],
+        "credentials": [
+            f"{c['title']}, {c['issuer']} ({month(c['date'])})"
+            for c in profile.get("certifications", []) + profile.get("awards", [])
+        ],
         "marker": dataset_for(profile["document_id"]).marker,
     }
 

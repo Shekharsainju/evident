@@ -1,0 +1,823 @@
+[
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt01",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "Bachelor of Computing Science, University of Technology Sydney",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": "2024-02",
+      "end": null,
+      "skills": [],
+      "title": "Bachelor of Computing Science",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Bachelor of Computing Science, University of Technology Sydney",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt02",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43007 Advanced Artificial Intelligence",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43007 Advanced Artificial Intelligence",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43007 Advanced Artificial Intelligence",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt03",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "31251 Data Structures and Algorithms",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "31251 Data Structures and Algorithms",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "31251 Data Structures and Algorithms",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt04",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "31271 Database Fundamentals",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "31271 Database Fundamentals",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "31271 Database Fundamentals",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt05",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "41092 Network Fundamentals",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "41092 Network Fundamentals",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "41092 Network Fundamentals",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt06",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "48024 Programming 2",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "48024 Programming 2",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "48024 Programming 2",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt07",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43030 Professional Practice in Computing",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43030 Professional Practice in Computing",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43030 Professional Practice in Computing",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt08",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "project",
+    "text": "Wrote a Python script that spreads assignment work across the weeks before each due date and plots the weekly load. Tried it on 4 subjects in one semester.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "built",
+      "deployment": "prototype",
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_01",
+          "metric": "count",
+          "direction": "absolute",
+          "value": 4.0,
+          "unit": "count",
+          "baseline": null,
+          "subject": "subjects planned with the script",
+          "span_text": "Tried it on 4 subjects in one semester"
+        }
+      ],
+      "start": "2025-09",
+      "end": "2025-10",
+      "skills": [
+        "Python",
+        "NumPy",
+        "Matplotlib",
+        "Git"
+      ],
+      "title": "Study Planner Script",
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Wrote a Python script that spreads assignment work across the weeks before each due date and plots the weekly load. Tried it on 4 subjects in one semester.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt09",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Python",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Python"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Python",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt10",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Java",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Java"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Java",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt11",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "C",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "C"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "C",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt12",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "SQL",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "SQL"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "SQL",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt13",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "R",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "R"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "R",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt14",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Linux",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Linux"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Linux",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt15",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Git",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Git"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Git",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt16",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Bash",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Bash"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Bash",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt17",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "NumPy",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "NumPy"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "NumPy",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt18",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Matplotlib",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Matplotlib"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Matplotlib",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt19",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Jupyter Notebook",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Jupyter Notebook"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Jupyter Notebook",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_09_gt20",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "unit testing",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "unit testing"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_09",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "unit testing",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  }
+]

@@ -48,6 +48,10 @@
 
 <h2>Technical skills</h2>
 <p>{{ cv.skills | join(", ") }}</p>
+{% if cv.credentials %}
+<h2>Certifications and awards</h2>
+<ul>{% for c in cv.credentials %}<li>{{ c }}</li>{% endfor %}</ul>
+{% endif %}
 
 <footer>{{ cv.marker }}</footer>
 </body></html>

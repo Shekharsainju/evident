@@ -1,0 +1,710 @@
+[
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt01",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "Bachelor of Computing Science, University of Technology Sydney",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": "2024-02",
+      "end": null,
+      "skills": [],
+      "title": "Bachelor of Computing Science",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Bachelor of Computing Science, University of Technology Sydney",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt02",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43007 Advanced Artificial Intelligence",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43007 Advanced Artificial Intelligence",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43007 Advanced Artificial Intelligence",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt03",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "41092 Network Fundamentals",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "41092 Network Fundamentals",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "41092 Network Fundamentals",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt04",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "31271 Database Fundamentals",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "31271 Database Fundamentals",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "31271 Database Fundamentals",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt05",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "education",
+    "text": "43030 Professional Practice in Computing",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [],
+      "title": "43030 Professional Practice in Computing",
+      "organisation": "University of Technology Sydney"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "43030 Professional Practice in Computing",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt06",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "experience",
+    "text": "Answers Wi-Fi and printer questions from residents and keeps the helpdesk knowledge base up to date. Wrote 15 new knowledge base articles.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "contributed",
+      "deployment": null,
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_01",
+          "metric": "count",
+          "direction": "absolute",
+          "value": 15.0,
+          "unit": "count",
+          "baseline": null,
+          "subject": "knowledge base articles written",
+          "span_text": "Wrote 15 new knowledge base articles"
+        }
+      ],
+      "start": "2024-04",
+      "end": null,
+      "skills": [],
+      "title": "Student IT Helpdesk Assistant",
+      "organisation": "Fictional student residence"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Answers Wi-Fi and printer questions from residents and keeps the helpdesk knowledge base up to date. Wrote 15 new knowledge base articles.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt07",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "project",
+    "text": "Led a team of three that built a chat bot which reads public river level feeds and posts an alert when a level crosses a set mark. It watched 5 river gauges during the demo.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "led",
+      "deployment": "prototype",
+      "scale": null,
+      "metrics": [
+        {
+          "schema_version": "2.0",
+          "metric_id": "m_02",
+          "metric": "count",
+          "direction": "absolute",
+          "value": 5.0,
+          "unit": "count",
+          "baseline": null,
+          "subject": "river gauges watched",
+          "span_text": "watched 5 river gauges during the demo"
+        }
+      ],
+      "start": "2025-05",
+      "end": "2025-05",
+      "skills": [
+        "Python",
+        "Git"
+      ],
+      "title": "Hackathon Flood Alert Bot",
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Led a team of three that built a chat bot which reads public river level feeds and posts an alert when a level crosses a set mark. It watched 5 river gauges during the demo.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt08",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "project",
+    "text": "Wrote Terraform scripts that create and tear down a small practice network of virtual machines for cloud study.",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": "built",
+      "deployment": "prototype",
+      "scale": null,
+      "metrics": [],
+      "start": "2025-10",
+      "end": "2025-12",
+      "skills": [
+        "Terraform basics",
+        "AWS basics",
+        "Linux"
+      ],
+      "title": "Cloud Lab Setup",
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Wrote Terraform scripts that create and tear down a small practice network of virtual machines for cloud study.",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt09",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Python",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Python"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Python",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt10",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Linux",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Linux"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Linux",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt11",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "AWS basics",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "AWS basics"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "AWS basics",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt12",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Terraform basics",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Terraform basics"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Terraform basics",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt13",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "Git",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "Git"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Git",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt14",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "SQL",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "SQL"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "SQL",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt15",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "skill",
+    "text": "network troubleshooting",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": null,
+      "end": null,
+      "skills": [
+        "network troubleshooting"
+      ],
+      "title": null,
+      "organisation": null
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "network troubleshooting",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt16",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "certification",
+    "text": "Fictional Cloud Practitioner Certificate, Fictional Cloud Training Institute",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": "2025-11",
+      "end": "2025-11",
+      "skills": [],
+      "title": "Fictional Cloud Practitioner Certificate",
+      "organisation": "Fictional Cloud Training Institute"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Fictional Cloud Practitioner Certificate, Fictional Cloud Training Institute",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  },
+  {
+    "schema_version": "2.0",
+    "fact_id": "student_profile_10_gt17",
+    "version": 1,
+    "owner_id": "ground-truth",
+    "status": "confirmed",
+    "kind": "award",
+    "text": "Second Place, Fictional Student Hackathon 2025, Fictional Student Tech Society",
+    "attributes": {
+      "schema_version": "2.0",
+      "ownership": null,
+      "deployment": null,
+      "scale": null,
+      "metrics": [],
+      "start": "2025-05",
+      "end": "2025-05",
+      "skills": [],
+      "title": "Second Place, Fictional Student Hackathon 2025",
+      "organisation": "Fictional Student Tech Society"
+    },
+    "source": {
+      "schema_version": "2.0",
+      "extraction_path": "pdf_text",
+      "document_id": "student_profile_10",
+      "page": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "span_text": "Second Place, Fictional Student Hackathon 2025, Fictional Student Tech Society",
+      "confidence": 1.0,
+      "span_found": true
+    },
+    "supersedes": null,
+    "edited_by_user": false,
+    "confirmed_at": "2026-10-25T00:00:00Z"
+  }
+]

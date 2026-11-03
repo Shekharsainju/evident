@@ -1,0 +1,261 @@
+{
+  "_note": "Fictional additions for phase 1 held-out testing only. Merged into source_profiles.jsonl by scripts/build_enriched.py --dataset heldout_p1. See README.md in this folder.",
+  "student_profile_06": {
+    "education_start": "2024-02",
+    "expected_graduation_month": "2026-11",
+    "projects": {
+      "Pharmacy Stock Tracker": {
+        "start": "2025-07",
+        "end": "2025-09",
+        "ownership": "built",
+        "deployment": "prototype",
+        "add_sentence": "It checked 350 stock lines in each weekly export.",
+        "metrics": [
+          {
+            "metric": "count",
+            "direction": "absolute",
+            "value": 350,
+            "unit": "count",
+            "subject": "stock lines checked per weekly export",
+            "span_text": "checked 350 stock lines in each weekly export"
+          }
+        ]
+      }
+    },
+    "experience": {
+      "Pharmacy Assistant": {
+        "start": "2016-05",
+        "end": "2022-12",
+        "ownership": "contributed",
+        "deployment": null,
+        "add_sentence": "Trained 6 new casual staff over two years.",
+        "metrics": [
+          {
+            "metric": "count",
+            "direction": "absolute",
+            "value": 6,
+            "unit": "count",
+            "subject": "new casual staff trained",
+            "span_text": "Trained 6 new casual staff over two years"
+          }
+        ]
+      },
+      "Weekend Pharmacy Assistant": {
+        "start": "2024-03",
+        "end": null,
+        "ownership": "contributed",
+        "deployment": null,
+        "metrics": []
+      }
+    }
+  },
+  "student_profile_07": {
+    "education_start": "2024-02",
+    "expected_graduation_month": "2026-11",
+    "projects": {
+      "Volunteer Roster Web App": {
+        "start": "2025-03",
+        "end": "2025-06",
+        "ownership": "contributed",
+        "deployment": "internal",
+        "add_sentence": "The group used it to fill 120 weekend shifts.",
+        "metrics": [
+          {
+            "metric": "count",
+            "direction": "absolute",
+            "value": 120,
+            "unit": "count",
+            "subject": "weekend shifts filled",
+            "span_text": "used it to fill 120 weekend shifts"
+          }
+        ]
+      },
+      "Accessible Timetable Redesign": {
+        "start": "2025-08",
+        "end": "2025-10",
+        "ownership": "built",
+        "deployment": "concept",
+        "metrics": []
+      }
+    },
+    "experience": {
+      "Gap Year Volunteer": {
+        "start": "2023-03",
+        "end": "2023-08",
+        "ownership": "contributed",
+        "deployment": null,
+        "add_sentence": "Helped organise 12 clean-up days.",
+        "metrics": [
+          {
+            "metric": "count",
+            "direction": "absolute",
+            "value": 12,
+            "unit": "count",
+            "subject": "clean-up days organised",
+            "span_text": "Helped organise 12 clean-up days"
+          }
+        ]
+      },
+      "Library Shelving Assistant": {
+        "start": "2024-06",
+        "end": null,
+        "ownership": "contributed",
+        "deployment": null,
+        "metrics": []
+      }
+    }
+  },
+  "student_profile_08": {
+    "education_start": "2024-02",
+    "expected_graduation_month": "2026-11",
+    "projects": {
+      "Booking Page Speed-up": {
+        "start": "2025-04",
+        "end": "2025-05",
+        "ownership": "built",
+        "deployment": "production",
+        "add_sentence": "The page now loads in 1.5 seconds on a typical phone connection.",
+        "metrics": [
+          {
+            "metric": "latency",
+            "direction": "absolute",
+            "value": 1.5,
+            "unit": "seconds",
+            "subject": "booking page load time",
+            "span_text": "loads in 1.5 seconds on a typical phone connection"
+          }
+        ]
+      }
+    },
+    "experience": {
+      "Junior Web Developer": {
+        "start": "2024-09",
+        "end": null,
+        "ownership": "built",
+        "deployment": "production",
+        "add_sentence": "Has shipped updates to 8 client sites.",
+        "metrics": [
+          {
+            "metric": "count",
+            "direction": "absolute",
+            "value": 8,
+            "unit": "count",
+            "subject": "client sites updated",
+            "span_text": "shipped updates to 8 client sites"
+          }
+        ]
+      },
+      "Software Engineering Intern": {
+        "start": "2024-12",
+        "end": "2025-02",
+        "ownership": "contributed",
+        "deployment": "internal",
+        "add_sentence": "Raised test coverage of the service to 70%.",
+        "metrics": [
+          {
+            "metric": "coverage",
+            "direction": "absolute",
+            "value": 70,
+            "unit": "percent",
+            "subject": "parcel tracking service test coverage",
+            "span_text": "Raised test coverage of the service to 70%"
+          }
+        ]
+      },
+      "Cafe Team Member": {
+        "start": "2023-04",
+        "end": null,
+        "ownership": "contributed",
+        "deployment": null,
+        "metrics": []
+      }
+    }
+  },
+  "student_profile_09": {
+    "education_start": "2024-02",
+    "expected_graduation_month": "2026-11",
+    "projects": {
+      "Study Planner Script": {
+        "start": "2025-09",
+        "end": "2025-10",
+        "ownership": "built",
+        "deployment": "prototype",
+        "add_sentence": "Tried it on 4 subjects in one semester.",
+        "metrics": [
+          {
+            "metric": "count",
+            "direction": "absolute",
+            "value": 4,
+            "unit": "count",
+            "subject": "subjects planned with the script",
+            "span_text": "Tried it on 4 subjects in one semester"
+          }
+        ]
+      }
+    },
+    "experience": {}
+  },
+  "student_profile_10": {
+    "education_start": "2024-02",
+    "expected_graduation_month": "2026-11",
+    "projects": {
+      "Hackathon Flood Alert Bot": {
+        "start": "2025-05",
+        "end": "2025-05",
+        "ownership": "led",
+        "deployment": "prototype",
+        "add_sentence": "It watched 5 river gauges during the demo.",
+        "metrics": [
+          {
+            "metric": "count",
+            "direction": "absolute",
+            "value": 5,
+            "unit": "count",
+            "subject": "river gauges watched",
+            "span_text": "watched 5 river gauges during the demo"
+          }
+        ]
+      },
+      "Cloud Lab Setup": {
+        "start": "2025-10",
+        "end": "2025-12",
+        "ownership": "built",
+        "deployment": "prototype",
+        "metrics": []
+      }
+    },
+    "experience": {
+      "Student IT Helpdesk Assistant": {
+        "start": "2024-04",
+        "end": null,
+        "ownership": "contributed",
+        "deployment": null,
+        "add_sentence": "Wrote 15 new knowledge base articles.",
+        "metrics": [
+          {
+            "metric": "count",
+            "direction": "absolute",
+            "value": 15,
+            "unit": "count",
+            "subject": "knowledge base articles written",
+            "span_text": "Wrote 15 new knowledge base articles"
+          }
+        ]
+      }
+    },
+    "certifications": [
+      {
+        "title": "Fictional Cloud Practitioner Certificate",
+        "issuer": "Fictional Cloud Training Institute",
+        "date": "2025-11"
+      }
+    ],
+    "awards": [
+      {
+        "title": "Second Place, Fictional Student Hackathon 2025",
+        "issuer": "Fictional Student Tech Society",
+        "date": "2025-05"
+      }
+    ]
+  }
+}
