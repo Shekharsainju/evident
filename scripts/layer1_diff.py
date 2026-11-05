@@ -13,13 +13,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 from evident.eval.grounding import LabelledClaim, dump_claims, load_claims
-from evident.eval.layer1_probe import layer1_outcomes, outcome_key, probe_claims
+from evident.eval.layer1_probe import (
+    classify,
+    dedupe_fail_closed,
+    layer1_outcomes,
+    probe_claims,
+)
 from evident.eval.splits import require_dev
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,8 +50,29 @@ Path(sys.argv[2]).write_text(json.dumps(out), encoding="utf-8")
 """
 
 
+class ToolError(Exception):
+    """The diff tool itself failed. Exit 2, never 1, so a tool error can't read as a gate result."""
+
+
 def _git(*args: str) -> None:
     subprocess.run(["git", *args], cwd=ROOT, check=True, capture_output=True, text=True)
+
+
+def _base_env() -> dict[str, str]:
+    # An inherited PYTHONPATH could make the base import the current checkout's code.
+    return {k: v for k, v in os.environ.items() if k.upper() != "PYTHONPATH"}
+
+
+def _check_base_import(stderr: str, wt: Path) -> None:
+    """Fail unless the base run imported evident from inside its own worktree."""
+    for line in stderr.splitlines():
+        if line.startswith("IMPORTED "):
+            path = Path(line.removeprefix("IMPORTED ").strip()).resolve()
+            if not path.is_relative_to(wt.resolve()):
+                raise ToolError(f"base imported evident from {path}, outside worktree {wt}")
+            print(f"base imports evident from: {path}")
+            return
+    raise ToolError("base run did not report where it imported evident from")
 
 
 def _score_base(base: str, claims_path: Path, scratch: Path) -> list[list[str]]:
@@ -56,10 +83,8 @@ def _score_base(base: str, claims_path: Path, scratch: Path) -> list[list[str]]:
         proc = subprocess.run(
             ["uv", "run", "--project", str(wt), "python", "-c", RUNNER,
              str(claims_path), str(result)],
-            cwd=wt, check=True, capture_output=True, text=True)
-        for line in proc.stderr.splitlines():
-            if line.startswith("IMPORTED "):
-                print(line.replace("IMPORTED ", "base imports evident from: ", 1))
+            cwd=wt, check=True, capture_output=True, text=True, env=_base_env())
+        _check_base_import(proc.stderr, wt)
         data: list[list[str]] = json.loads(result.read_text(encoding="utf-8"))
         return data
     finally:
@@ -68,6 +93,18 @@ def _score_base(base: str, claims_path: Path, scratch: Path) -> list[list[str]]:
 
 
 def main() -> int:
+    try:
+        return _main()
+    except subprocess.CalledProcessError as e:
+        print(f"tool error: {e}", file=sys.stderr)
+        print(e.stderr or "", file=sys.stderr)
+        return 2
+    except (ToolError, OSError, json.JSONDecodeError) as e:
+        print(f"tool error: {e}", file=sys.stderr)
+        return 2
+
+
+def _main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--base", default="HEAD", help="git ref to compare against")
     ap.add_argument("--extra", type=Path, help="LabelledClaim JSONL of extra probes")
@@ -82,7 +119,7 @@ def main() -> int:
         extra = load_claims(args.extra)
         require_dev(c.profile_id for c in extra)
         claims.extend(extra)
-    claims = list({outcome_key(c): c for c in reversed(claims)}.values())[::-1]
+    claims = dedupe_fail_closed(claims)
     if args.profile:
         claims = [c for c in claims if c.profile_id in args.profile]
     print(f"probes: {len(claims)}")
@@ -94,20 +131,10 @@ def main() -> int:
         old = _score_base(args.base, claims_path, scratch)
     new = layer1_outcomes(claims)
 
-    changed = []
-    counts = {"K": 0, "S": 0, "F": 0, "U": 0}
-    for c, old_rules in zip(claims, old, strict=True):
-        new_rules = new[outcome_key(c)]
-        if bool(old_rules) == bool(new_rules):
-            continue
-        newly_passing = not new_rules
-        letter = {(True, "unsupported"): "K", (True, "supported"): "S",
-                  (False, "supported"): "F", (False, "unsupported"): "U"}[(newly_passing, c.label)]
-        counts[letter] += 1
-        changed.append({"label": c.label, "old": old_rules, "new": new_rules,
-                        "text": c.claim.text, "evidence": outcome_key(c).split("|")[-1]})
-        print(f"{c.label} | {','.join(old_rules) or 'pass'} -> "
-              f"{','.join(new_rules) or 'pass'} | {c.claim.text}")
+    changed, counts = classify(claims, old, new)
+    for row in changed:
+        print(f"{row['label']} | {','.join(row['old']) or 'pass'} -> "
+              f"{','.join(row['new']) or 'pass'} | {row['text']}")
     print(f"changed: {len(changed)} (newly passing unsupported: {counts['K']}, "
           f"newly passing supported: {counts['S']}, newly failing supported: {counts['F']}, "
           f"newly failing unsupported: {counts['U']})")
