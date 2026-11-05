@@ -342,3 +342,47 @@ def test_date_the_date_rule_cannot_read_is_not_cut_out() -> None:
                  "2025.",
                  "Cut timetable clash checks to under 2 seconds at Acme Robotics Dec 2 2025."):
         assert not run_layer1(claim(text, f), context(f)).passed, text
+
+
+# Task 6 (spec 7.2): the first word of a sentence stays in the name run unless it is a
+# listed opener.
+
+
+def test_unknown_sentence_start_name_rejected() -> None:
+    f = project()
+    for text in ("Goldman Sachs backed the planner.",
+                 "• Goldman Sachs backed the planner",
+                 "Built it; Goldman Sachs backed the planner.",
+                 "Built it.\nGoldman Sachs backed it.",
+                 "Built it\nGoldman Sachs backed it.",
+                 "Built it\n• Goldman Sachs backed it."):
+        failures = check_entities(claim(text, f), [f], context(f))
+        assert [x.rule for x in failures] == ["entities"], text
+
+
+def test_sentence_start_name_with_one_evidence_word_still_rejected() -> None:
+    f = project(text="Built the planner, checked by Sachs staff")
+    for text in ("Goldman Sachs backed the planner.",
+                 "Built it; Goldman Sachs backed the planner.",
+                 "• Goldman Sachs backed the planner"):
+        assert not run_layer1(claim(text, f), context(f)).passed, text
+
+
+def test_sentence_start_name_in_evidence_passes() -> None:
+    f = project(text="Built it for the Fictional Robotics Society showcase")
+    for text in ("Built the Team Course Planner with Python.",
+                 "Led the Fictional Robotics Society showcase.",
+                 "• Fictional Robotics Society showcase used it",
+                 "Built it; Fictional Robotics Society used it.",
+                 "The Team Course Planner cut clash checks to under 2 seconds."):
+        assert check_entities(claim(text, f), [f], context(f)) == [], text
+
+
+def test_listed_openers_are_dropped_at_each_kind_of_start() -> None:
+    f = project(text="Built the planner for Fictional Robotics Society")
+    for opener in ("The", "Our", "She", "Developed", "Designed", "Used", "Studied"):
+        for text in (f"{opener} Fictional Robotics Society planner.",
+                     f"Built it; {opener} Fictional Robotics Society planner.",
+                     f"• {opener} Fictional Robotics Society planner",
+                     f"Built it.\n{opener} Fictional Robotics Society planner."):
+            assert check_entities(claim(text, f), [f], context(f)) == [], text

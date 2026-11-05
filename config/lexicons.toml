@@ -2,7 +2,7 @@
 # Words not listed here pass Layer 1 and are left to the Layer 2 judge.
 # Keys are matched after normalisation (lowercase, NFKC), as whole words or phrases.
 
-version = "1"
+version = "2"
 
 # Nouns that make a number or quantity word a scale figure.
 scale_nouns = ["users", "user", "customers", "customer", "clients", "visitors", "subscribers",
@@ -14,6 +14,22 @@ seniority_words = ["senior", "lead", "principal", "staff", "head", "chief", "dir
 credential_words = ["certified", "certification", "accredited", "licensed", "chartered",
                     "phd", "doctorate", "masters", "master's", "mba", "honours", "honors",
                     "distinction", "scholarship", "fellowship", "award", "awarded"]
+
+# Words that may open a sentence, bullet or clause without being part of a name. Every
+# ownership and deployment key below counts as one too. Any other capitalised first word stays
+# in the name run and must appear in the evidence.
+sentence_openers = [
+    "developed", "designed", "wrote", "created", "tested", "completed", "enrolled", "studied",
+    "volunteered", "supported", "worked", "joined", "evaluated", "analysed", "analyzed", "added",
+    "logged", "profiled", "used",
+    # Needed by the A3 test test_written_dates_are_not_names.
+    "building", "started",
+    # Dev claims "Text Classification Study: Reached 84% accuracy ..." and
+    # "Student Services Dashboard: Covered 1,200 survey responses."
+    "reached", "covered",
+    "the", "a", "an", "this", "that", "these", "our", "my", "her", "his", "their",
+    "it", "she", "he", "they", "i", "we",
+]
 
 # Rank 1 contributed, 2 built, 3 led, matching the Ownership enum order.
 [ownership]

@@ -1,0 +1,133 @@
+probes: 1256
+base imports evident from: C:\Users\ultra\AppData\Local\Temp\layer1-diff-q4pn7p_o\base-worktree\src\evident\__init__.py
+unsupported | pass -> entities | Northwind Traders backed the Team Course Planner.
+unsupported | pass -> entities | Used it; Northwind Traders backed the Team Course Planner.
+unsupported | pass -> entities | Used it.
+Northwind Traders backed the Team Course Planner.
+unsupported | pass -> entities | Blue Harbour backed the Team Course Planner.
+unsupported | pass -> entities | Used it; Blue Harbour backed the Team Course Planner.
+unsupported | pass -> entities | Used it.
+Blue Harbour backed the Team Course Planner.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed Team Course Planner; Contoso Cloud hosted it.
+unsupported | pass -> entities | Blue Harbour backed the AI Coursework Prototype.
+unsupported | pass -> entities | Used it; Blue Harbour backed the AI Coursework Prototype.
+unsupported | pass -> entities | Used it.
+Blue Harbour backed the AI Coursework Prototype.
+unsupported | pass -> entities | Acme Robotics backed the AI Coursework Prototype.
+unsupported | pass -> entities | Used it; Acme Robotics backed the AI Coursework Prototype.
+unsupported | pass -> entities | Used it.
+Acme Robotics backed the AI Coursework Prototype.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed AI Coursework Prototype; Contoso Cloud hosted it.
+unsupported | pass -> entities | Blue Harbour backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Used it; Blue Harbour backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Used it.
+Blue Harbour backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Acme Robotics backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Used it; Acme Robotics backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Used it.
+Acme Robotics backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed Coursework Retrieval Assistant; Contoso Cloud hosted it.
+unsupported | pass -> entities | Acme Robotics backed the Text Classification Study.
+unsupported | pass -> entities | Used it; Acme Robotics backed the Text Classification Study.
+unsupported | pass -> entities | Used it.
+Acme Robotics backed the Text Classification Study.
+unsupported | pass -> entities | Goldman Sachs backed the Text Classification Study.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Text Classification Study.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Text Classification Study.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed Text Classification Study; Contoso Cloud hosted it.
+unsupported | pass -> entities | Acme Robotics backed the Student Services Dashboard.
+unsupported | pass -> entities | Used it; Acme Robotics backed the Student Services Dashboard.
+unsupported | pass -> entities | Used it.
+Acme Robotics backed the Student Services Dashboard.
+unsupported | pass -> entities | Goldman Sachs backed the Student Services Dashboard.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Student Services Dashboard.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Student Services Dashboard.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed Student Services Dashboard; Contoso Cloud hosted it.
+unsupported | pass -> entities | Goldman Sachs backed the Search Result Analysis.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Search Result Analysis.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Search Result Analysis.
+unsupported | pass -> entities | Northwind Traders backed the Search Result Analysis.
+unsupported | pass -> entities | Used it; Northwind Traders backed the Search Result Analysis.
+unsupported | pass -> entities | Used it.
+Northwind Traders backed the Search Result Analysis.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed Search Result Analysis; Contoso Cloud hosted it.
+unsupported | pass -> entities | Goldman Sachs backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Northwind Traders backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Used it; Northwind Traders backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Used it.
+Northwind Traders backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed Network Monitoring Exercise; Contoso Cloud hosted it.
+unsupported | pass -> entities | Northwind Traders backed the Reliable Course Service.
+unsupported | pass -> entities | Used it; Northwind Traders backed the Reliable Course Service.
+unsupported | pass -> entities | Used it.
+Northwind Traders backed the Reliable Course Service.
+unsupported | pass -> entities | Blue Harbour backed the Reliable Course Service.
+unsupported | pass -> entities | Used it; Blue Harbour backed the Reliable Course Service.
+unsupported | pass -> entities | Used it.
+Blue Harbour backed the Reliable Course Service.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed Reliable Course Service; Contoso Cloud hosted it.
+unsupported | pass -> entities | Northwind Traders backed the Team Service Platform.
+unsupported | pass -> entities | Used it; Northwind Traders backed the Team Service Platform.
+unsupported | pass -> entities | Used it.
+Northwind Traders backed the Team Service Platform.
+unsupported | pass -> entities | Blue Harbour backed the Team Service Platform.
+unsupported | pass -> entities | Used it; Blue Harbour backed the Team Service Platform.
+unsupported | pass -> entities | Used it.
+Blue Harbour backed the Team Service Platform.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed Team Service Platform; Contoso Cloud hosted it.
+unsupported | pass -> entities | Blue Harbour backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Used it; Blue Harbour backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Used it.
+Blue Harbour backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Acme Robotics backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Used it; Acme Robotics backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Used it.
+Acme Robotics backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Designed Tool-Call Agent Prototype; Contoso Cloud hosted it.
+changed: 100 (newly passing unsupported: 0, newly passing supported: 0, newly failing supported: 0, newly failing unsupported: 100)

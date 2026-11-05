@@ -266,13 +266,25 @@ def _pieces(text: str, start: int, end: int, dates: list[tuple[int, int]]
     return pieces
 
 
+# A list marker, like a full stop or semicolon, starts a new clause for the opener rule.
+_CLAUSE_ENDERS = (".", ";", ":", "\u2022", "\u00b7", "\u25aa", "\u25cf", "\u25e6",
+                  "*", "-", "\u2013", "\u2014")
+
+
+def _opens_sentence(before: str) -> bool:
+    """Whether the text before a run ends a sentence, a clause, a list marker or a line."""
+    stripped = before.rstrip()
+    gap = before[len(stripped):]
+    return not stripped or stripped.endswith(_CLAUSE_ENDERS) or "\n" in gap or "\r" in gap
+
+
 def _name_runs(text: str) -> list[tuple[list[str], bool, bool]]:
     """Capitalised runs split into parts, each with whether it opens a sentence and whether
     it touches a written date. Dates are cut out: the date rule checks them."""
     runs: list[tuple[list[str], bool, bool]] = []
     dates = _date_spans(text)
     for m in _CAP_RUN.finditer(text):
-        at_start = m.start() == 0 or text[:m.start()].rstrip().endswith((".", ";", ":"))
+        at_start = _opens_sentence(text[:m.start()])
         for piece, date_before, date_after in _pieces(text, m.start(), m.end(), dates):
             words = piece.split()
             while words and words[0] in ("and", "&"):
@@ -354,14 +366,18 @@ def check_entities(claim: Claim, facts: list[FactVersion], ctx: Layer1Context
         w = normalise_text(word)
         return w in ctx.lex.ownership or (w in ctx.lex.deployment and w.endswith("ed"))
 
+    def opener(word: str) -> bool:
+        return normalise_text(word) in ctx.lex.sentence_openers
+
     for words, at_start, by_date in _name_runs(claim.text):
         if supported(words, by_date):
             continue
-        # A sentence-initial verb ("Built Team Course Planner") is not part of the name. On a
-        # strict part only a known verb is dropped: in "Goldman Sachs Mar 2025" the first
-        # word belongs to the name.
-        if (at_start and len(words) > 1 and (not by_date or known_verb(words[0]))
-                and supported(words[1:], by_date)):
+        # A listed sentence opener ("Built Team Course Planner", "The Team Course Planner") is
+        # not part of the name. Any other first word stays: "Goldman Sachs backed it" must
+        # find both words. On a strict part only a known verb is dropped: in "Goldman Sachs
+        # Mar 2025" the first word belongs to the name.
+        if (at_start and len(words) > 1 and opener(words[0])
+                and (not by_date or known_verb(words[0])) and supported(words[1:], by_date)):
             continue
         parts = _split_on_and(words)
         if len(parts) > 1:
@@ -375,7 +391,7 @@ def check_entities(claim: Claim, facts: list[FactVersion], ctx: Layer1Context
                 failures.append(_fail("entities", run,
                                       f"'{run}' is a name that no cited fact mentions."))
             continue
-        run = " ".join(words[1:] if at_start and len(words) > 2 else words)
+        run = " ".join(words[1:] if at_start and len(words) > 2 and opener(words[0]) else words)
         failures.append(_fail("entities", run,
                               f"'{run}' is a name that no cited fact mentions."))
     return failures
