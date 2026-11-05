@@ -177,6 +177,10 @@ Tasks 5 to 8 each end with the same gate, called **"Layer 1 gate"** below:
 - run `uv run python scripts/layer1_diff.py --base <commit before the task> --extra <task probes>`. Expected: exit 0, and every newly passing claim is listed in the commit body as checked by hand;
 - a fresh reviewer (spec compliance against `cv-builder-invariants` and the task), with review rounds until it approves. Each false-accept path a reviewer finds becomes a regression test before the fix.
 
+**Deviation from spec 7 step 5 (owner approved 2026-11-06):** the generated probe set is 946 distinct claims plus the 125 dev claims, not about 10,000. More seeds only add duplicates, because the templates allow few distinct mutations. To make up for it, each Layer 1 task commits at least 40 probes aimed at its own rule, at least half of them unsupported, to `experiments/p1-layer1/probes/task-<n>.jsonl` (dev profiles only), and passes them as `--extra`. The gate output goes to `experiments/p1-layer1/task-<n>-diff.txt`. `experiments/p1-layer1/RESULTS.md` records the deviation and each gate's counts.
+
+**Order change (owner, 2026-11-06):** Task 5 runs after Task 8 and before the Task 8 milestone. The step 1 search found no failing claim phrase in the dev run records, but the owner saw the failure in the live demo. The cause is the extracted fact wording "Studied 43007 Advanced Artificial Intelligence.", where the code is not the first evidence token, so `_is_identifier` reads it as an unbound number. The ground truth wording "43007 Advanced Artificial Intelligence" passes. Task 5 starts from a failing unit test against the extracted wording.
+
 ### Task 5: Subject codes (spec 7.1)
 
 **Files:** Modify `src/evident/validation/layer1/numbers.py` (`_is_identifier`). Test `tests/validation/layer1/test_numbers.py`.
