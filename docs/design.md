@@ -912,6 +912,7 @@ Each major decision is recorded once here, with the alternatives considered and 
 | 11 | Exact one-sided bounds for proportions; bootstrap for other metrics | One interval method for everything | Each method fits its metric type | Never |
 | 12 | No generated faces; no inference of traits from voice, face or writing | Avatar generation; confidence or personality scoring | Misrepresentation and unreliable, potentially discriminatory inference | Never |
 | 13 | Lower-is-better metrics recorded as absolute values round away from zero, never toward it | One rounding direction for all metrics | A smaller latency, cost or error rate is a stronger claim, so rounding toward zero would let inflation through | Never; correctness requirement |
+| 14 | Layer 1 keeps the sentence-start entity gap (the first word of a capitalised run at a sentence start is dropped and a single word left is unchecked); the Layer 2 judge covers it (P9) | Opener lists with exceptions for markers, figures and lowercase matches (phase 1 Task 6, reverted after three review rounds) | Each exception opened a new false-accept path faster than probes could cover it | A design where every capitalised word in the claim must appear in the evidence passes the Layer 1 gate with no new false accept and a measured false-reject cost on dev |
 
 ## Open questions
 

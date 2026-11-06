@@ -202,6 +202,8 @@ Tasks 5 to 8 each end with the same gate, called **"Layer 1 gate"** below:
 
 ### Task 6: Sentence-start entities (spec 7.2)
 
+> **Status: reverted on 2026-11-07 (owner decision, P9).** Three review rounds (49e9317, ac3ca43, 262f0d7) each found a new false-accept path: an opener dropped after a bullet, dash or line break left a single unchecked word; a digit-led word passed as a figure; a leftover word or a whole run matched lowercase prose; a leftover of two or more words matched lowercase prose. The Layer 1 source (`checks_scope.py`, `config.py`, `config/lexicons.toml`) is back to its 4478384 version through a new commit. History is not rewritten. Every test and probe that asserts a rejection is kept. Cases the 4478384 code accepts are strict xfails that name the limitation. The gate tool changes (standing probes, `--report` in UTF-8) stay. The sentence-start entity gap stays a documented limitation, covered by the Layer 2 judge. A future attempt starts from a stricter design: every capitalised word in the claim must appear in the evidence. Gate after the revert: 0 changed claims against v0.1-a3 and 4478384 (`experiments/p1-layer1/RESULTS.md`). The steps below are kept as the record of what was tried.
+
 **Files:** Modify `src/evident/validation/layer1/checks_scope.py` (`_name_runs`, `check_entities`) and `config/lexicons.toml` (new `sentence_openers` list, `version = "2"`). Modify `layer1/config.py` (`Lexicons.sentence_openers: frozenset[str]`). Test `tests/validation/layer1/test_checks_scope.py`.
 
 - [ ] **Step 1: Failing tests:**
