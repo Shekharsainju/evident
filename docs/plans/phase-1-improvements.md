@@ -183,6 +183,8 @@ Tasks 5 to 8 each end with the same gate, called **"Layer 1 gate"** below:
 
 ### Task 5: Subject codes (spec 7.1)
 
+> **Status: on hold for the owner (2026-11-07).** The live claim "Studied 43007 Advanced Artificial Intelligence as part of a Bachelor of Computing Science." passes Layer 1 when it cites the subject fact as the extractor writes it (title and span "43007 Advanced Artificial Intelligence", text "Studied 43007 Advanced Artificial Intelligence."), because the title and span are evidence and lead with the code. It fails only when the subject fact is not cited, and then the rejection is right. The earlier diagnosis checked the fact text alone. Both cases are now guard tests in `tests/validation/layer1/test_checks_refs.py`. The only form still rejected with the subject fact cited is the reversed one ("Advanced Artificial Intelligence (43007)"), which no run has shown. No Layer 1 code is changed.
+
 **Files:** Modify `src/evident/validation/layer1/numbers.py` (`_is_identifier`). Test `tests/validation/layer1/test_numbers.py`.
 
 **Interfaces:** `_is_identifier(norm_claim, number_text, start, end, evidence, titles: list[str]) -> bool`. `titles` holds the normalised titles of the cited education facts, passed from `find_numbers` (new keyword argument `titles: list[str] = []`, filled by `check_metrics` from cited facts with kind `education`).

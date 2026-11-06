@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 
+from evident.contracts.facts import FactVersion
 from evident.validation.layer1.checks_refs import check_aggregates, check_metrics, check_scale
 from evident.validation.layer1.run import run_layer1
 from tests.builders import attrs
@@ -223,3 +224,37 @@ def test_higher_is_better_absolute_record_still_rounds_toward_zero() -> None:
     assert check_metrics(claim("Reached 80% accuracy", f), [f], context(f)) == []
     assert check_metrics(claim("Reached 90% accuracy", f), [f], context(f)) != []
     assert check_metrics(claim("Reached 80% on the test set", f), [f], context(f)) == []
+
+
+# Task 5 (spec 7.1): the live claim that Layer 1 rejected. With the subject fact cited as the
+# extractor writes it (title and span lead with the code), the code is an identifier. Cited
+# without that fact, the code is in no cited evidence and the rejection is right.
+
+
+def _subject_43007() -> FactVersion:
+    return confirmed("d_f02", text="Studied 43007 Advanced Artificial Intelligence.",
+                     kind="education", attributes=attrs(title="43007 Advanced Artificial "
+                                                              "Intelligence"))
+
+
+def _degree() -> FactVersion:
+    return confirmed("d_f01", text="Bachelor of Computing Science, University of Technology "
+                     "Sydney", kind="education",
+                     attributes=attrs(title="Bachelor of Computing Science",
+                                      organisation="University of Technology Sydney",
+                                      start="2024-02", end="2026-11"))
+
+
+_LIVE_43007 = ("Studied 43007 Advanced Artificial Intelligence as part of a Bachelor of "
+               "Computing Science.")
+
+
+def test_live_subject_code_claim_passes_with_the_subject_fact_cited() -> None:
+    facts = [_degree(), _subject_43007()]
+    assert run_layer1(claim(_LIVE_43007, *facts), context(*facts)).passed
+
+
+def test_live_subject_code_claim_citing_only_the_degree_is_rejected() -> None:
+    deg = _degree()
+    failures = check_metrics(claim(_LIVE_43007, deg), [deg], context(deg))
+    assert [(x.rule, x.phrase) for x in failures] == [("metrics", "43007")]
