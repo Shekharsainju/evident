@@ -94,10 +94,12 @@ def test_span_offsets_point_into_normalised_text() -> None:
         assert norm[m.start:m.end] == m.span
 
 
-# Task 7 (Review Focus 2): a time unit glued to its number ("1s", "200ms") is still a metric
-# number. Without this, "Clash checks run in 1s" had no number for the metric rule to check.
+# Task 7 (Review Focus 2) wanted a time unit glued to its number ("1s", "200ms") read as a
+# metric number. Task 7 was reverted (P10), so these are strict xfails naming the limitation.
 
 
+@pytest.mark.xfail(strict=True, reason="Task 7 reverted (P10): a time unit glued to its "
+                   "number is not read. Documented limitation; the judge covers it.")
 @pytest.mark.parametrize("text,value,unit", [
     ("Clash checks run in 1s", 1.0, "s"),
     ("Clash checks run in 0.5s", 0.5, "s"),

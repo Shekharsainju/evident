@@ -43,10 +43,6 @@ _GLUE = {"of", "a", "an", "the", "and", "by", "to", "in", "on", "than", "percent
 
 YEAR_MIN, YEAR_MAX = 1990, 2039
 _NUMBER = re.compile(r"^\$?(\d+(?:\.\d+)?)([km])?(%|\+)?$")
-# A time unit written against its number ("1s", "0.5s", "200ms"). Without this the token is
-# not a number at all and a claim like "runs in 1s" has nothing for the metric rule to check.
-# Not "1990s": a bare year with "s" is a decade.
-_GLUED_TIME = re.compile(r"^(\d+(?:\.\d+)?)(ms|s|sec|secs)$")
 
 
 class NumberKind(StrEnum):
@@ -175,15 +171,6 @@ def find_numbers(claim_text: str, evidence_texts: list[str], lex: Lexicons) -> l
         parsed = _digits(tok.text)
         next_i = i + 1
         is_percent = has_plus = False
-        glued = _GLUED_TIME.match(tok.text)
-        if glued and not (glued.group(2) == "s" and glued.group(1).isdigit()
-                          and YEAR_MIN <= int(glued.group(1)) <= YEAR_MAX):
-            start, end = tok.start, tok.end
-            comparator_g: Literal["eq", "ge"] = "ge" if _preceded_by_ge(norm, start) else "eq"
-            out.append(NumberMention(float(glued.group(1)), glued.group(2), comparator_g,
-                                     NumberKind.metric, norm[start:end], start, end))
-            i = next_i
-            continue
         if parsed is None:
             words = _words_to_number(toks, i)
             if words is None:

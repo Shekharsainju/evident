@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from evident.validation.layer1.checks_refs import check_aggregates, check_metrics, check_scale
 from evident.validation.layer1.run import run_layer1
 from tests.builders import attrs
@@ -109,10 +111,16 @@ def test_subject_code_claim_passes_metric_check() -> None:  # Review Focus 1, en
     assert result.passed, result.failures
 
 
-# Task 7 (P8, Decision log 13): a lower-is-better metric recorded as an absolute value may
-# round away from zero, never toward it. Fix round 1: such a record binds only a number with
-# a unit in its family, in a claim that names the metric; a lower bound above the record
-# fails; a saving word means a change, which an absolute record cannot back.
+# Task 7 (P8) was reverted after two review rounds: with no upper limit on a lower-is-better
+# record, each fix left a way for a stray number to pass (P10). The layer 1 code is back to
+# 2010eec, where every metric rounds toward zero. Rejections that code makes are plain tests;
+# rejections it does not make are strict xfails naming the limitation (the judge covers them).
+
+_P8_LIMITATION = pytest.mark.xfail(
+    strict=True,
+    reason="Task 7 reverted (P10): a lower-is-better absolute record still rounds toward "
+           "zero, and a time unit glued to its number is not read. Documented limitation; "
+           "the judge covers it.")
 
 
 def _clash_latency() -> object:
@@ -130,25 +138,29 @@ def _error_rate() -> object:
                   unit="percent", span_text="an error rate of 5%")
 
 
-def _unbound(text: str, rec: object) -> bool:
+def _rejects(text: str, rec: object) -> bool:
     f = project(metrics=[rec])
-    failures = check_metrics(claim(text, f), [f], context(f))
-    return any(x.rule == "metrics" and "unbound" in x.detail for x in failures)
+    return not run_layer1(claim(text, f), context(f)).passed
 
 
-def test_lower_is_better_old_false_accepts_now_fail() -> None:
+@_P8_LIMITATION
+def test_lower_is_better_value_below_the_record_fails() -> None:
+    for text in ("Clash check latency is 1 second", "Clash check latency is 0.5 seconds",
+                 "Clash checks run in 1 second"):
+        assert _rejects(text, _clash_latency()), text
+    assert _rejects("Kept the error rate at 3%", _error_rate())
+
+
+def test_lower_is_better_equal_value_passes() -> None:
     f = project(metrics=[_clash_latency()])
-    for text in ("Clash check latency is 1 second", "Clash check latency is 0.5 seconds"):
-        failures = check_metrics(claim(text, f), [f], context(f))
-        assert len(failures) == 1, (text, failures)
-        assert failures[0].rule == "metrics" and "beyond" in failures[0].detail, text
-
-
-def test_lower_is_better_equal_or_higher_passes() -> None:
-    f = project(metrics=[_clash_latency()])
-    for text in ("Clash check latency is 2 seconds", "Clash check latency is about 3 seconds",
-                 "Clash check latency is under 2 seconds", "Clash check latency is 2s"):
+    for text in ("Clash check latency is 2 seconds", "Clash check latency is under 2 seconds",
+                 "Clash check latency is 2s", "Clash check latency is at least 2 seconds",
+                 "Clash check latency is over 1 second"):
         assert check_metrics(claim(text, f), [f], context(f)) == [], text
+    g = project(metrics=[_error_rate()])
+    assert check_metrics(claim("Kept the error rate at 5%", g), [g], context(g)) == []
+    h = project(metrics=[_hosting_cost()])
+    assert check_metrics(claim("Kept hosting cost at $400 a month", h), [h], context(h)) == []
 
 
 def test_decrease_record_still_rounds_toward_zero() -> None:
@@ -158,36 +170,34 @@ def test_decrease_record_still_rounds_toward_zero() -> None:
 
 
 def test_units_that_differ_fail_closed() -> None:
-    # Whole Layer 1, not only check_metrics: "2,000" reads as the year 2000, so the dates
-    # rule is what rejects "under 2,000 ms".
-    f = project(metrics=[_clash_latency()])
+    # "2,000" reads as the year 2000, so the dates rule is what rejects "under 2,000 ms".
     for text in ("Clash checks run in under 2,000 ms", "Clash checks run in 1500 ms",
-                 "Clash checks run in 1s", "Clash checks run in 0.5s",
                  "Clash check latency is under 2,000 ms", "Clash check latency is 1500 ms"):
-        assert not run_layer1(claim(text, f), context(f)).passed, text
+        assert _rejects(text, _clash_latency()), text
 
 
-def test_lower_is_better_unitless_number_is_unbound() -> None:
-    rec = _clash_latency()
-    for text in ("Clash check latency is now 500.",
-                 "Clash check latency stays low across 40.",
+@_P8_LIMITATION
+def test_glued_time_unit_below_the_record_fails() -> None:
+    for text in ("Clash checks run in 1s", "Clash checks run in 0.5s"):
+        assert _rejects(text, _clash_latency()), text
+
+
+def test_unitless_number_against_a_lower_is_better_record_fails() -> None:
+    for text in ("Clash check latency is now 500.", "Clash check latency stays low across 40.",
                  "Clash check latency is 800 on average",
                  "Ran clash checks on 300 of the plans with low latency"):
-        assert _unbound(text, rec), text
-    assert _unbound("Fixed errors in 50 of the modules", _error_rate())
-    assert _unbound("Kept hosting cost to 900 of budget", _hosting_cost())
+        assert _rejects(text, _clash_latency()), text
+    assert _rejects("Fixed errors in 50 of the modules", _error_rate())
+    assert _rejects("Kept hosting cost to 900 of budget", _hosting_cost())
 
 
-def test_lower_is_better_number_without_the_metric_keyword_is_unbound() -> None:
-    rec = _clash_latency()
-    for text in ("Clash checks run in 1 second", "Clash checks run in 2 seconds",
-                 "Clash checks take 3 seconds", "Clash checks finish in 2s"):
-        assert _unbound(text, rec), text
-    assert _unbound("Hosting came to $400 a month", _hosting_cost())
+def test_value_above_a_lower_is_better_record_fails() -> None:
+    for text in ("Clash checks take 3 seconds", "Clash check latency is at least 3 seconds",
+                 "Clash check latency is over 3 seconds", "Clash check latency is 3+ seconds"):
+        assert _rejects(text, _clash_latency()), text
 
 
 def test_unitless_number_beside_a_lower_is_better_record_does_not_bind_elsewhere() -> None:
-    # Dropping the latency record must not leave a count record to bind the stray number.
     count = metric(metric_id="m_n", metric="count", direction="absolute", value=500.0,
                    unit="count", span_text="500 plans")
     f = project(metrics=[_clash_latency(), count])
@@ -195,33 +205,15 @@ def test_unitless_number_beside_a_lower_is_better_record_does_not_bind_elsewhere
     assert [x.rule for x in failures] == ["metrics"], failures
 
 
-def test_lower_bound_above_a_lower_is_better_record_fails() -> None:
-    f = project(metrics=[_clash_latency()])
-    for text in ("Clash check latency is at least 3 seconds",
-                 "Clash check latency is over 3 seconds",
-                 "Clash check latency is 3+ seconds"):
-        failures = check_metrics(claim(text, f), [f], context(f))
-        assert [x.rule for x in failures] == ["metrics"], text
-    for text in ("Clash check latency is at least 2 seconds",
-                 "Clash check latency is over 1 second"):
-        assert check_metrics(claim(text, f), [f], context(f)) == [], text
+def test_saving_above_an_absolute_cost_record_fails() -> None:
+    for text in ("Saved $500 in hosting cost", "Hosting cost savings of $500"):
+        assert _rejects(text, _hosting_cost()), text
 
 
+@_P8_LIMITATION
 def test_saving_needs_a_decrease_record() -> None:
-    for text in ("Saved $500 in hosting cost", "Saved $300 in hosting costs",
-                 "Hosting cost savings of $500"):
-        assert _unbound(text, _hosting_cost()), text
-    assert _unbound("Saved 1 second of clash check latency", _clash_latency())
-    f = project(metrics=[_hosting_cost()])
-    for text in ("Kept hosting cost at $400 a month", "Hosting cost was about $450 a month"):
-        assert check_metrics(claim(text, f), [f], context(f)) == [], text
-
-
-def test_lower_is_better_error_rate_rounds_away_from_zero() -> None:
-    f = project(metrics=[_error_rate()])
-    (failure,) = check_metrics(claim("Kept the error rate at 3%", f), [f], context(f))
-    assert "beyond" in failure.detail
-    assert check_metrics(claim("Kept the error rate at 5%", f), [f], context(f)) == []
+    assert _rejects("Saved $300 in hosting costs", _hosting_cost())
+    assert _rejects("Saved 1 second of clash check latency", _clash_latency())
 
 
 def test_higher_is_better_absolute_record_still_rounds_toward_zero() -> None:

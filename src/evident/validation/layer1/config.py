@@ -33,8 +33,6 @@ class Lexicons:
     seniority_words: set[str]
     credential_words: set[str]
     unit_aliases: dict[str, str] = field(default_factory=dict)
-    lower_is_better: frozenset[str] = field(default_factory=frozenset)
-    saving_words: frozenset[str] = field(default_factory=frozenset)
 
     def unit_family(self, unit: str) -> str:
         """Map a unit spelling to its family name, or return it normalised."""
@@ -83,9 +81,6 @@ def load_lexicons(path: Path = LEXICONS_PATH) -> Lexicons:
         seniority_words={normalise_text(w) for w in raw["seniority_words"]},
         credential_words={normalise_text(w) for w in raw["credential_words"]},
         unit_aliases=unit_aliases,
-        # Required: without it latency would round toward zero and pass smaller claims.
-        lower_is_better=frozenset(str(m) for m in raw["lower_is_better"]),
-        saving_words=frozenset(normalise_text(str(w)) for w in raw["saving_words"]),
     )
 
 
