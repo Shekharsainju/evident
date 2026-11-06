@@ -66,13 +66,13 @@ Proposals and temporary exceptions to the Decision log in `docs/design.md`. Noth
 
 ## P7: Metric direction for "cut ... to under N" (owner decision)
 
-- **Status:** owner decision of 2026-11-03. It reverses the owner decision of 2026-10-31 (A3 RESULTS, "Known limitation: metric direction") to leave the rule unchanged.
+- **Status:** owner decision of 2026-11-03, not built: Task 8 was skipped on 2026-11-07 (P10). It reverses the owner decision of 2026-10-31 (A3 RESULTS, "Known limitation: metric direction") to leave the rule unchanged.
 - **Change:** when a direction word is followed by "to" and an optional bound word ("under", "below", "less than", "over", "above", "more than") before the number, the number states an end value and may bind to an `absolute` record as well as one with the matching direction. "Cut latency by 2 seconds" still needs a `decrease` record. Phase 1 spec 7.3.
 - **Guard:** P8 applies to this path too, so "cut ... to under 1 second" against a 2 second record fails.
 
 ## P8: Lower-is-better absolute metrics round away from zero
 
-- **Status:** approved by the owner on 2026-11-03. Moved into the Decision log (row 13) and the Deterministic check rules Metrics row of `docs/design.md`.
+- **Status:** approved by the owner on 2026-11-03. Moved into the Decision log (row 13) and the Deterministic check rules Metrics row of `docs/design.md`. Not enforced by Layer 1: Task 7 was reverted on 2026-11-07 (P10).
 - **Found:** while writing the phase 1 spec, a probe on the A3 code showed that with a cited record `latency, absolute, 2 seconds`, Layer 1 passes "Clash checks run in 1 second" and "take 0.5 seconds". The round-toward-zero rule assumes a bigger number is the stronger claim, which is wrong for latency, cost and error rate stated as absolute values.
 - **Rule:** for a record with direction `absolute` whose metric is lower-is-better (a list in `config/lexicons.toml`: latency, cost, error_rate), the claimed value may round away from zero, never toward it. Records with direction `decrease` or `increase` store the size of the change, where a bigger number is the stronger claim, so they keep round toward zero.
 - **Tests:** "1 second" and "0.5 seconds" against the 2 second record fail; "2 seconds" passes.
@@ -84,3 +84,11 @@ Proposals and temporary exceptions to the Decision log in `docs/design.md`. Noth
 - **Decision:** revert the Layer 1 source to 4478384 with new commits, not by rewriting history. Keep every rejection test and probe. Cases the 4478384 code still accepts become strict xfails, so a later fix shows up as XPASS. Keep the gate tool changes (standing probes, UTF-8 `--report`).
 - **Limitation kept:** at a plain sentence start, or after ".", ";" or ":", the first word of a capitalised run is dropped and a single word left is not checked, so "Goldman Sachs backed the planner." passes Layer 1. A run kept whole can match lowercase prose ("The Answer" against "the answer"); this shape was found while writing round 2 probes, not by a review. The Layer 2 judge covers these claims; nothing auto-passes when the judge is unavailable.
 - **Future attempt:** start from a stricter design: every capitalised word in the claim must appear in the evidence (after alias mapping). Measure newly failing supported dev claims before adopting it. Supported sentences that must keep passing are in `tests/eval/test_layer1_probe.py` and the `revert_r2_supported` probes.
+
+## P10: Revert Task 7 (P8) and skip Task 8 (P7); keep both as documented limitations
+
+- **Status:** owner decision of 2026-11-07. Recorded in the Decision log (row 15) of `docs/design.md`.
+- **What happened:** Task 7 made a lower-is-better metric recorded as an absolute value round away from zero (P8). Two review rounds each found new false accepts that neither 2010eec nor v0.1-a3 had. eacceca: a number with no unit bound the record ("latency is now 500"), "at least 3 seconds" passed, and "Saved $500 in hosting cost" bound an absolute $400 record. e849255 required a unit, a metric keyword and no saving word, and still passed a second number in the same unit ("latency is under 2 seconds and a full rebuild takes 90 seconds"), statements of change ("Shaved 3 seconds off timetable clash check latency.") and other lower-bound wordings ("no less than 3 seconds"). The cause is the same each time: rounding away from zero has no upper limit, so the record no longer caps a loosely bound number.
+- **Decision:** revert the Layer 1 source to 2010eec with new commits, not by rewriting history. Keep every rejection test and probe. Cases the 2010eec code accepts become strict xfails. Skip Task 8 (P7, direction word with "to" states an end value), because it widens accepts in the same area.
+- **Limitations kept:** against a lower-is-better absolute record, Layer 1 rounds toward zero like every other metric, so "Clash check latency is 1 second" passes against a 2 second record. A time unit glued to its number ("1s", "500ms") is not read as a number. "Cut ... to under 2 seconds" against an absolute record is rejected (P7 not built). The Layer 2 judge covers these claims; nothing auto-passes when the judge is unavailable.
+- **Future design (P8):** an upper limit: a claimed value passes only from the record up to a small margin above it, and anything else is routed to user review. It needs its own decision entry, tests and gate before any code.

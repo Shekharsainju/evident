@@ -226,6 +226,8 @@ Tasks 5 to 8 each end with the same gate, called **"Layer 1 gate"** below:
 
 ### Task 7: Lower-is-better metrics round away from zero (P8)
 
+> **Status: reverted on 2026-11-07 (owner decision, P10).** Two review rounds (eacceca, e849255) each found new false accepts. Rounding away from zero has no upper limit, so any number loosely bound to a lower-is-better record passed: a number with no unit, a second number in the same unit, a statement of change ("Shaved 3 seconds off ... latency"), lower bounds. The Layer 1 source is back to 2010eec through a new commit. Every rejection test and probe is kept; cases the 2010eec code accepts are strict xfails. P8 stays a documented limitation, covered by the Layer 2 judge. Future design: an upper limit just above the record, with anything outside it routed to user review. Gate after the revert: 0 changed claims against 2010eec and v0.1-a3. The steps below are kept as the record of what was tried.
+
 **Files:** Modify `src/evident/validation/layer1/checks_refs.py` (`_within`) and `config/lexicons.toml` (new `lower_is_better = ["latency", "cost", "error_rate"]`, `version = "3"`: Task 6 used "2" and was reverted to "1", so "2" is not reused). Modify `layer1/config.py`. Test `tests/validation/layer1/test_checks_refs.py`.
 
 **Interfaces:** `_within(mention: NumberMention, record: MetricRecord, lower_is_better: frozenset[str]) -> bool`.
@@ -240,6 +242,8 @@ Tasks 5 to 8 each end with the same gate, called **"Layer 1 gate"** below:
 - [ ] **Step 4:** Full suite. **Layer 1 gate** (here a newly *failing* supported claim is expected and listed; a newly passing one must not exist). Commit: `fix: round lower-is-better absolute metrics away from zero`.
 
 ### Task 8: Direction word with "to" states an end value (spec 7.3, P7)
+
+> **Status: skipped on 2026-11-07 (owner decision, P10).** Task 8 widens what Layer 1 accepts in the same area as Task 7, so it is not built. "Cut timetable clash checks to under 2 seconds" against an absolute record stays a Layer 1 reject (a false reject, routed to the judge and user review), as at A3. P7 is a documented limitation. The steps below are not run.
 
 **Files:** Modify `src/evident/validation/layer1/checks_refs.py` (`_candidates`). Test `tests/validation/layer1/test_checks_refs.py`.
 
