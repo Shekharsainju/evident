@@ -75,7 +75,7 @@ Proposals and temporary exceptions to the Decision log in `docs/design.md`. Noth
 - **Status:** approved by the owner on 2026-11-03. Moved into the Decision log (row 13) and the Deterministic check rules Metrics row of `docs/design.md`. Not enforced by Layer 1: Task 7 was reverted on 2026-11-07 (P10).
 - **Found:** while writing the phase 1 spec, a probe on the A3 code showed that with a cited record `latency, absolute, 2 seconds`, Layer 1 passes "Clash checks run in 1 second" and "take 0.5 seconds". The round-toward-zero rule assumes a bigger number is the stronger claim, which is wrong for latency, cost and error rate stated as absolute values.
 - **Rule:** for a record with direction `absolute` whose metric is lower-is-better (a list in `config/lexicons.toml`: latency, cost, error_rate), the claimed value may round away from zero, never toward it. Records with direction `decrease` or `increase` store the size of the change, where a bigger number is the stronger claim, so they keep round toward zero.
-- **Tests:** "1 second" and "0.5 seconds" against the 2 second record fail; "2 seconds" passes.
+- **Tests:** "1 second" and "0.5 seconds" against the 2 second record were meant to fail; since the Task 7 revert (P10) they are strict xfails in `tests/validation/layer1/test_checks_refs.py`.
 
 ## P9: Revert Task 6 (sentence-start entities); keep the gap as a documented limitation
 
