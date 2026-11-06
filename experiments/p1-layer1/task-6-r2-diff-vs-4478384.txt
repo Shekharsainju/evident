@@ -1,0 +1,1020 @@
+probes: 3362
+base imports evident from: C:\Users\ultra\AppData\Local\Temp\layer1-diff-g5513vrv\base-worktree\src\evident\__init__.py
+supported | entities -> pass | • Our Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Our Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Our Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Our Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Our Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Our Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • My Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - My Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – My Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — My Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * My Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+My Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • Her Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Her Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Her Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Her Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Her Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Her Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • A Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - A Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – A Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — A Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * A Team Course Planner project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+A Team Course Planner project ran from Mar 2025 to Jun 2025.
+unsupported | pass -> entities | The Goldman backed the Team Course Planner.
+unsupported | pass -> entities | Our Majesty backed the Team Course Planner.
+unsupported | pass -> entities | Her Economist backed the Team Course Planner.
+unsupported | pass -> entities | We Nation backed the Team Course Planner.
+unsupported | pass -> entities | It Ventures backed the Team Course Planner.
+unsupported | pass -> entities | A Guardian backed the Team Course Planner.
+unsupported | pass -> entities | Concept Nation backed the Team Course Planner.
+unsupported | pass -> entities | Contributed to the Team Course Planner project as a prototype, using Python and Flask.; Goldman Sachs backed the Team Course Planner.
+unsupported | pass -> entities | Contributed to the Team Course Planner project as a prototype, using Python and Flask.; Northwind Traders backed the Team Course Planner.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the Team Course Planner.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Team Course Planner.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Team Course Planner.
+unsupported | pass -> entities | Designed Team Course Planner; Contoso Cloud hosted it.
+supported | entities -> pass | • Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+supported | entities -> pass | - Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+supported | entities -> pass | – Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+supported | entities -> pass | — Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+supported | entities -> pass | * Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+supported | entities -> pass | Worked on the AI Coursework Prototype project from Aug 2025 to Oct 2025. - Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+supported | entities -> pass | Worked on the AI Coursework Prototype project from Aug 2025 to Oct 2025. – Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+supported | entities -> pass | Worked on the AI Coursework Prototype project from Aug 2025 to Oct 2025. — Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+supported | entities -> pass | Worked on the AI Coursework Prototype project from Aug 2025 to Oct 2025. * Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+supported | entities -> pass | • Our AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - Our AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – Our AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — Our AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * Our AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+Our AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • My AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - My AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – My AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — My AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * My AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+My AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • Her AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - Her AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – Her AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — Her AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * Her AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+Her AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • A AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - A AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – A AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — A AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * A AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+A AI Coursework Prototype project ran from Aug 2025 to Oct 2025.
+unsupported | pass -> entities | The Ventures backed the AI Coursework Prototype.
+unsupported | pass -> entities | Our Guardian backed the AI Coursework Prototype.
+unsupported | pass -> entities | Her Goldman backed the AI Coursework Prototype.
+unsupported | pass -> entities | We Majesty backed the AI Coursework Prototype.
+unsupported | pass -> entities | It Economist backed the AI Coursework Prototype.
+unsupported | pass -> entities | A Nation backed the AI Coursework Prototype.
+unsupported | pass -> entities | Concept Majesty backed the AI Coursework Prototype.
+unsupported | pass -> entities | Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+Goldman Sachs backed the AI Coursework Prototype.
+unsupported | pass -> entities | Built the AI Coursework Prototype project as a prototype, using Python and prompt design.
+Northwind Traders backed the AI Coursework Prototype.
+unsupported | pass -> entities | Built the AI Coursework Prototype project as a prototype, using Python and prompt design.; Goldman Sachs backed the AI Coursework Prototype.
+unsupported | pass -> entities | Built the AI Coursework Prototype project as a prototype, using Python and prompt design.; Northwind Traders backed the AI Coursework Prototype.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the AI Coursework Prototype.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the AI Coursework Prototype.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the AI Coursework Prototype.
+unsupported | pass -> entities | Designed AI Coursework Prototype; Contoso Cloud hosted it.
+supported | entities -> pass | • Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+supported | entities -> pass | - Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+supported | entities -> pass | – Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+supported | entities -> pass | — Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+supported | entities -> pass | * Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+supported | entities -> pass | Worked on the Coursework Retrieval Assistant project from Aug 2025 to Oct 2025. - Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+supported | entities -> pass | Worked on the Coursework Retrieval Assistant project from Aug 2025 to Oct 2025. – Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+supported | entities -> pass | Worked on the Coursework Retrieval Assistant project from Aug 2025 to Oct 2025. — Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+supported | entities -> pass | Worked on the Coursework Retrieval Assistant project from Aug 2025 to Oct 2025. * Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+supported | entities -> pass | • Our Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - Our Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – Our Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — Our Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * Our Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+Our Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • My Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - My Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – My Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — My Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * My Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+My Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • Her Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - Her Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – Her Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — Her Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * Her Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+Her Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • A Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - A Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – A Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — A Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * A Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+A Coursework Retrieval Assistant project ran from Aug 2025 to Oct 2025.
+unsupported | pass -> entities | The Economist backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Our Nation backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Her Ventures backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | We Guardian backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | It Goldman backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | A Majesty backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Concept Guardian backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+Goldman Sachs backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.
+Northwind Traders backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.; Goldman Sachs backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Built the Coursework Retrieval Assistant project as a prototype, using Python and embeddings.; Northwind Traders backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Designed Coursework Retrieval Assistant; Contoso Cloud hosted it.
+supported | entities -> pass | • Built the Text Classification Study project as a concept, using Python and pandas.
+supported | entities -> pass | - Built the Text Classification Study project as a concept, using Python and pandas.
+supported | entities -> pass | – Built the Text Classification Study project as a concept, using Python and pandas.
+supported | entities -> pass | — Built the Text Classification Study project as a concept, using Python and pandas.
+supported | entities -> pass | * Built the Text Classification Study project as a concept, using Python and pandas.
+supported | entities -> pass | Worked on the Text Classification Study project from Mar 2025 to Jun 2025. - Built the Text Classification Study project as a concept, using Python and pandas.
+supported | entities -> pass | Worked on the Text Classification Study project from Mar 2025 to Jun 2025. – Built the Text Classification Study project as a concept, using Python and pandas.
+supported | entities -> pass | Worked on the Text Classification Study project from Mar 2025 to Jun 2025. — Built the Text Classification Study project as a concept, using Python and pandas.
+supported | entities -> pass | Worked on the Text Classification Study project from Mar 2025 to Jun 2025. * Built the Text Classification Study project as a concept, using Python and pandas.
+supported | entities -> pass | • Our Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Our Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Our Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Our Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Our Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Our Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • My Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - My Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – My Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — My Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * My Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+My Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • Her Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Her Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Her Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Her Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Her Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Her Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • A Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - A Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – A Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — A Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * A Text Classification Study project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+A Text Classification Study project ran from Mar 2025 to Jun 2025.
+unsupported | pass -> entities | The Goldman backed the Text Classification Study.
+unsupported | pass -> entities | Our Majesty backed the Text Classification Study.
+unsupported | pass -> entities | Her Economist backed the Text Classification Study.
+unsupported | pass -> entities | We Nation backed the Text Classification Study.
+unsupported | pass -> entities | It Ventures backed the Text Classification Study.
+unsupported | pass -> entities | A Guardian backed the Text Classification Study.
+unsupported | pass -> entities | Concept Nation backed the Text Classification Study.
+unsupported | pass -> entities | Built the Text Classification Study project as a concept, using Python and pandas.
+Goldman Sachs backed the Text Classification Study.
+unsupported | pass -> entities | Built the Text Classification Study project as a concept, using Python and pandas.
+Northwind Traders backed the Text Classification Study.
+unsupported | pass -> entities | Built the Text Classification Study project as a concept, using Python and pandas.; Goldman Sachs backed the Text Classification Study.
+unsupported | pass -> entities | Built the Text Classification Study project as a concept, using Python and pandas.; Northwind Traders backed the Text Classification Study.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the Text Classification Study.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Text Classification Study.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Text Classification Study.
+unsupported | pass -> entities | Designed Text Classification Study; Contoso Cloud hosted it.
+supported | entities -> pass | • Built the Student Services Dashboard project as a prototype, using Python and pandas.
+supported | entities -> pass | - Built the Student Services Dashboard project as a prototype, using Python and pandas.
+supported | entities -> pass | – Built the Student Services Dashboard project as a prototype, using Python and pandas.
+supported | entities -> pass | — Built the Student Services Dashboard project as a prototype, using Python and pandas.
+supported | entities -> pass | * Built the Student Services Dashboard project as a prototype, using Python and pandas.
+supported | entities -> pass | Worked on the Student Services Dashboard project from Mar 2025 to Jun 2025. - Built the Student Services Dashboard project as a prototype, using Python and pandas.
+supported | entities -> pass | Worked on the Student Services Dashboard project from Mar 2025 to Jun 2025. – Built the Student Services Dashboard project as a prototype, using Python and pandas.
+supported | entities -> pass | Worked on the Student Services Dashboard project from Mar 2025 to Jun 2025. — Built the Student Services Dashboard project as a prototype, using Python and pandas.
+supported | entities -> pass | Worked on the Student Services Dashboard project from Mar 2025 to Jun 2025. * Built the Student Services Dashboard project as a prototype, using Python and pandas.
+supported | entities -> pass | • Our Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Our Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Our Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Our Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Our Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Our Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • My Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - My Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – My Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — My Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * My Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+My Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • Her Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Her Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Her Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Her Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Her Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Her Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • A Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - A Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – A Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — A Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * A Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+A Student Services Dashboard project ran from Mar 2025 to Jun 2025.
+unsupported | pass -> entities | The Ventures backed the Student Services Dashboard.
+unsupported | pass -> entities | Our Guardian backed the Student Services Dashboard.
+unsupported | pass -> entities | Her Goldman backed the Student Services Dashboard.
+unsupported | pass -> entities | We Majesty backed the Student Services Dashboard.
+unsupported | pass -> entities | It Economist backed the Student Services Dashboard.
+unsupported | pass -> entities | A Nation backed the Student Services Dashboard.
+unsupported | pass -> entities | Concept Majesty backed the Student Services Dashboard.
+unsupported | pass -> entities | Built the Student Services Dashboard project as a prototype, using Python and pandas.
+Goldman Sachs backed the Student Services Dashboard.
+unsupported | pass -> entities | Built the Student Services Dashboard project as a prototype, using Python and pandas.
+Northwind Traders backed the Student Services Dashboard.
+unsupported | pass -> entities | Built the Student Services Dashboard project as a prototype, using Python and pandas.; Goldman Sachs backed the Student Services Dashboard.
+unsupported | pass -> entities | Built the Student Services Dashboard project as a prototype, using Python and pandas.; Northwind Traders backed the Student Services Dashboard.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the Student Services Dashboard.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Student Services Dashboard.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Student Services Dashboard.
+unsupported | pass -> entities | Designed Student Services Dashboard; Contoso Cloud hosted it.
+supported | entities -> pass | • Built the Search Result Analysis project as a concept, using Python and Matplotlib.
+supported | entities -> pass | - Built the Search Result Analysis project as a concept, using Python and Matplotlib.
+supported | entities -> pass | – Built the Search Result Analysis project as a concept, using Python and Matplotlib.
+supported | entities -> pass | — Built the Search Result Analysis project as a concept, using Python and Matplotlib.
+supported | entities -> pass | * Built the Search Result Analysis project as a concept, using Python and Matplotlib.
+supported | entities -> pass | Worked on the Search Result Analysis project from Aug 2025 to Oct 2025. - Built the Search Result Analysis project as a concept, using Python and Matplotlib.
+supported | entities -> pass | Worked on the Search Result Analysis project from Aug 2025 to Oct 2025. – Built the Search Result Analysis project as a concept, using Python and Matplotlib.
+supported | entities -> pass | Worked on the Search Result Analysis project from Aug 2025 to Oct 2025. — Built the Search Result Analysis project as a concept, using Python and Matplotlib.
+supported | entities -> pass | Worked on the Search Result Analysis project from Aug 2025 to Oct 2025. * Built the Search Result Analysis project as a concept, using Python and Matplotlib.
+supported | entities -> pass | • Our Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - Our Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – Our Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — Our Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * Our Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+Our Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • My Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - My Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – My Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — My Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * My Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+My Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • Her Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - Her Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – Her Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — Her Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * Her Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+Her Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • A Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - A Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – A Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — A Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * A Search Result Analysis project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+A Search Result Analysis project ran from Aug 2025 to Oct 2025.
+unsupported | pass -> entities | The Economist backed the Search Result Analysis.
+unsupported | pass -> entities | Our Nation backed the Search Result Analysis.
+unsupported | pass -> entities | Her Ventures backed the Search Result Analysis.
+unsupported | pass -> entities | We Guardian backed the Search Result Analysis.
+unsupported | pass -> entities | It Goldman backed the Search Result Analysis.
+unsupported | pass -> entities | A Majesty backed the Search Result Analysis.
+unsupported | pass -> entities | Concept Guardian backed the Search Result Analysis.
+unsupported | pass -> entities | Built the Search Result Analysis project as a concept, using Python and Matplotlib.; Goldman Sachs backed the Search Result Analysis.
+unsupported | pass -> entities | Built the Search Result Analysis project as a concept, using Python and Matplotlib.; Northwind Traders backed the Search Result Analysis.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the Search Result Analysis.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Search Result Analysis.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Search Result Analysis.
+unsupported | pass -> entities | Designed Search Result Analysis; Contoso Cloud hosted it.
+supported | entities -> pass | • Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+supported | entities -> pass | - Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+supported | entities -> pass | – Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+supported | entities -> pass | — Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+supported | entities -> pass | * Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+supported | entities -> pass | Worked on the Network Monitoring Exercise project from Aug 2024 to Oct 2024. - Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+supported | entities -> pass | Worked on the Network Monitoring Exercise project from Aug 2024 to Oct 2024. – Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+supported | entities -> pass | Worked on the Network Monitoring Exercise project from Aug 2024 to Oct 2024. — Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+supported | entities -> pass | Worked on the Network Monitoring Exercise project from Aug 2024 to Oct 2024. * Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+supported | entities -> pass | • Our Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | - Our Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | – Our Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | — Our Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | * Our Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | Used it
+Our Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | • My Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | - My Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | – My Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | — My Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | * My Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | Used it
+My Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | • Her Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | - Her Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | – Her Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | — Her Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | * Her Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | Used it
+Her Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | • A Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | - A Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | – A Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | — A Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | * A Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+supported | entities -> pass | Used it
+A Network Monitoring Exercise project ran from Aug 2024 to Oct 2024.
+unsupported | pass -> entities | The Goldman backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Our Majesty backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Her Economist backed the Network Monitoring Exercise.
+unsupported | pass -> entities | We Nation backed the Network Monitoring Exercise.
+unsupported | pass -> entities | It Ventures backed the Network Monitoring Exercise.
+unsupported | pass -> entities | A Guardian backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Concept Nation backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+Goldman Sachs backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.
+Northwind Traders backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.; Goldman Sachs backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Built the Network Monitoring Exercise project as a concept, using Linux and Wireshark basics.; Northwind Traders backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Network Monitoring Exercise.
+unsupported | pass -> entities | Designed Network Monitoring Exercise; Contoso Cloud hosted it.
+supported | entities -> pass | • Our Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Our Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Our Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Our Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Our Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Our Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • My Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - My Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – My Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — My Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * My Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+My Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • Her Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Her Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Her Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Her Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Her Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Her Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • A Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - A Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – A Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — A Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * A Reliable Course Service project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+A Reliable Course Service project ran from Mar 2025 to Jun 2025.
+unsupported | pass -> entities | The Ventures backed the Reliable Course Service.
+unsupported | pass -> entities | Our Guardian backed the Reliable Course Service.
+unsupported | pass -> entities | Her Goldman backed the Reliable Course Service.
+unsupported | pass -> entities | We Majesty backed the Reliable Course Service.
+unsupported | pass -> entities | It Economist backed the Reliable Course Service.
+unsupported | pass -> entities | A Nation backed the Reliable Course Service.
+unsupported | pass -> entities | Concept Majesty backed the Reliable Course Service.
+unsupported | pass -> entities | Contributed to the Reliable Course Service project as a prototype, using Python and Flask.; Goldman Sachs backed the Reliable Course Service.
+unsupported | pass -> entities | Contributed to the Reliable Course Service project as a prototype, using Python and Flask.; Northwind Traders backed the Reliable Course Service.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the Reliable Course Service.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Reliable Course Service.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Reliable Course Service.
+unsupported | pass -> entities | Designed Reliable Course Service; Contoso Cloud hosted it.
+supported | entities -> pass | • Our Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Our Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Our Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Our Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Our Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Our Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • My Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - My Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – My Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — My Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * My Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+My Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • Her Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - Her Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – Her Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — Her Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * Her Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+Her Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | • A Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | - A Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | – A Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | — A Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | * A Team Service Platform project ran from Mar 2025 to Jun 2025.
+supported | entities -> pass | Used it
+A Team Service Platform project ran from Mar 2025 to Jun 2025.
+unsupported | pass -> entities | The Economist backed the Team Service Platform.
+unsupported | pass -> entities | Our Nation backed the Team Service Platform.
+unsupported | pass -> entities | Her Ventures backed the Team Service Platform.
+unsupported | pass -> entities | We Guardian backed the Team Service Platform.
+unsupported | pass -> entities | It Goldman backed the Team Service Platform.
+unsupported | pass -> entities | A Majesty backed the Team Service Platform.
+unsupported | pass -> entities | Concept Guardian backed the Team Service Platform.
+unsupported | pass -> entities | Contributed to the Team Service Platform project as a prototype, using Java and REST APIs.; Goldman Sachs backed the Team Service Platform.
+unsupported | pass -> entities | Contributed to the Team Service Platform project as a prototype, using Java and REST APIs.; Northwind Traders backed the Team Service Platform.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the Team Service Platform.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Team Service Platform.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Team Service Platform.
+unsupported | pass -> entities | Designed Team Service Platform; Contoso Cloud hosted it.
+supported | entities -> pass | • Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+supported | entities -> pass | - Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+supported | entities -> pass | – Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+supported | entities -> pass | — Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+supported | entities -> pass | * Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+supported | entities -> pass | Worked on the Tool-Call Agent Prototype project from Aug 2025 to Oct 2025. - Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+supported | entities -> pass | Worked on the Tool-Call Agent Prototype project from Aug 2025 to Oct 2025. – Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+supported | entities -> pass | Worked on the Tool-Call Agent Prototype project from Aug 2025 to Oct 2025. — Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+supported | entities -> pass | Worked on the Tool-Call Agent Prototype project from Aug 2025 to Oct 2025. * Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+supported | entities -> pass | • Our Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - Our Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – Our Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — Our Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * Our Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+Our Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • My Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - My Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – My Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — My Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * My Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+My Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • Her Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - Her Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – Her Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — Her Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * Her Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+Her Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | • A Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | - A Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | – A Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | — A Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | * A Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+supported | entities -> pass | Used it
+A Tool-Call Agent Prototype project ran from Aug 2025 to Oct 2025.
+unsupported | pass -> entities | The Goldman backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Our Majesty backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Her Economist backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | We Nation backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | It Ventures backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | A Guardian backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Concept Nation backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+Goldman Sachs backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.
+Northwind Traders backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.; Goldman Sachs backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Built the Tool-Call Agent Prototype project as a prototype, using Python and structured tool calls.; Northwind Traders backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Goldman Sydney funded the project.
+unsupported | pass -> entities | Goldman Sachs backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Used it; Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it; Goldman Sachs backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Used it.
+Goldman Sydney funded the project.
+unsupported | pass -> entities | Used it.
+Goldman Sachs backed the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Designed Tool-Call Agent Prototype; Contoso Cloud hosted it.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+The 1Password team used the Team Course Planner.
+unsupported | pass -> entities | The 1Password team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+Our 1st team used the Team Course Planner.
+unsupported | pass -> entities | Our 1st team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+A 2nd team used the Team Course Planner.
+unsupported | pass -> entities | A 2nd team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+The 3D team used the Team Course Planner.
+unsupported | pass -> entities | The 3D team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+Our 5G team used the Team Course Planner.
+unsupported | pass -> entities | Our 5G team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+A 10x team used the Team Course Planner.
+unsupported | pass -> entities | A 10x team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+The 23andMe team used the Team Course Planner.
+unsupported | pass -> entities | The 23andMe team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+Our 3Com team used the Team Course Planner.
+unsupported | pass -> entities | Our 3Com team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+A 8x8 team used the Team Course Planner.
+unsupported | pass -> entities | A 8x8 team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+The 99designs team used the Team Course Planner.
+unsupported | pass -> entities | The 99designs team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+Our 2U team used the Team Course Planner.
+unsupported | pass -> entities | Our 2U team used the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+The Check featured the Team Course Planner.
+unsupported | pass -> entities | The Check featured the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+The Checks featured the Team Course Planner.
+unsupported | pass -> entities | The Checks featured the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+The Clash featured the Team Course Planner.
+unsupported | pass -> entities | The Clash featured the Team Course Planner.
+unsupported | pass -> entities | Worked on the Team Course Planner project.
+The Clashes featured the Team Course Planner.
+unsupported | pass -> entities | The Clashes featured the Team Course Planner.
+supported | entities -> pass | • Our Python work was part of the Team Course Planner project.
+supported | entities -> pass | - Our Python work was part of the Team Course Planner project.
+supported | entities -> pass | – Our Python work was part of the Team Course Planner project.
+supported | entities -> pass | — Our Python work was part of the Team Course Planner project.
+supported | entities -> pass | * Our Python work was part of the Team Course Planner project.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+The 1Password team used the AI Coursework Prototype.
+unsupported | pass -> entities | The 1Password team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+Our 1st team used the AI Coursework Prototype.
+unsupported | pass -> entities | Our 1st team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+A 2nd team used the AI Coursework Prototype.
+unsupported | pass -> entities | A 2nd team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+The 3D team used the AI Coursework Prototype.
+unsupported | pass -> entities | The 3D team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+Our 5G team used the AI Coursework Prototype.
+unsupported | pass -> entities | Our 5G team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+A 10x team used the AI Coursework Prototype.
+unsupported | pass -> entities | A 10x team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+The 23andMe team used the AI Coursework Prototype.
+unsupported | pass -> entities | The 23andMe team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+Our 3Com team used the AI Coursework Prototype.
+unsupported | pass -> entities | Our 3Com team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+A 8x8 team used the AI Coursework Prototype.
+unsupported | pass -> entities | A 8x8 team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+The 99designs team used the AI Coursework Prototype.
+unsupported | pass -> entities | The 99designs team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+Our 2U team used the AI Coursework Prototype.
+unsupported | pass -> entities | Our 2U team used the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+The Agent featured the AI Coursework Prototype.
+unsupported | pass -> entities | The Agent featured the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+The Before featured the AI Coursework Prototype.
+unsupported | pass -> entities | The Before featured the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+The Course featured the AI Coursework Prototype.
+unsupported | pass -> entities | The Course featured the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the AI Coursework Prototype project.
+The Local featured the AI Coursework Prototype.
+unsupported | pass -> entities | The Local featured the AI Coursework Prototype.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+The 1Password team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | The 1Password team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+Our 1st team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Our 1st team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+A 2nd team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | A 2nd team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+The 3D team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | The 3D team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+Our 5G team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Our 5G team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+A 10x team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | A 10x team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+The 23andMe team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | The 23andMe team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+Our 3Com team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Our 3Com team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+A 8x8 team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | A 8x8 team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+The 99designs team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | The 99designs team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+Our 2U team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Our 2U team used the Coursework Retrieval Assistant.
+unsupported | pass -> entities | • The Answer featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | - The Answer featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | – The Answer featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | — The Answer featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | * The Answer featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+The Answer featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | The Answer featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+The Augmented featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | The Augmented featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+The Cases featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | The Cases featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Coursework Retrieval Assistant project.
+The Collection featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | The Collection featured the Coursework Retrieval Assistant.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+The 1Password team used the Text Classification Study.
+unsupported | pass -> entities | The 1Password team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+Our 1st team used the Text Classification Study.
+unsupported | pass -> entities | Our 1st team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+A 2nd team used the Text Classification Study.
+unsupported | pass -> entities | A 2nd team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+The 3D team used the Text Classification Study.
+unsupported | pass -> entities | The 3D team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+Our 5G team used the Text Classification Study.
+unsupported | pass -> entities | Our 5G team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+A 10x team used the Text Classification Study.
+unsupported | pass -> entities | A 10x team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+The 23andMe team used the Text Classification Study.
+unsupported | pass -> entities | The 23andMe team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+Our 3Com team used the Text Classification Study.
+unsupported | pass -> entities | Our 3Com team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+A 8x8 team used the Text Classification Study.
+unsupported | pass -> entities | A 8x8 team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+The 99designs team used the Text Classification Study.
+unsupported | pass -> entities | The 99designs team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+Our 2U team used the Text Classification Study.
+unsupported | pass -> entities | Our 2U team used the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+The Accuracy featured the Text Classification Study.
+unsupported | pass -> entities | The Accuracy featured the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+The Across featured the Text Classification Study.
+unsupported | pass -> entities | The Across featured the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+The Baseline featured the Text Classification Study.
+unsupported | pass -> entities | The Baseline featured the Text Classification Study.
+unsupported | pass -> entities | Worked on the Text Classification Study project.
+The Claiming featured the Text Classification Study.
+unsupported | pass -> entities | The Claiming featured the Text Classification Study.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+The 1Password team used the Student Services Dashboard.
+unsupported | pass -> entities | The 1Password team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+Our 1st team used the Student Services Dashboard.
+unsupported | pass -> entities | Our 1st team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+A 2nd team used the Student Services Dashboard.
+unsupported | pass -> entities | A 2nd team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+The 3D team used the Student Services Dashboard.
+unsupported | pass -> entities | The 3D team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+Our 5G team used the Student Services Dashboard.
+unsupported | pass -> entities | Our 5G team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+A 10x team used the Student Services Dashboard.
+unsupported | pass -> entities | A 10x team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+The 23andMe team used the Student Services Dashboard.
+unsupported | pass -> entities | The 23andMe team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+Our 3Com team used the Student Services Dashboard.
+unsupported | pass -> entities | Our 3Com team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+A 8x8 team used the Student Services Dashboard.
+unsupported | pass -> entities | A 8x8 team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+The 99designs team used the Student Services Dashboard.
+unsupported | pass -> entities | The 99designs team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+Our 2U team used the Student Services Dashboard.
+unsupported | pass -> entities | Our 2U team used the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+The Across featured the Student Services Dashboard.
+unsupported | pass -> entities | The Across featured the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+The Built featured the Student Services Dashboard.
+unsupported | pass -> entities | The Built featured the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+The Compare featured the Student Services Dashboard.
+unsupported | pass -> entities | The Compare featured the Student Services Dashboard.
+unsupported | pass -> entities | Worked on the Student Services Dashboard project.
+The Covered featured the Student Services Dashboard.
+unsupported | pass -> entities | The Covered featured the Student Services Dashboard.
+supported | entities -> pass | • Our Excel work was part of the Student Services Dashboard project.
+supported | entities -> pass | - Our Excel work was part of the Student Services Dashboard project.
+supported | entities -> pass | – Our Excel work was part of the Student Services Dashboard project.
+supported | entities -> pass | — Our Excel work was part of the Student Services Dashboard project.
+supported | entities -> pass | * Our Excel work was part of the Student Services Dashboard project.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+The 1Password team used the Search Result Analysis.
+unsupported | pass -> entities | The 1Password team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+Our 1st team used the Search Result Analysis.
+unsupported | pass -> entities | Our 1st team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+A 2nd team used the Search Result Analysis.
+unsupported | pass -> entities | A 2nd team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+The 3D team used the Search Result Analysis.
+unsupported | pass -> entities | The 3D team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+Our 5G team used the Search Result Analysis.
+unsupported | pass -> entities | Our 5G team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+A 10x team used the Search Result Analysis.
+unsupported | pass -> entities | A 10x team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+The 23andMe team used the Search Result Analysis.
+unsupported | pass -> entities | The 23andMe team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+Our 3Com team used the Search Result Analysis.
+unsupported | pass -> entities | Our 3Com team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+A 8x8 team used the Search Result Analysis.
+unsupported | pass -> entities | A 8x8 team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+The 99designs team used the Search Result Analysis.
+unsupported | pass -> entities | The 99designs team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+Our 2U team used the Search Result Analysis.
+unsupported | pass -> entities | Our 2U team used the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+The Caused featured the Search Result Analysis.
+unsupported | pass -> entities | The Caused featured the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+The Change featured the Search Result Analysis.
+unsupported | pass -> entities | The Change featured the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+The Descriptions featured the Search Result Analysis.
+unsupported | pass -> entities | The Descriptions featured the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Search Result Analysis project.
+The Goals featured the Search Result Analysis.
+unsupported | pass -> entities | The Goals featured the Search Result Analysis.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+The 1Password team used the Network Monitoring Exercise.
+unsupported | pass -> entities | The 1Password team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+Our 1st team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Our 1st team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+A 2nd team used the Network Monitoring Exercise.
+unsupported | pass -> entities | A 2nd team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+The 3D team used the Network Monitoring Exercise.
+unsupported | pass -> entities | The 3D team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+Our 5G team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Our 5G team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+A 10x team used the Network Monitoring Exercise.
+unsupported | pass -> entities | A 10x team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+The 23andMe team used the Network Monitoring Exercise.
+unsupported | pass -> entities | The 23andMe team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+Our 3Com team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Our 3Com team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+A 8x8 team used the Network Monitoring Exercise.
+unsupported | pass -> entities | A 8x8 team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+The 99designs team used the Network Monitoring Exercise.
+unsupported | pass -> entities | The 99designs team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+Our 2U team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Our 2U team used the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+The Checks featured the Network Monitoring Exercise.
+unsupported | pass -> entities | The Checks featured the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+The Common featured the Network Monitoring Exercise.
+unsupported | pass -> entities | The Common featured the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+The Controlled featured the Network Monitoring Exercise.
+unsupported | pass -> entities | The Controlled featured the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Network Monitoring Exercise project.
+The Documented featured the Network Monitoring Exercise.
+unsupported | pass -> entities | The Documented featured the Network Monitoring Exercise.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+The 1Password team used the Reliable Course Service.
+unsupported | pass -> entities | The 1Password team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+Our 1st team used the Reliable Course Service.
+unsupported | pass -> entities | Our 1st team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+A 2nd team used the Reliable Course Service.
+unsupported | pass -> entities | A 2nd team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+The 3D team used the Reliable Course Service.
+unsupported | pass -> entities | The 3D team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+Our 5G team used the Reliable Course Service.
+unsupported | pass -> entities | Our 5G team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+A 10x team used the Reliable Course Service.
+unsupported | pass -> entities | A 10x team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+The 23andMe team used the Reliable Course Service.
+unsupported | pass -> entities | The 23andMe team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+Our 3Com team used the Reliable Course Service.
+unsupported | pass -> entities | Our 3Com team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+A 8x8 team used the Reliable Course Service.
+unsupported | pass -> entities | A 8x8 team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+The 99designs team used the Reliable Course Service.
+unsupported | pass -> entities | The 99designs team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+Our 2U team used the Reliable Course Service.
+unsupported | pass -> entities | Our 2U team used the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+The Before featured the Reliable Course Service.
+unsupported | pass -> entities | The Before featured the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+The Changes featured the Reliable Course Service.
+unsupported | pass -> entities | The Changes featured the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+The Container featured the Reliable Course Service.
+unsupported | pass -> entities | The Container featured the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Reliable Course Service project.
+The Coverage featured the Reliable Course Service.
+unsupported | pass -> entities | The Coverage featured the Reliable Course Service.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+The 1Password team used the Team Service Platform.
+unsupported | pass -> entities | The 1Password team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+Our 1st team used the Team Service Platform.
+unsupported | pass -> entities | Our 1st team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+A 2nd team used the Team Service Platform.
+unsupported | pass -> entities | A 2nd team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+The 3D team used the Team Service Platform.
+unsupported | pass -> entities | The 3D team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+Our 5G team used the Team Service Platform.
+unsupported | pass -> entities | Our 5G team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+A 10x team used the Team Service Platform.
+unsupported | pass -> entities | A 10x team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+The 23andMe team used the Team Service Platform.
+unsupported | pass -> entities | The 23andMe team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+Our 3Com team used the Team Service Platform.
+unsupported | pass -> entities | Our 3Com team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+A 8x8 team used the Team Service Platform.
+unsupported | pass -> entities | A 8x8 team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+The 99designs team used the Team Service Platform.
+unsupported | pass -> entities | The 99designs team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+Our 2U team used the Team Service Platform.
+unsupported | pass -> entities | Our 2U team used the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+The Backend featured the Team Service Platform.
+unsupported | pass -> entities | The Backend featured the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+The Demonstration featured the Team Service Platform.
+unsupported | pass -> entities | The Demonstration featured the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+The Endpoints featured the Team Service Platform.
+unsupported | pass -> entities | The Endpoints featured the Team Service Platform.
+unsupported | pass -> entities | Worked on the Team Service Platform project.
+The Helped featured the Team Service Platform.
+unsupported | pass -> entities | The Helped featured the Team Service Platform.
+supported | entities -> pass | • Our Java work was part of the Team Service Platform project.
+supported | entities -> pass | - Our Java work was part of the Team Service Platform project.
+supported | entities -> pass | – Our Java work was part of the Team Service Platform project.
+supported | entities -> pass | — Our Java work was part of the Team Service Platform project.
+supported | entities -> pass | * Our Java work was part of the Team Service Platform project.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+The 1Password team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | The 1Password team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+Our 1st team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Our 1st team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+A 2nd team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | A 2nd team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+The 3D team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | The 3D team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+Our 5G team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Our 5G team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+A 10x team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | A 10x team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+The 23andMe team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | The 23andMe team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+Our 3Com team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Our 3Com team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+A 8x8 team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | A 8x8 team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+The 99designs team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | The 99designs team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+Our 2U team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Our 2U team used the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+The Actions featured the Tool-Call Agent Prototype.
+unsupported | pass -> entities | The Actions featured the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+The Bounded featured the Tool-Call Agent Prototype.
+unsupported | pass -> entities | The Bounded featured the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+The Course featured the Tool-Call Agent Prototype.
+unsupported | pass -> entities | The Course featured the Tool-Call Agent Prototype.
+unsupported | pass -> entities | Worked on the Tool-Call Agent Prototype project.
+The Language featured the Tool-Call Agent Prototype.
+unsupported | pass -> entities | The Language featured the Tool-Call Agent Prototype.
+changed: 795 (newly passing unsupported: 0, newly passing supported: 318, newly failing supported: 0, newly failing unsupported: 477)

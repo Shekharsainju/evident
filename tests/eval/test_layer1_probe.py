@@ -222,3 +222,27 @@ def test_diff_script_refuses_a_standing_probe_from_a_test_profile(monkeypatch, t
     monkeypatch.setattr(sys, "argv", ["diff", "--base", "X", "--out", str(tmp_path / "o.json")])
     with pytest.raises(LockedSplitError):
         module.main()
+
+
+def test_diff_script_writes_its_report_as_utf8(monkeypatch, tmp_path) -> None:  # type: ignore[no-untyped-def]
+    import sys
+
+    from evident.eval.grounding import dump_claims
+    from tests.eval.test_splits import _load_script
+
+    module = _load_script("layer1_diff")
+    probe = _lc("• Our Team Course Planner project – a bullet probe.", "supported")
+    (tmp_path / "p.jsonl").write_text(dump_claims([probe]), encoding="utf-8")
+    monkeypatch.setattr(module, "PROBES_DIR", tmp_path)
+    monkeypatch.setattr(module, "probe_claims", lambda: [])
+    monkeypatch.setattr(module, "_score_base",
+                        lambda ref, path, scratch: [["entities"]] * len(module.load_claims(path)))
+    monkeypatch.setattr(module, "layer1_outcomes",
+                        lambda claims: {outcome_key(c): [] for c in claims})
+    report = tmp_path / "gate.txt"
+    monkeypatch.setattr(sys, "argv", ["diff", "--base", "X", "--out", str(tmp_path / "o.json"),
+                                      "--report", str(report)])
+    assert module.main() == 0
+    text = report.read_bytes().decode("utf-8")
+    assert "• Our Team Course Planner project – a bullet probe." in text
+    assert "newly passing supported: 1" in text

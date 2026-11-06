@@ -139,6 +139,28 @@ def _evidence_names(facts: list[FactVersion]) -> set[str]:
 # bullet or an opening bracket opens a sentence as much as one after a full stop.
 _LINE_OPENERS = frozenset(".;:!?\n\r([\"'*-\u2022\u00b7\u2013\u2014\u201c\u2018")
 
+_NAME_WORD = re.compile(rf"(?<![\w+#.'-]){_CAP_WORD}")
+# A figure the number checks read ("84", "1,200", "2.5"). "1st", "3D" or "1Password" are not.
+_PLAIN_FIGURE = re.compile(r"(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?")
+
+
+def _capitalised_words(facts: list[FactVersion]) -> set[str]:
+    """Words of capitalised names in the evidence: every word of a title, organisation or
+    skill, and capitalised words in the text that do not open a sentence or line. A word
+    seen only in lowercase prose ("timetable"), or only with the capital a sentence start
+    gives it, is not part of a name."""
+    words: set[str] = set()
+    for f in facts:
+        for x in (f.attributes.title, f.attributes.organisation, *f.attributes.skills):
+            if x:
+                words.update(normalise_text(x).split())
+        for text in (f.text, f.source.span_text):
+            for m in _NAME_WORD.finditer(text):
+                before = text[:m.start()].rstrip(" \t")
+                if before and before[-1] not in _LINE_OPENERS:
+                    words.update(normalise_text(m.group(0)).split())
+    return words - CONNECTORS
+
 
 # Checks
 
@@ -351,6 +373,7 @@ def check_entities(claim: Claim, facts: list[FactVersion], ctx: Layer1Context
     norm = normalise_text(claim.text)
     evidence = _evidence_norm(facts)
     names = _evidence_names(facts)
+    cap_words = _capitalised_words(facts)
     failures: list[CheckFailure] = []
     for word in _phrases(norm, ctx.lex.seniority_words | ctx.lex.credential_words):
         if not contains_phrase(evidence, word):
@@ -368,21 +391,26 @@ def check_entities(claim: Claim, facts: list[FactVersion], ctx: Layer1Context
 
     def lone_word_known(word: str) -> bool:
         # "The Guardian": once the opener is gone one word is left, and the single-word
-        # exemption in _name_supported must not wave it through.
-        w = normalise_text(word)
-        if w[:1].isdigit():
+        # exemption in _name_supported must not wave it through. The word must belong to a
+        # capitalised name in the evidence: "The Timetable" is not backed by "timetable".
+        if _PLAIN_FIGURE.fullmatch(word.rstrip(".,;:!?")):
             return True  # a figure ("Reached 84%"), judged by the number checks
-        spellings = [w]
+        w = normalise_text(word)
+        if w in ctx.aliases.skills or w in cap_words:
+            return True
         canonical = ctx.aliases.canonical_entity(w)
-        if canonical is not None:
-            spellings.extend(a for a, c in ctx.aliases.entities.items() if c == canonical)
-        return w in ctx.aliases.skills or any(contains_phrase(evidence, x) for x in spellings)
+        spellings = ([a for a, c in ctx.aliases.entities.items() if c == canonical]
+                     if canonical is not None else [])
+        return any(x in names or x in cap_words for x in spellings)
 
     def opener(word: str) -> bool:
         return normalise_text(word) in ctx.lex.sentence_openers
 
     for words, at_start, by_date in _name_runs(claim.text):
-        if supported(words, by_date):
+        # A run led by a listed opener is judged without it, below. Kept whole, "The Answer"
+        # would match the prose "the answer" in the evidence, which names nothing.
+        opener_led = at_start and len(words) > 1 and opener(words[0]) and not by_date
+        if not opener_led and supported(words, by_date):
             continue
         # A listed sentence opener ("Built Team Course Planner", "The Team Course Planner") is
         # not part of the name. Any other first word stays: "Goldman Sachs backed it" must

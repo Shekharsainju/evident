@@ -6,7 +6,10 @@ config, using only modules that exist at older refs. Exit 1 if any unsupported c
 passes. Dev profiles only: any claim from a locked test profile raises LockedSplitError.
 
 Usage: uv run python scripts/layer1_diff.py --base <git-ref> [--extra probes.jsonl]
-       [--out diff.json]
+       [--out diff.json] [--report gate.txt]
+
+--report writes the printed gate output to a UTF-8 file. Redirecting stdout on Windows
+re-encodes it in the console code page, which breaks bullets and dashes in claim text.
 """
 
 from __future__ import annotations
@@ -53,6 +56,15 @@ Path(sys.argv[2]).write_text(json.dumps(out), encoding="utf-8")
 """
 
 
+# Every printed gate line, kept for --report.
+_LINES: list[str] = []
+
+
+def _emit(line: str) -> None:
+    _LINES.append(line)
+    print(line)
+
+
 class ToolError(Exception):
     """The diff tool itself failed. Exit 2, never 1, so a tool error can't read as a gate result."""
 
@@ -73,7 +85,7 @@ def _check_base_import(stderr: str, wt: Path) -> None:
             path = Path(line.removeprefix("IMPORTED ").strip()).resolve()
             if not path.is_relative_to(wt.resolve()):
                 raise ToolError(f"base imported evident from {path}, outside worktree {wt}")
-            print(f"base imports evident from: {path}")
+            _emit(f"base imports evident from: {path}")
             return
     raise ToolError("base run did not report where it imported evident from")
 
@@ -114,6 +126,7 @@ def _main() -> int:
     ap.add_argument("--profile", action="append", default=[],
                     help="restrict to these dev profiles (test profiles are refused)")
     ap.add_argument("--out", type=Path, default=Path(tempfile.gettempdir()) / "layer1_diff.json")
+    ap.add_argument("--report", type=Path, help="also write the printed output here as UTF-8")
     args = ap.parse_args()
 
     require_dev(args.profile)
@@ -129,7 +142,8 @@ def _main() -> int:
     claims = dedupe_fail_closed(claims)
     if args.profile:
         claims = [c for c in claims if c.profile_id in args.profile]
-    print(f"probes: {len(claims)}")
+    _LINES.clear()
+    _emit(f"probes: {len(claims)}")
 
     with tempfile.TemporaryDirectory(prefix="layer1-diff-") as tmp:
         scratch = Path(tmp)
@@ -140,14 +154,16 @@ def _main() -> int:
 
     changed, counts = classify(claims, old, new)
     for row in changed:
-        print(f"{row['label']} | {','.join(row['old']) or 'pass'} -> "
+        _emit(f"{row['label']} | {','.join(row['old']) or 'pass'} -> "
               f"{','.join(row['new']) or 'pass'} | {row['text']}")
-    print(f"changed: {len(changed)} (newly passing unsupported: {counts['K']}, "
+    _emit(f"changed: {len(changed)} (newly passing unsupported: {counts['K']}, "
           f"newly passing supported: {counts['S']}, newly failing supported: {counts['F']}, "
           f"newly failing unsupported: {counts['U']})")
     args.out.write_text(json.dumps({"base": args.base, "probes": len(claims),
                                     "counts": counts, "changed": changed}, indent=2),
                         encoding="utf-8")
+    if args.report:
+        args.report.write_text("\n".join(_LINES) + "\n", encoding="utf-8")
     return 1 if counts["K"] else 0
 
 

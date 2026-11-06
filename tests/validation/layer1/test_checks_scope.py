@@ -452,3 +452,69 @@ def test_lone_word_left_after_an_opener_must_be_in_the_evidence() -> None:
 def test_figure_after_an_opener_is_left_to_the_number_checks() -> None:
     f = project()
     assert check_entities(claim("Team Course Planner: Reached 84 on it.", f), [f], context(f)) == []
+
+
+# Task 6 fix round 2: re-review of ac3ca43. A digit-led word left after an opener is not a
+# figure, and a word left after an opener must belong to a capitalised name in the evidence.
+
+_STARTS = ("• ", "- ", "Built it\n")
+_DIGIT_LED = ("1Password", "1st", "2nd", "3D", "5G", "10x", "23andMe", "3Com", "8x8",
+              "99designs", "2U")
+
+
+def test_digit_led_word_after_an_opener_must_be_in_the_evidence() -> None:
+    f = project()
+    for start in _STARTS:
+        for word in _DIGIT_LED:
+            text = f"{start}The {word} team used the Team Course Planner."
+            assert not run_layer1(claim(text, f), context(f)).passed, text
+
+
+def test_plain_figures_after_an_opener_still_go_to_the_number_checks() -> None:
+    f = project()
+    for text in ("Team Course Planner: Reached 84% on it.",
+                 "Team Course Planner: Covered 1,200 on it.",
+                 "Team Course Planner: Reached 2.5 on it.",
+                 "• Reached 84 on the Team Course Planner."):
+        assert check_entities(claim(text, f), [f], context(f)) == [], text
+
+
+def test_digit_led_word_in_a_capitalised_evidence_name_is_supported() -> None:
+    f = project(text="Built a planner the 1Password team used, in Python and Flask")
+    assert check_entities(claim("• The 1Password team used the planner.", f), [f],
+                          context(f)) == []
+
+
+def test_word_after_an_opener_must_not_match_only_a_lowercase_evidence_word() -> None:
+    f = project()  # text: "Built a timetable clash checker in Python and Flask"
+    for start in ("", *_STARTS):
+        for text in (f"{start}The Timetable featured the planner.",
+                     f"{start}The Checker won praise.",
+                     f"{start}Our Clash team used it."):
+            assert _entities_rejects(text, f), text
+
+
+def test_word_after_an_opener_at_an_evidence_sentence_start_is_not_a_name() -> None:
+    # "Timetable" opens the evidence sentence, so its capital letter says nothing.
+    f = project(text="Timetable clash checks ran in Python and Flask")
+    assert _entities_rejects("• The Timetable featured the planner.", f)
+
+
+def test_word_after_an_opener_inside_a_capitalised_evidence_name_is_supported() -> None:
+    f = project(text="Built a planner that the Faculty Timetable Office used, in Python")
+    for text in ("• The Timetable featured the planner.", "Built it\nThe Office used it."):
+        assert check_entities(claim(text, f), [f], context(f)) == [], text
+
+
+def test_opener_led_run_must_not_match_lowercase_prose_as_a_whole() -> None:
+    # "the answer" is prose in the evidence; with the opener kept, "The Answer" matched it.
+    f = project(text="Built a planner and noted where the answer was uncertain, in Python")
+    for start in ("", *_STARTS):
+        assert _entities_rejects(f"{start}The Answer featured the planner.", f), start
+
+
+def test_opener_led_run_with_a_capitalised_evidence_name_is_supported() -> None:
+    f = project(text="Built a planner that was featured in The Guardian, in Python")
+    for start in ("", *_STARTS):
+        text = f"{start}The Guardian featured the planner."
+        assert check_entities(claim(text, f), [f], context(f)) == [], text
