@@ -246,3 +246,23 @@ def test_diff_script_writes_its_report_as_utf8(monkeypatch, tmp_path) -> None:  
     text = report.read_bytes().decode("utf-8")
     assert "• Our Team Course Planner project – a bullet probe." in text
     assert "newly passing supported: 1" in text
+
+
+def test_plain_start_sentences_broken_by_task_6_round_2_pass() -> None:
+    # Task 6 round 2 rejected these supported dev sentences (re-review 2). The revert must
+    # pass them again, and any future sentence-start fix must keep them passing.
+    from evident.eval.grounding import DEFAULT_AS_OF, layer1_context
+    from evident.validation.layer1.run import run_layer1
+
+    rows = [("student_profile_02", "student_profile_02_gt07",
+             "The Classifier reached 84% accuracy on the held-out test set."),
+            ("student_profile_01", "student_profile_01_gt08",
+             "The Agent selected local course tools."),
+            ("student_profile_05", "student_profile_05_gt08", "The Loop logged tool observations."),
+            ("student_profile_03", "student_profile_03_gt07",
+             "The Survey covered 1,200 survey responses."),
+            ("student_profile_04", "student_profile_04_gt08", "The Container ran the service.")]
+    for profile, fact_id, text in rows:
+        c = _claim("r", text, [FactRef(fact_id=fact_id, version=1)], "projects")
+        result = run_layer1(c, layer1_context(profile, DEFAULT_AS_OF))
+        assert result.passed, (text, result.failures)

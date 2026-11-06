@@ -32,8 +32,6 @@ class Lexicons:
     aggregate_nouns: dict[str, FactKind]
     seniority_words: set[str]
     credential_words: set[str]
-    # Words that may open a sentence without being part of a name (spec 7.2).
-    sentence_openers: frozenset[str] = frozenset()
     unit_aliases: dict[str, str] = field(default_factory=dict)
 
     def unit_family(self, unit: str) -> str:
@@ -67,16 +65,10 @@ def load_lexicons(path: Path = LEXICONS_PATH) -> Lexicons:
         for spelling in spellings:
             # "%" normalises to itself; plain words lose nothing.
             unit_aliases[normalise_text(spelling) or spelling] = family
-    ownership = {k: int(v) for k, v in _norm_keys(raw["ownership"]).items()}
-    deployment = {k: int(v) for k, v in _norm_keys(raw["deployment"]).items()}
-    # Ownership keys are all verbs and open sentences too. Deployment keys only when past
-    # tense: "Live", "Pilot" and "Concept" start real names (as known_verb already assumes).
-    listed = {normalise_text(w) for w in raw["sentence_openers"]}
-    openers = listed | set(ownership) | {w for w in deployment if w.endswith("ed")}
     return Lexicons(
         version=str(raw.get("version", "unversioned")),
-        ownership=ownership,
-        deployment=deployment,
+        ownership={k: int(v) for k, v in _norm_keys(raw["ownership"]).items()},
+        deployment={k: int(v) for k, v in _norm_keys(raw["deployment"]).items()},
         metric_keywords={k: str(v) for k, v in _norm_keys(raw["metric_keywords"]).items()},
         direction_words={
             k: MetricDirection(str(v)) for k, v in _norm_keys(raw["direction_words"]).items()
@@ -88,7 +80,6 @@ def load_lexicons(path: Path = LEXICONS_PATH) -> Lexicons:
         },
         seniority_words={normalise_text(w) for w in raw["seniority_words"]},
         credential_words={normalise_text(w) for w in raw["credential_words"]},
-        sentence_openers=frozenset(openers),
         unit_aliases=unit_aliases,
     )
 

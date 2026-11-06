@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from evident.validation.layer1.checks_scope import (
     check_dates,
     check_deployment,
@@ -344,27 +346,56 @@ def test_date_the_date_rule_cannot_read_is_not_cut_out() -> None:
         assert not run_layer1(claim(text, f), context(f)).passed, text
 
 
-# Task 6 (spec 7.2): the first word of a sentence stays in the name run unless it is a
-# listed opener.
+# Task 6 (spec 7.2) was reverted after three review rounds: each fix opened a new false-accept
+# path. The layer 1 code is back to 4478384. These tests keep every rejection the review
+# rounds asked for. Cases the 4478384 code already rejects are plain tests. Cases it accepts
+# are the documented sentence-start limitation (the Layer 2 judge covers it) and are strict
+# xfails, so a future fix that closes them shows up as XPASS.
+
+_LIMITATION = pytest.mark.xfail(
+    strict=True,
+    reason="Task 6 reverted: a name at a plain sentence start, or after '.' or ';', loses its "
+           "first word and a single word is not checked. Documented limitation; the judge "
+           "covers it.")
+_DASHES = ("-", "–", "—", "*")
+_STARTS = ("• ", "- ", "Built it\n")
+_DIGIT_LED = ("1Password", "1st", "2nd", "3D", "5G", "10x", "23andMe", "3Com", "8x8",
+              "99designs", "2U")
 
 
-def test_unknown_sentence_start_name_rejected() -> None:
+def _entities_rejects(text: str, f) -> bool:  # type: ignore[no-untyped-def]
+    return any(x.rule == "entities" for x in check_entities(claim(text, f), [f], context(f)))
+
+
+def test_unknown_name_after_a_bullet_or_line_break_rejected() -> None:
     f = project()
-    for text in ("Goldman Sachs backed the planner.",
-                 "• Goldman Sachs backed the planner",
-                 "Built it; Goldman Sachs backed the planner.",
-                 "Built it.\nGoldman Sachs backed it.",
+    for text in ("• Goldman Sachs backed the planner",
                  "Built it\nGoldman Sachs backed it.",
                  "Built it\n• Goldman Sachs backed it."):
         failures = check_entities(claim(text, f), [f], context(f))
         assert [x.rule for x in failures] == ["entities"], text
 
 
+@_LIMITATION
+def test_unknown_sentence_start_name_rejected() -> None:
+    f = project()
+    for text in ("Goldman Sachs backed the planner.",
+                 "Built it; Goldman Sachs backed the planner.",
+                 "Built it.\nGoldman Sachs backed it."):
+        failures = check_entities(claim(text, f), [f], context(f))
+        assert [x.rule for x in failures] == ["entities"], text
+
+
+def test_name_after_a_bullet_with_one_evidence_word_rejected() -> None:
+    f = project(text="Built the planner, checked by Sachs staff")
+    assert not run_layer1(claim("• Goldman Sachs backed the planner", f), context(f)).passed
+
+
+@_LIMITATION
 def test_sentence_start_name_with_one_evidence_word_still_rejected() -> None:
     f = project(text="Built the planner, checked by Sachs staff")
     for text in ("Goldman Sachs backed the planner.",
-                 "Built it; Goldman Sachs backed the planner.",
-                 "• Goldman Sachs backed the planner"):
+                 "Built it; Goldman Sachs backed the planner."):
         assert not run_layer1(claim(text, f), context(f)).passed, text
 
 
@@ -378,30 +409,9 @@ def test_sentence_start_name_in_evidence_passes() -> None:
         assert check_entities(claim(text, f), [f], context(f)) == [], text
 
 
-def test_listed_openers_are_dropped_at_each_kind_of_start() -> None:
-    f = project(text="Built the planner for Fictional Robotics Society")
-    for opener in ("The", "Our", "She", "Developed", "Designed", "Used", "Studied"):
-        for text in (f"{opener} Fictional Robotics Society planner.",
-                     f"Built it; {opener} Fictional Robotics Society planner.",
-                     f"• {opener} Fictional Robotics Society planner",
-                     f"Built it.\n{opener} Fictional Robotics Society planner."):
-            assert check_entities(claim(text, f), [f], context(f)) == [], text
-
-
-# Task 6 fix round 1: a dropped opener must leave a word the evidence contains. Each row is a
-# review finding that passed after 49e9317 and was rejected by the older code.
-
-_DASHES = ("-", "–", "—", "*")
-
-
-def _entities_rejects(text: str, f) -> bool:  # type: ignore[no-untyped-def]
-    return any(x.rule == "entities" for x in check_entities(claim(text, f), [f], context(f)))
-
-
-def test_name_word_opener_before_a_lone_unknown_word_is_rejected() -> None:
+def test_name_word_opener_after_a_marker_before_an_unknown_word_is_rejected() -> None:
     f = project()
-    cases = ["The Guardian featured the planner.",
-             "• The Guardian featured the planner.",
+    cases = ["• The Guardian featured the planner.",
              "Built the planner\nThe Guardian featured it.",
              "Built the planner - The Guardian featured it.",
              "Built the planner — The Guardian featured it.",
@@ -414,6 +424,11 @@ def test_name_word_opener_before_a_lone_unknown_word_is_rejected() -> None:
              "Built it\nA Goldman backed it."]
     for text in cases:
         assert _entities_rejects(text, f), text
+
+
+@_LIMITATION
+def test_name_word_opener_at_a_plain_start_before_an_unknown_word_is_rejected() -> None:
+    assert _entities_rejects("The Guardian featured the planner.", project())
 
 
 def test_each_start_marker_rejects_an_opener_before_an_unknown_word() -> None:
@@ -442,24 +457,14 @@ def test_ownership_opener_before_an_unknown_word_is_rejected_on_a_led_fact() -> 
         assert not run_layer1(claim(text, led), context(led)).passed, text
 
 
-def test_lone_word_left_after_an_opener_must_be_in_the_evidence() -> None:
+def test_name_word_opener_at_a_plain_start_or_after_a_colon_passes() -> None:
     f = project()
-    for text in ("The Planner cut clash checks.", "• The Planner is small.",
-                 "Built it\nOur Flask app was small.", "Built the Team Course Planner."):
+    for text in ("The Planner cut clash checks.", "Built the Team Course Planner.",
+                 "Team Course Planner: Reached 84 on it.",
+                 "Team Course Planner: Reached 84% on it.",
+                 "Team Course Planner: Covered 1,200 on it.",
+                 "Team Course Planner: Reached 2.5 on it."):
         assert check_entities(claim(text, f), [f], context(f)) == [], text
-
-
-def test_figure_after_an_opener_is_left_to_the_number_checks() -> None:
-    f = project()
-    assert check_entities(claim("Team Course Planner: Reached 84 on it.", f), [f], context(f)) == []
-
-
-# Task 6 fix round 2: re-review of ac3ca43. A digit-led word left after an opener is not a
-# figure, and a word left after an opener must belong to a capitalised name in the evidence.
-
-_STARTS = ("• ", "- ", "Built it\n")
-_DIGIT_LED = ("1Password", "1st", "2nd", "3D", "5G", "10x", "23andMe", "3Com", "8x8",
-              "99designs", "2U")
 
 
 def test_digit_led_word_after_an_opener_must_be_in_the_evidence() -> None:
@@ -470,28 +475,27 @@ def test_digit_led_word_after_an_opener_must_be_in_the_evidence() -> None:
             assert not run_layer1(claim(text, f), context(f)).passed, text
 
 
-def test_plain_figures_after_an_opener_still_go_to_the_number_checks() -> None:
-    f = project()
-    for text in ("Team Course Planner: Reached 84% on it.",
-                 "Team Course Planner: Covered 1,200 on it.",
-                 "Team Course Planner: Reached 2.5 on it.",
-                 "• Reached 84 on the Team Course Planner."):
-        assert check_entities(claim(text, f), [f], context(f)) == [], text
-
-
 def test_digit_led_word_in_a_capitalised_evidence_name_is_supported() -> None:
     f = project(text="Built a planner the 1Password team used, in Python and Flask")
     assert check_entities(claim("• The 1Password team used the planner.", f), [f],
                           context(f)) == []
 
 
-def test_word_after_an_opener_must_not_match_only_a_lowercase_evidence_word() -> None:
+def test_word_after_an_opener_and_a_marker_must_not_match_only_lowercase_evidence() -> None:
     f = project()  # text: "Built a timetable clash checker in Python and Flask"
-    for start in ("", *_STARTS):
+    for start in _STARTS:
         for text in (f"{start}The Timetable featured the planner.",
                      f"{start}The Checker won praise.",
                      f"{start}Our Clash team used it."):
             assert _entities_rejects(text, f), text
+
+
+@_LIMITATION
+def test_word_after_an_opener_at_a_plain_start_must_not_match_only_lowercase_evidence() -> None:
+    f = project()
+    for text in ("The Timetable featured the planner.", "The Checker won praise.",
+                 "Our Clash team used it."):
+        assert _entities_rejects(text, f), text
 
 
 def test_word_after_an_opener_at_an_evidence_sentence_start_is_not_a_name() -> None:
@@ -500,14 +504,11 @@ def test_word_after_an_opener_at_an_evidence_sentence_start_is_not_a_name() -> N
     assert _entities_rejects("• The Timetable featured the planner.", f)
 
 
-def test_word_after_an_opener_inside_a_capitalised_evidence_name_is_supported() -> None:
-    f = project(text="Built a planner that the Faculty Timetable Office used, in Python")
-    for text in ("• The Timetable featured the planner.", "Built it\nThe Office used it."):
-        assert check_entities(claim(text, f), [f], context(f)) == [], text
-
-
+@pytest.mark.xfail(strict=True, reason="Task 6 reverted: a run kept whole ('The Answer') "
+                   "matches lowercase prose in the evidence at any start. Documented "
+                   "limitation; the judge covers it.")
 def test_opener_led_run_must_not_match_lowercase_prose_as_a_whole() -> None:
-    # "the answer" is prose in the evidence; with the opener kept, "The Answer" matched it.
+    # "the answer" is prose in the evidence; with the opener kept, "The Answer" matches it.
     f = project(text="Built a planner and noted where the answer was uncertain, in Python")
     for start in ("", *_STARTS):
         assert _entities_rejects(f"{start}The Answer featured the planner.", f), start
