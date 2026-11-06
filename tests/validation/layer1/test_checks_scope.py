@@ -381,6 +381,7 @@ def test_unknown_sentence_start_name_rejected() -> None:
     f = project()
     for text in ("Goldman Sachs backed the planner.",
                  "Built it; Goldman Sachs backed the planner.",
+                 "Built it: Goldman Sachs backed the planner.",
                  "Built it.\nGoldman Sachs backed it."):
         failures = check_entities(claim(text, f), [f], context(f))
         assert [x.rule for x in failures] == ["entities"], text

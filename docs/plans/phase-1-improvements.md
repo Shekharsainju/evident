@@ -30,7 +30,7 @@
 1. **Cold start of a partly offloaded 8B model.** The first call loads 5.2 GB, part of it into system RAM, and may pass the 30 s timeout. Expected: a warm-up call before timing that is recorded but not counted, and any timeout counts as a judge error (user review), never a pass. Test in Task 10.
 2. **Units that differ from the record** ("under 2,000 ms" or "2s" against a "2 seconds" record). Expected: either a correct binding or a fail-closed reject, never a pass beyond the record. Test in Task 7.
 3. **The same span appears twice on a photo** ("Python" in the skills list and in a project line). Expected: the word-position path sees two matches and keeps the whole-image fallback. Test in Task 12.
-4. **A sentence-start name after a bullet, semicolon or line break** ("• Goldman Sachs backed ...", "...; Goldman Sachs backed ..."). Expected: treated like the start of a sentence, so the opener rule applies. Test in Task 6.
+4. **A sentence-start name after a bullet, semicolon or line break** ("• Goldman Sachs backed ...", "...; Goldman Sachs backed ..."). Expected: treated like the start of a sentence, so the opener rule applies. Test in Task 6. Task 6 was reverted (P9): after a bullet or line break the name is rejected; after a semicolon or colon it is a documented limitation, kept as a strict xfail.
 5. **A profile with no confirmed coursework or skill facts.** Expected: the planner prompt doesn't ask for a section it can't support, and the run record counts the missing claim without inventing one. Test in Task 11.
 
 ---
@@ -202,7 +202,7 @@ Tasks 5 to 8 each end with the same gate, called **"Layer 1 gate"** below:
 
 ### Task 6: Sentence-start entities (spec 7.2)
 
-> **Status: reverted on 2026-11-07 (owner decision, P9).** Three review rounds (49e9317, ac3ca43, 262f0d7) each found a new false-accept path: an opener dropped after a bullet, dash or line break left a single unchecked word; a digit-led word passed as a figure; a leftover word or a whole run matched lowercase prose; a leftover of two or more words matched lowercase prose. The Layer 1 source (`checks_scope.py`, `config.py`, `config/lexicons.toml`) is back to its 4478384 version through a new commit. History is not rewritten. Every test and probe that asserts a rejection is kept. Cases the 4478384 code accepts are strict xfails that name the limitation. The gate tool changes (standing probes, `--report` in UTF-8) stay. The sentence-start entity gap stays a documented limitation, covered by the Layer 2 judge. A future attempt starts from a stricter design: every capitalised word in the claim must appear in the evidence. Gate after the revert: 0 changed claims against v0.1-a3 and 4478384 (`experiments/p1-layer1/RESULTS.md`). The steps below are kept as the record of what was tried.
+> **Status: reverted on 2026-11-07 (owner decision, P9).** Three review rounds (49e9317, ac3ca43, 262f0d7) each found a new false-accept path: an opener dropped after a bullet, dash or line break left a single unchecked word; a digit-led word passed as a figure; a leftover word matched lowercase prose (a whole run matching prose, "The Answer", was found while writing round 2 probes); a leftover of two or more words matched lowercase prose. The Layer 1 source (`checks_scope.py`, `config.py`, `config/lexicons.toml`) is back to its 4478384 version through a new commit. History is not rewritten. Every test and probe that asserts a rejection is kept. Cases the 4478384 code accepts are strict xfails that name the limitation. The gate tool changes (standing probes, `--report` in UTF-8) stay. The sentence-start entity gap stays a documented limitation, covered by the Layer 2 judge. A future attempt starts from a stricter design: every capitalised word in the claim must appear in the evidence. Gate after the revert: 0 changed claims against v0.1-a3 and 4478384 (`experiments/p1-layer1/RESULTS.md`). The steps below are kept as the record of what was tried.
 
 **Files:** Modify `src/evident/validation/layer1/checks_scope.py` (`_name_runs`, `check_entities`) and `config/lexicons.toml` (new `sentence_openers` list, `version = "2"`). Modify `layer1/config.py` (`Lexicons.sentence_openers: frozenset[str]`). Test `tests/validation/layer1/test_checks_scope.py`.
 
@@ -226,7 +226,7 @@ Tasks 5 to 8 each end with the same gate, called **"Layer 1 gate"** below:
 
 ### Task 7: Lower-is-better metrics round away from zero (P8)
 
-**Files:** Modify `src/evident/validation/layer1/checks_refs.py` (`_within`) and `config/lexicons.toml` (new `lower_is_better = ["latency", "cost", "error_rate"]`, in the same `version = "2"` bump if Task 6 is unmerged, otherwise `"3"`). Modify `layer1/config.py`. Test `tests/validation/layer1/test_checks_refs.py`.
+**Files:** Modify `src/evident/validation/layer1/checks_refs.py` (`_within`) and `config/lexicons.toml` (new `lower_is_better = ["latency", "cost", "error_rate"]`, `version = "3"`: Task 6 used "2" and was reverted to "1", so "2" is not reused). Modify `layer1/config.py`. Test `tests/validation/layer1/test_checks_refs.py`.
 
 **Interfaces:** `_within(mention: NumberMention, record: MetricRecord, lower_is_better: frozenset[str]) -> bool`.
 
