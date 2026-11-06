@@ -69,9 +69,10 @@ def load_lexicons(path: Path = LEXICONS_PATH) -> Lexicons:
             unit_aliases[normalise_text(spelling) or spelling] = family
     ownership = {k: int(v) for k, v in _norm_keys(raw["ownership"]).items()}
     deployment = {k: int(v) for k, v in _norm_keys(raw["deployment"]).items()}
-    # Every ownership and deployment key opens sentences too, so they are not listed twice.
+    # Ownership keys are all verbs and open sentences too. Deployment keys only when past
+    # tense: "Live", "Pilot" and "Concept" start real names (as known_verb already assumes).
     listed = {normalise_text(w) for w in raw["sentence_openers"]}
-    openers = listed | set(ownership) | set(deployment)
+    openers = listed | set(ownership) | {w for w in deployment if w.endswith("ed")}
     return Lexicons(
         version=str(raw.get("version", "unversioned")),
         ownership=ownership,

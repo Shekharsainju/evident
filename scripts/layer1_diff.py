@@ -29,6 +29,9 @@ from evident.eval.layer1_probe import (
 from evident.eval.splits import require_dev
 
 ROOT = Path(__file__).resolve().parents[1]
+# Targeted probes from every fix stay in the gate for good, so a later fix can't reopen an
+# earlier false-accept path unnoticed.
+PROBES_DIR = ROOT / "experiments" / "p1-layer1" / "probes"
 
 # Runs inside the worktree. Imports only modules that exist at older refs.
 RUNNER = """
@@ -115,6 +118,10 @@ def _main() -> int:
 
     require_dev(args.profile)
     claims: list[LabelledClaim] = probe_claims()
+    for path in sorted(PROBES_DIR.glob("*.jsonl")):
+        standing = load_claims(path)
+        require_dev(c.profile_id for c in standing)
+        claims.extend(standing)
     if args.extra:
         extra = load_claims(args.extra)
         require_dev(c.profile_id for c in extra)

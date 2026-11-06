@@ -179,3 +179,46 @@ def test_probe_claims_mutation_equal_to_instance_stays_unsupported(monkeypatch) 
     hit = [c for c in claims if outcome_key(c) == outcome_key(
         next(x for x in claims if x.claim.text == inst.text))]
     assert len(hit) == 1 and hit[0].label == "unsupported"
+
+
+def test_diff_script_always_loads_standing_probes(monkeypatch, tmp_path) -> None:  # type: ignore[no-untyped-def]
+    import sys
+
+    from evident.eval.grounding import dump_claims
+    from tests.eval.test_splits import _load_script
+
+    module = _load_script("layer1_diff")
+    probe = _lc("Standing probe sentence for the gate.", "unsupported")
+    (tmp_path / "p.jsonl").write_text(dump_claims([probe]), encoding="utf-8")
+    monkeypatch.setattr(module, "PROBES_DIR", tmp_path)
+    seen: list[str] = []
+
+    def base(ref, path, scratch):  # type: ignore[no-untyped-def]
+        claims = module.load_claims(path)
+        seen.extend(c.claim.text for c in claims)
+        return [[]] * len(claims)
+
+    monkeypatch.setattr(module, "_score_base", base)
+    monkeypatch.setattr(module, "layer1_outcomes",
+                        lambda claims: {outcome_key(c): [] for c in claims})
+    monkeypatch.setattr(sys, "argv", ["diff", "--base", "X", "--out", str(tmp_path / "o.json")])
+    assert module.main() == 0
+    assert "Standing probe sentence for the gate." in seen
+
+
+def test_diff_script_refuses_a_standing_probe_from_a_test_profile(monkeypatch, tmp_path) -> None:  # type: ignore[no-untyped-def]
+    import sys
+
+    import pytest
+
+    from evident.eval.grounding import dump_claims
+    from evident.eval.splits import LockedSplitError
+    from tests.eval.test_splits import _load_script
+
+    module = _load_script("layer1_diff")
+    bad = _lc("Locked profile probe.", "unsupported", profile=P1_TEST_PROFILES[0])
+    (tmp_path / "p.jsonl").write_text(dump_claims([bad]), encoding="utf-8")
+    monkeypatch.setattr(module, "PROBES_DIR", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["diff", "--base", "X", "--out", str(tmp_path / "o.json")])
+    with pytest.raises(LockedSplitError):
+        module.main()

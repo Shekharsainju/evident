@@ -366,6 +366,18 @@ def check_entities(claim: Claim, facts: list[FactVersion], ctx: Layer1Context
         w = normalise_text(word)
         return w in ctx.lex.ownership or (w in ctx.lex.deployment and w.endswith("ed"))
 
+    def lone_word_known(word: str) -> bool:
+        # "The Guardian": once the opener is gone one word is left, and the single-word
+        # exemption in _name_supported must not wave it through.
+        w = normalise_text(word)
+        if w[:1].isdigit():
+            return True  # a figure ("Reached 84%"), judged by the number checks
+        spellings = [w]
+        canonical = ctx.aliases.canonical_entity(w)
+        if canonical is not None:
+            spellings.extend(a for a, c in ctx.aliases.entities.items() if c == canonical)
+        return w in ctx.aliases.skills or any(contains_phrase(evidence, x) for x in spellings)
+
     def opener(word: str) -> bool:
         return normalise_text(word) in ctx.lex.sentence_openers
 
@@ -377,7 +389,8 @@ def check_entities(claim: Claim, facts: list[FactVersion], ctx: Layer1Context
         # find both words. On a strict part only a known verb is dropped: in "Goldman Sachs
         # Mar 2025" the first word belongs to the name.
         if (at_start and len(words) > 1 and opener(words[0])
-                and (not by_date or known_verb(words[0])) and supported(words[1:], by_date)):
+                and (not by_date or known_verb(words[0])) and supported(words[1:], by_date)
+                and (len(words) > 2 or by_date or lone_word_known(words[1]))):
             continue
         parts = _split_on_and(words)
         if len(parts) > 1:

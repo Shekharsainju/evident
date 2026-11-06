@@ -386,3 +386,69 @@ def test_listed_openers_are_dropped_at_each_kind_of_start() -> None:
                      f"• {opener} Fictional Robotics Society planner",
                      f"Built it.\n{opener} Fictional Robotics Society planner."):
             assert check_entities(claim(text, f), [f], context(f)) == [], text
+
+
+# Task 6 fix round 1: a dropped opener must leave a word the evidence contains. Each row is a
+# review finding that passed after 49e9317 and was rejected by the older code.
+
+_DASHES = ("-", "–", "—", "*")
+
+
+def _entities_rejects(text: str, f) -> bool:  # type: ignore[no-untyped-def]
+    return any(x.rule == "entities" for x in check_entities(claim(text, f), [f], context(f)))
+
+
+def test_name_word_opener_before_a_lone_unknown_word_is_rejected() -> None:
+    f = project()
+    cases = ["The Guardian featured the planner.",
+             "• The Guardian featured the planner.",
+             "Built the planner\nThe Guardian featured it.",
+             "Built the planner - The Guardian featured it.",
+             "Built the planner — The Guardian featured it.",
+             "Built the planner – The Guardian featured it.",
+             "Built the planner * The Economist covered it.",
+             "• Her Majesty praised the planner.",
+             "Built the planner\nWe Mentor backed it.",
+             "Built it – Our Goldman backed it.",
+             "Built it\nIt Goldman backed it.",
+             "Built it\nA Goldman backed it."]
+    for text in cases:
+        assert _entities_rejects(text, f), text
+
+
+def test_each_start_marker_rejects_an_opener_before_an_unknown_word() -> None:
+    f = project()
+    for dash in _DASHES:
+        for opener in ("The", "Our", "Her", "We", "It", "A"):
+            assert _entities_rejects(f"Built it {dash} {opener} Goldman backed it.", f), \
+                (dash, opener)
+    for opener in ("The", "Our", "Her", "We", "It", "A"):
+        assert _entities_rejects(f"Built it\n{opener} Goldman backed it.", f), opener
+        assert _entities_rejects(f"• {opener} Goldman backed it.", f), opener
+
+
+def test_deployment_noun_opener_is_part_of_the_name() -> None:
+    prod = project(deployment="production")
+    for text in ("• Live Nation used the planner.", "Built the planner\nLive Nation used it.",
+                 "Built it\nPilot Flying backed it.", "Built it\nShipped Sachs tools."):
+        assert _entities_rejects(text, prod), text
+    concept = project(deployment="concept")
+    assert _entities_rejects("• Concept Ventures funded the planner.", concept)
+
+
+def test_ownership_opener_before_an_unknown_word_is_rejected_on_a_led_fact() -> None:
+    led = project(ownership="led")
+    for text in ("• Led Zeppelin used it.", "Built it\nLed Zeppelin used it."):
+        assert not run_layer1(claim(text, led), context(led)).passed, text
+
+
+def test_lone_word_left_after_an_opener_must_be_in_the_evidence() -> None:
+    f = project()
+    for text in ("The Planner cut clash checks.", "• The Planner is small.",
+                 "Built it\nOur Flask app was small.", "Built the Team Course Planner."):
+        assert check_entities(claim(text, f), [f], context(f)) == [], text
+
+
+def test_figure_after_an_opener_is_left_to_the_number_checks() -> None:
+    f = project()
+    assert check_entities(claim("Team Course Planner: Reached 84 on it.", f), [f], context(f)) == []

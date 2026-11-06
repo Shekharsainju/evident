@@ -16,7 +16,8 @@ credential_words = ["certified", "certification", "accredited", "licensed", "cha
                     "distinction", "scholarship", "fellowship", "award", "awarded"]
 
 # Words that may open a sentence, bullet or clause without being part of a name. Every
-# ownership and deployment key below counts as one too. Any other capitalised first word stays
+# ownership key below counts as one too, and so does each past-tense deployment key
+# (designed, shipped); the other deployment keys (live, pilot, concept) start real names. Any other capitalised first word stays
 # in the name run and must appear in the evidence.
 sentence_openers = [
     "developed", "designed", "wrote", "created", "tested", "completed", "enrolled", "studied",

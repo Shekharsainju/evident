@@ -18,6 +18,9 @@ Counts are claims whose Layer 1 outcome changed between the base and the fix. K:
 
 | Task | Fix | Base | Fix commit | Probes (targeted, of them unsupported) | K | S | F | U | Gate output |
 |---|---|---|---|---|---|---|---|---|---|
-| 6 | sentence-start entities (7.2) | 4478384 | 49e9317 | 1256 (310, 180) | 0 | 0 | 0 | 100 | `task-6-diff.txt` |
+| 6 | sentence-start entities (7.2) | 4478384 | fix round 1 (see git log) | 2291 (1350, 940) | 0 | 303 | 0 | 172 | `task-6-diff.txt` |
+| 6 | same, against the A3 code | v0.1-a3 | fix round 1 (see git log) | 2291 (1350, 940) | 0 | 303 | 0 | 172 | `task-6-diff-vs-a3.txt` |
 
 Task 6 is pending review; this row is final only once the review approves.
+
+Task 6 S = 303: all supported probes with a full name in the evidence (Our, My, Her, A before the name, or a verb opener after a bullet, dash or line break), which the old code rejected. Checked by hand. Against 49e9317 the counts are K 0, S 0, F 0, U 490 (`task-6-diff-vs-49e9317.txt`). Standing probes: every `probes/*.jsonl` is loaded by every gate run.
