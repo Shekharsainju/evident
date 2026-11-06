@@ -1,0 +1,43 @@
+probes: 3439
+base imports evident from: C:\Users\ultra\AppData\Local\Temp\layer1-diff-io3617k7\base-worktree\src\evident\__init__.py
+unsupported | pass -> metrics | Timetable clash checks run in 1 second.
+unsupported | pass -> metrics | Timetable clash checks run in 0.5 seconds.
+unsupported | pass -> metrics | Timetable clash checks run in 1.5 seconds.
+unsupported | pass -> metrics | Timetable clash checks run in 1.9 seconds.
+unsupported | pass -> metrics | Timetable clash checks run in under 1 second.
+unsupported | pass -> metrics | Timetable clash checks run in 1s.
+unsupported | pass -> metrics | Timetable clash checks run in 0.5s.
+unsupported | pass -> metrics | Timetable clash checks run in 1.5s.
+unsupported | pass -> metrics | Timetable clash checks run in 500ms.
+supported | metrics -> pass | Timetable clash checks run in under 3 seconds.
+unsupported | pass -> metrics | Timetable clash checks take 1 second.
+unsupported | pass -> metrics | Timetable clash checks take 0.5 seconds.
+unsupported | pass -> metrics | Timetable clash checks take 1.5 seconds.
+unsupported | pass -> metrics | Timetable clash checks take 1.9 seconds.
+unsupported | pass -> metrics | Timetable clash checks take under 1 second.
+unsupported | pass -> metrics | Timetable clash checks take 1s.
+unsupported | pass -> metrics | Timetable clash checks take 0.5s.
+unsupported | pass -> metrics | Timetable clash checks take 1.5s.
+unsupported | pass -> metrics | Timetable clash checks take 500ms.
+supported | metrics -> pass | Timetable clash checks take under 3 seconds.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1 second.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 0.5 seconds.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1.5 seconds.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1.9 seconds.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to under 1 second.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1s.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 0.5s.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1.5s.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 500ms.
+supported | metrics -> pass | Profiling got timetable clash checks down to under 3 seconds.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1 second.
+unsupported | pass -> metrics | • Timetable clash checks finish in 0.5 seconds.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1.5 seconds.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1.9 seconds.
+unsupported | pass -> metrics | • Timetable clash checks finish in under 1 second.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1s.
+unsupported | pass -> metrics | • Timetable clash checks finish in 0.5s.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1.5s.
+unsupported | pass -> metrics | • Timetable clash checks finish in 500ms.
+supported | metrics -> pass | • Timetable clash checks finish in under 3 seconds.
+changed: 40 (newly passing unsupported: 0, newly passing supported: 4, newly failing supported: 0, newly failing unsupported: 36)

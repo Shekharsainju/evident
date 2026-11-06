@@ -54,10 +54,15 @@ def _candidates(mention: NumberMention, norm: str, records: list[MetricRecord],
     return found
 
 
-def _within(mention: NumberMention, record: MetricRecord) -> bool:
-    """The claim may round toward zero, never away, and must keep the sign."""
+def _within(mention: NumberMention, record: MetricRecord, lower_is_better: frozenset[str]
+            ) -> bool:
+    """The claim must keep the sign and may round toward zero, never away. For an absolute
+    record of a lower-is-better metric (latency, cost, error rate) a smaller value is the
+    stronger claim, so there it may round away from zero, never toward it."""
     if (mention.value < 0) != (record.value < 0):
         return False
+    if record.direction is MetricDirection.absolute and record.metric in lower_is_better:
+        return abs(mention.value) >= abs(record.value)
     return abs(mention.value) <= abs(record.value)
 
 
@@ -81,7 +86,7 @@ def check_metrics(claim: Claim, facts: list[FactVersion], ctx: Layer1Context
             failures.append(_fail("metrics_other_needs_review", m.span,
                                   f"'{m.span}' binds to an uncontrolled metric "
                                   f"{found[0].metric}, which needs user review."))
-        elif not _within(m, found[0]):
+        elif not _within(m, found[0], ctx.lex.lower_is_better):
             r = found[0]
             failures.append(_fail("metrics", m.span,
                                   f"'{m.span}' goes beyond the record {r.metric_id} "

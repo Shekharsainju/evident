@@ -92,3 +92,22 @@ def test_span_offsets_point_into_normalised_text() -> None:
     norm = normalise_text(text)
     for m in find_numbers(text, [], LEX):
         assert norm[m.start:m.end] == m.span
+
+
+# Task 7 (Review Focus 2): a time unit glued to its number ("1s", "200ms") is still a metric
+# number. Without this, "Clash checks run in 1s" had no number for the metric rule to check.
+
+
+@pytest.mark.parametrize("text,value,unit", [
+    ("Clash checks run in 1s", 1.0, "s"),
+    ("Clash checks run in 0.5s", 0.5, "s"),
+    ("Clash checks run in 200ms", 200.0, "ms"),
+    ("Clash checks run in 2secs", 2.0, "secs"),
+])
+def test_time_unit_glued_to_a_number_is_a_metric(text: str, value: float, unit: str) -> None:
+    (m,) = find_numbers(text, [], LEX)
+    assert (m.kind, m.value, m.unit) == (NumberKind.metric, value, unit)
+
+
+def test_decade_is_not_read_as_a_glued_time_unit() -> None:
+    assert find_numbers("Worked on retro games from the 1990s", [], LEX) == []

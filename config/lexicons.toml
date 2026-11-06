@@ -2,7 +2,12 @@
 # Words not listed here pass Layer 1 and are left to the Layer 2 judge.
 # Keys are matched after normalisation (lowercase, NFKC), as whole words or phrases.
 
-version = "1"
+version = "3"
+
+# Metrics where a smaller value is the stronger claim. For an absolute record of one of these
+# the claim may round away from zero, never toward it (P8, Decision log 13). Version 2 was
+# used by the reverted Task 6 change, so this list starts version 3.
+lower_is_better = ["latency", "cost", "error_rate"]
 
 # Nouns that make a number or quantity word a scale figure.
 scale_nouns = ["users", "user", "customers", "customer", "clients", "visitors", "subscribers",

@@ -107,3 +107,58 @@ def test_subject_code_claim_passes_metric_check() -> None:  # Review Focus 1, en
     result = run_layer1(claim("Completed 43007 Advanced Artificial Intelligence", f),
                         context(f))
     assert result.passed, result.failures
+
+
+# Task 7 (P8, Decision log 13): a lower-is-better metric recorded as an absolute value may
+# round away from zero, never toward it.
+
+
+def _clash_latency() -> object:
+    return metric(metric_id="m_clash", metric="latency", direction="absolute", value=2.0,
+                  unit="seconds", span_text="cut timetable clash checks to under 2 seconds")
+
+
+def test_lower_is_better_old_false_accepts_now_fail() -> None:
+    f = project(metrics=[_clash_latency()])
+    for text in ("Clash checks run in 1 second", "Clash checks take 0.5 seconds"):
+        failures = check_metrics(claim(text, f), [f], context(f))
+        assert len(failures) == 1, (text, failures)
+        assert failures[0].rule == "metrics" and "beyond" in failures[0].detail, text
+
+
+def test_lower_is_better_equal_or_higher_passes() -> None:
+    f = project(metrics=[_clash_latency()])
+    for text in ("Clash checks run in 2 seconds", "Clash checks run in about 3 seconds"):
+        assert check_metrics(claim(text, f), [f], context(f)) == [], text
+
+
+def test_decrease_record_still_rounds_toward_zero() -> None:
+    f = project(metrics=[latency()])
+    assert check_metrics(claim("Cut latency by 40%", f), [f], context(f)) == []
+    assert check_metrics(claim("Cut latency by 50%", f), [f], context(f)) != []
+
+
+def test_units_that_differ_fail_closed() -> None:
+    # Whole Layer 1, not only check_metrics: "2,000" reads as the year 2000, so the dates
+    # rule is what rejects "under 2,000 ms".
+    f = project(metrics=[_clash_latency()])
+    for text in ("Clash checks run in under 2,000 ms", "Clash checks run in 1500 ms",
+                 "Clash checks run in 1s", "Clash checks run in 0.5s"):
+        assert not run_layer1(claim(text, f), context(f)).passed, text
+
+
+def test_lower_is_better_error_rate_rounds_away_from_zero() -> None:
+    rec = metric(metric_id="m_err", metric="error_rate", direction="absolute", value=5.0,
+                 unit="percent", span_text="an error rate of 5%")
+    f = project(metrics=[rec])
+    (failure,) = check_metrics(claim("Kept the error rate at 3%", f), [f], context(f))
+    assert "beyond" in failure.detail
+    assert check_metrics(claim("Kept the error rate at 5%", f), [f], context(f)) == []
+
+
+def test_higher_is_better_absolute_record_still_rounds_toward_zero() -> None:
+    rec = metric(metric_id="m_acc_abs", metric="accuracy", direction="absolute", value=84.0,
+                 unit="percent", span_text="84% accuracy")
+    f = project(metrics=[rec])
+    assert check_metrics(claim("Reached 80% accuracy", f), [f], context(f)) == []
+    assert check_metrics(claim("Reached 90% accuracy", f), [f], context(f)) != []
