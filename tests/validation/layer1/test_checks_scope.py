@@ -354,7 +354,7 @@ def test_date_the_date_rule_cannot_read_is_not_cut_out() -> None:
 
 _LIMITATION = pytest.mark.xfail(
     strict=True,
-    reason="Task 6 reverted: a name at a plain sentence start, or after '.' or ';', loses its "
+    reason="Task 6 reverted: a name at a plain sentence start, or after '.', ';' or ':', loses its "
            "first word and a single word is not checked. Documented limitation; the judge "
            "covers it.")
 _DASHES = ("-", "–", "—", "*")
