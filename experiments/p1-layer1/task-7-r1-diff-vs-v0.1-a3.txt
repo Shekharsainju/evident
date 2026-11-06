@@ -1,0 +1,80 @@
+probes: 3528
+base imports evident from: C:\Users\ultra\AppData\Local\Temp\layer1-diff-50ycq6sd\base-worktree\src\evident\__init__.py
+unsupported | pass -> metrics | Timetable clash checks run in 1 second.
+unsupported | pass -> metrics | Timetable clash checks run in 0.5 seconds.
+unsupported | pass -> metrics | Timetable clash checks run in 1.5 seconds.
+unsupported | pass -> metrics | Timetable clash checks run in 1.9 seconds.
+unsupported | pass -> metrics | Timetable clash checks run in under 1 second.
+unsupported | pass -> metrics | Timetable clash checks run in 1s.
+unsupported | pass -> metrics | Timetable clash checks run in 0.5s.
+unsupported | pass -> metrics | Timetable clash checks run in 1.5s.
+unsupported | pass -> metrics | Timetable clash checks run in 500ms.
+supported | pass -> metrics | Timetable clash checks run in 2 seconds.
+supported | pass -> metrics | Timetable clash checks run in about 2 seconds.
+supported | pass -> metrics | Timetable clash checks run in under 2 seconds.
+supported | pass -> metrics | Timetable clash checks run in 2s.
+supported | pass -> metrics | Timetable clash checks run in 2.0 seconds.
+unsupported | pass -> metrics | Timetable clash checks take 1 second.
+unsupported | pass -> metrics | Timetable clash checks take 0.5 seconds.
+unsupported | pass -> metrics | Timetable clash checks take 1.5 seconds.
+unsupported | pass -> metrics | Timetable clash checks take 1.9 seconds.
+unsupported | pass -> metrics | Timetable clash checks take under 1 second.
+unsupported | pass -> metrics | Timetable clash checks take 1s.
+unsupported | pass -> metrics | Timetable clash checks take 0.5s.
+unsupported | pass -> metrics | Timetable clash checks take 1.5s.
+unsupported | pass -> metrics | Timetable clash checks take 500ms.
+supported | pass -> metrics | Timetable clash checks take 2 seconds.
+supported | pass -> metrics | Timetable clash checks take about 2 seconds.
+supported | pass -> metrics | Timetable clash checks take under 2 seconds.
+supported | pass -> metrics | Timetable clash checks take 2s.
+supported | pass -> metrics | Timetable clash checks take 2.0 seconds.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1 second.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 0.5 seconds.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1.5 seconds.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1.9 seconds.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to under 1 second.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1s.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 0.5s.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 1.5s.
+unsupported | pass -> metrics | Profiling got timetable clash checks down to 500ms.
+supported | pass -> metrics | Profiling got timetable clash checks down to 2 seconds.
+supported | pass -> metrics | Profiling got timetable clash checks down to about 2 seconds.
+supported | pass -> metrics | Profiling got timetable clash checks down to under 2 seconds.
+supported | pass -> metrics | Profiling got timetable clash checks down to 2s.
+supported | pass -> metrics | Profiling got timetable clash checks down to 2.0 seconds.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1 second.
+unsupported | pass -> metrics | • Timetable clash checks finish in 0.5 seconds.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1.5 seconds.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1.9 seconds.
+unsupported | pass -> metrics | • Timetable clash checks finish in under 1 second.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1s.
+unsupported | pass -> metrics | • Timetable clash checks finish in 0.5s.
+unsupported | pass -> metrics | • Timetable clash checks finish in 1.5s.
+unsupported | pass -> metrics | • Timetable clash checks finish in 500ms.
+supported | pass -> metrics | • Timetable clash checks finish in 2 seconds.
+supported | pass -> metrics | • Timetable clash checks finish in about 2 seconds.
+supported | pass -> metrics | • Timetable clash checks finish in under 2 seconds.
+supported | pass -> metrics | • Timetable clash checks finish in 2s.
+supported | pass -> metrics | • Timetable clash checks finish in 2.0 seconds.
+unsupported | pass -> metrics | • Timetable clash checks run in 1 second.
+unsupported | pass -> metrics | - Timetable clash checks run in 1 second.
+unsupported | pass -> metrics | Contributed to the planner; Timetable clash checks run in 1 second.
+unsupported | pass -> metrics | Contributed to the planner.
+Timetable clash checks run in 1 second.
+unsupported | pass -> metrics | Saved 1 second of timetable clash check latency.
+unsupported | pass -> metrics | Contributed to the planner; Saved 1 second of timetable clash check latency.
+unsupported | pass -> metrics | Contributed to the planner.
+Saved 1 second of timetable clash check latency.
+unsupported | pass -> metrics | Timetable clash check latency is 1 second.
+unsupported | pass -> metrics | • Timetable clash check latency is 1 second.
+unsupported | pass -> metrics | - Timetable clash check latency is 1 second.
+unsupported | pass -> metrics | Contributed to the planner; Timetable clash check latency is 1 second.
+unsupported | pass -> metrics | Contributed to the planner.
+Timetable clash check latency is 1 second.
+supported | metrics -> pass | Timetable clash check latency is under 3 seconds.
+supported | metrics -> pass | • Timetable clash check latency is under 3 seconds.
+supported | metrics -> pass | - Timetable clash check latency is under 3 seconds.
+supported | metrics -> pass | Contributed to the planner; Timetable clash check latency is under 3 seconds.
+supported | metrics -> pass | Contributed to the planner.
+Timetable clash check latency is under 3 seconds.
+changed: 73 (newly passing unsupported: 0, newly passing supported: 5, newly failing supported: 20, newly failing unsupported: 48)

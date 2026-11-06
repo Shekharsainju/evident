@@ -40,6 +40,10 @@ def _phrases_in(window: str, table: dict[str, str] | dict[str, MetricDirection])
     return {str(v) for phrase, v in table.items() if contains_phrase(window, phrase)}
 
 
+def _lower_is_better(record: MetricRecord, lex: Lexicons) -> bool:
+    return record.direction is MetricDirection.absolute and record.metric in lex.lower_is_better
+
+
 def _candidates(mention: NumberMention, norm: str, records: list[MetricRecord],
                 lex: Lexicons) -> list[MetricRecord]:
     window = norm[max(0, mention.start - WINDOW): mention.end + WINDOW]
@@ -51,6 +55,16 @@ def _candidates(mention: NumberMention, norm: str, records: list[MetricRecord],
         found = [r for r in found if r.metric in keywords]
     if directions:
         found = [r for r in found if r.direction.value in directions]
+    # A lower-is-better absolute record passes claims above its value (P8), so a loose
+    # binding would pass stray figures. It binds only a number with a unit in its family,
+    # in a claim that names the metric, and not after a saving word. If it is ruled out the
+    # number is unbound: binding another record instead could pass the same stray figure.
+    saving = bool(_phrases_in(before, dict.fromkeys(lex.saving_words, "")))
+    for r in found:
+        if _lower_is_better(r, lex) and (
+                mention.unit is None or saving or r.metric not in keywords
+                or lex.unit_family(mention.unit) != lex.unit_family(r.unit)):
+            return []
     return found
 
 
@@ -58,10 +72,13 @@ def _within(mention: NumberMention, record: MetricRecord, lower_is_better: froze
             ) -> bool:
     """The claim must keep the sign and may round toward zero, never away. For an absolute
     record of a lower-is-better metric (latency, cost, error rate) a smaller value is the
-    stronger claim, so there it may round away from zero, never toward it."""
+    stronger claim, so there it may round away from zero, never toward it. A lower bound
+    there ("at least 3 seconds", "3+ seconds") may not sit above the record."""
     if (mention.value < 0) != (record.value < 0):
         return False
     if record.direction is MetricDirection.absolute and record.metric in lower_is_better:
+        if mention.comparator == "ge":
+            return abs(mention.value) <= abs(record.value)
         return abs(mention.value) >= abs(record.value)
     return abs(mention.value) <= abs(record.value)
 
